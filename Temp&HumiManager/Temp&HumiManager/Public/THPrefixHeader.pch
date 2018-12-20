@@ -1,0 +1,61 @@
+//
+//  THPrefixHeader.pch
+//  Temp&HumiManager
+//
+//  Created by terry on 2018/3/7.
+//  Copyright © 2018年 terry. All rights reserved.
+//
+
+#import "MyDefaultManager.h"
+#import "MyArchiverManager.h"
+#import "MyAlertView.h"
+#import "methoder.h"
+#import "ConstNotification.h"
+#import "My_AlertView.h"
+#import "TH_NormalView.h"
+
+#import "UIColor+DIYColor.h"
+#import "UIFont+DIYFont.h"
+#import "UIButton+DIYButton.h"
+#import "UIView+DIYView.h"
+#import "UILabel+DIYLabel.h"
+#import "UIScrollView+DIYScrollView.h"
+
+#import "NSString+DIYString.h"
+#import "NSArray+DIYArray.h"
+#import "NSDate+DIYDate.h"
+
+#ifndef THPrefixHeader_pch
+#define THPrefixHeader_pch
+
+#define MainColor [UIColor colorWithRed:44/255.0 green:209/255.0 blue:1 alpha:1]
+//副色调(蓝)
+#define AuxiliaryColor [UIColor colorWithRed:79/255.0 green:218/255.0 blue:255/255.0 alpha:1]
+//副色调(黑)
+#define AuxiBlackColor [UIColor colorWithHexString:@"#212121" Alpha:1]
+
+// 随机色
+#define RandomColor [UIColor colorWithRed:arc4random_uniform(256)/255.0 green:arc4random_uniform(256)/255.0 blue:arc4random_uniform(256)/255.0 alpha:1]
+
+// 随机透明色
+#define RandomColorAlpha(x) [UIColor colorWithRed:arc4random_uniform(256)/255.0 green:arc4random_uniform(256)/255.0 blue:arc4random_uniform(256)/255.0 alpha:x]
+
+#define MainScreenWidth [UIScreen mainScreen].bounds.size.width
+#define MainScreenHeight [UIScreen mainScreen].bounds.size.height
+#define Fit_X(x) ((x/414.f)*MainScreenWidth)
+#define Fit_Y(y) ((y/736.f)*MainScreenHeight)
+#define StatusBarHeight [[UIApplication sharedApplication] statusBarFrame].size.height
+
+//自定义log
+#ifdef DEBUG
+#define LRLog(...) NSLog(@"%s 第%d行 \n %@\n\n",__func__,__LINE__,[NSString stringWithFormat:__VA_ARGS__])
+#else
+#define LRLog(...)
+#endif
+
+//自定义弱、强引用self
+#define LRWeakSelf(type)  __weak typeof(type) weak##type = type;
+#define LRStrongSelf(type)  __strong typeof(type) type = weak##type;
+
+
+#endif /* THPrefixHeader_pch */
