@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)selectDataOfDevice:(int)uid Mac:(NSString *)mac;
 
+- (void)selectLastDataOfDevice:(int)uid Mac:(NSString *)mac;
+
 @end
 
 NS_ASSUME_NONNULL_END

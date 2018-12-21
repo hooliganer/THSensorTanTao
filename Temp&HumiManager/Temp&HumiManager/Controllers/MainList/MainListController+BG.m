@@ -192,8 +192,9 @@
                 for (int row=0; row<devs.count; row++) {
                     
                     DeviceInfo * dev = devs[row][@"device"];
-                    
-                    [[AFManager shared] selectDataOfDevice:user.uid Mac:dev.mac];
+                 
+                    [[AFManager shared] selectLastDataOfDevice:user.uid Mac:dev.mac];
+//                    [[AFManager shared] selectDataOfDevice:user.uid Mac:dev.mac];
 //                    HTTP_MemberDataManager* mng = [[HTTP_MemberDataManager alloc]init];
 //                    [mng.dataSets setValue:group forKey:@"group"];
 //                    [mng.dataSets setValue:dev forKey:@"device"];
