@@ -52,7 +52,7 @@
     [self setupBtmSubviews];
 
     self.exportBtn = [[UIButton_DIYObject alloc]initWithFrame:CGRectMake(20, 10, self.bgScroll.width - 40, 40)];
-    [self.exportBtn setTitle:@"EXPORT"];
+    [self.exportBtn setTitle:@"SHARE"];
     self.exportBtn.labTitle.textColor = [UIColor whiteColor];
     self.exportBtn.backgroundColor = [UIColor colorWithRed:78/255.0 green:200/255.0 blue:94/255.0 alpha:1];
     self.exportBtn.layer.masksToBounds = true;
@@ -69,6 +69,8 @@
     NSString * timeStr = [NSString stringWithFormat:@"%02d:00--%02d:00",[[NSDate nowDateWithSecond:-3600] nHour],[NSDate currentHour]];
     self.segmentView.labCenter.text = timeStr;
     [self.segmentView.labCenter sizeToFit];
+    self.segmentView.delegate = self;
+    self.segmentView.date = [NSDate date];
 
     self.typeView = [[DetailTypeChooseView alloc]initWithFrame:CGRectMake(0, self.segmentView.bottomY, self.btmView.width, self.btmView.height * 0.1)];
     self.typeView.delegate = self;
@@ -96,6 +98,42 @@
     self.temperatureView.hidden = !(type == 0);
     self.humidityView.hidden = !(type == 1);
     self.warnView.hidden = !(type == 2);
+}
+
+- (void)segmentView:(DetailChooseSegment *)segment chooseLR:(bool)isLeft{
+    
+    NSDate * oldDate = segment.date;
+    NSDate * newDate;
+    switch (segment.type) {
+        case 1://day
+        {
+            newDate = [oldDate dateWithDays:isLeft?-1:1];
+        }
+            break;
+        case 2://week
+        {
+            newDate = [oldDate dateWithDays:isLeft?-7:7];
+        }
+            break;
+            
+        default://hour
+        {
+            newDate = [oldDate dateWithSeconds:isLeft?-3600:3600];
+        }
+            break;
+    }
+    if (!isLeft) {
+        NSTimeInterval newInterval = [newDate timeIntervalSince1970];
+        NSTimeInterval nowInterval = [[NSDate date] timeIntervalSince1970];
+        if (newInterval > nowInterval) {
+            return ;
+        }
+    }
+    segment.date = newDate;
+}
+
+- (void)segmentView:(DetailChooseSegment *)segment chooseIndex:(NSInteger)index{
+    
 }
 
 @end

@@ -21,10 +21,11 @@
 
 @property (nonatomic,strong)AFHTTPSessionManager * sessionManager;
 
-- (void)selectMembersOfGroupWithGid:(int)gid Block:(void(^)(void))block;
+- (void)selectMembersOfGroupWithGid:(int)gid Block:(void(^)(NSArray <DeviceInfo *>*devices))block Fail:(void(^)(NSError * error))fail;
 
 
 - (void)fakeLoad;
 
+- (void)fakeLoadQueue:(dispatch_queue_t)queue Block:(void(^)(void))block;
 
 @end

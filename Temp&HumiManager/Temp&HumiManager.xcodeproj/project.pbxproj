@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		45D9322DB4B46F08D5732969 /* libPods-Temp&HumiManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 32D3B6916A059A6F065A0794 /* libPods-Temp&HumiManager.a */; };
+		B2CB1E9C21CC7FE2005E3501 /* UIFont+DIYFont.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CB1E9B21CC7FE2005E3501 /* UIFont+DIYFont.m */; };
+		B2CB1E9F21CC8B09005E3501 /* AFManager+AFAutoRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CB1E9E21CC8B09005E3501 /* AFManager+AFAutoRegister.m */; };
+		B2CB1EA421CCA214005E3501 /* THNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CB1EA321CCA214005E3501 /* THNavigationBar.m */; };
+		B2CB1EA721CCBEE9005E3501 /* AFManager+SelectDataOfDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CB1EA621CCBEE9005E3501 /* AFManager+SelectDataOfDevice.m */; };
 		DE0C4861205FB6A8004C8609 /* DetailWarnCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0C4860205FB6A8004C8609 /* DetailWarnCollectionCell.m */; };
 		DE1137B020B57CCF00B59C53 /* HTTP_GroupManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DE1137AF20B57CCF00B59C53 /* HTTP_GroupManager.m */; };
 		DE1137B320B5838500B59C53 /* MyAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE1137B220B5838500B59C53 /* MyAlertView.m */; };
@@ -24,7 +28,6 @@
 		DE28B0A420A3F0EC00D5627F /* FMDB_DeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DE28B0A320A3F0EC00D5627F /* FMDB_DeviceInfo.m */; };
 		DE29C6A4206B55E3001A901E /* DetailInfoController+DetailInfoBG.m in Sources */ = {isa = PBXBuildFile; fileRef = DE29C6A3206B55E3001A901E /* DetailInfoController+DetailInfoBG.m */; };
 		DE2CF411206A35C60098F939 /* MyIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2CF410206A35C60098F939 /* MyIndicatorView.m */; };
-		DE2D77F62050EAF70044AB56 /* UIFont+DIYFont.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2D77F42050EAF60044AB56 /* UIFont+DIYFont.m */; };
 		DE3536C421C68BBA00B553DE /* TestDB+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = DE3536C121C68BBA00B553DE /* TestDB+CoreDataClass.m */; };
 		DE3536C521C68BBA00B553DE /* TestDB+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = DE3536C321C68BBA00B553DE /* TestDB+CoreDataProperties.m */; };
 		DE3592AA2140116F000E392C /* AppDelegate+Catergory.m in Sources */ = {isa = PBXBuildFile; fileRef = DE3592A92140116F000E392C /* AppDelegate+Catergory.m */; };
@@ -143,6 +146,14 @@
 /* Begin PBXFileReference section */
 		32D3B6916A059A6F065A0794 /* libPods-Temp&HumiManager.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Temp&HumiManager.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DE8723639F0A2169AD8A633 /* Pods-Temp&HumiManager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Temp&HumiManager.release.xcconfig"; path = "Pods/Target Support Files/Pods-Temp&HumiManager/Pods-Temp&HumiManager.release.xcconfig"; sourceTree = "<group>"; };
+		B2CB1E9A21CC7FE2005E3501 /* UIFont+DIYFont.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIFont+DIYFont.h"; sourceTree = "<group>"; };
+		B2CB1E9B21CC7FE2005E3501 /* UIFont+DIYFont.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIFont+DIYFont.m"; sourceTree = "<group>"; };
+		B2CB1E9D21CC8B09005E3501 /* AFManager+AFAutoRegister.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AFManager+AFAutoRegister.h"; sourceTree = "<group>"; };
+		B2CB1E9E21CC8B09005E3501 /* AFManager+AFAutoRegister.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AFManager+AFAutoRegister.m"; sourceTree = "<group>"; };
+		B2CB1EA221CCA214005E3501 /* THNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = THNavigationBar.h; sourceTree = "<group>"; };
+		B2CB1EA321CCA214005E3501 /* THNavigationBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = THNavigationBar.m; sourceTree = "<group>"; };
+		B2CB1EA521CCBEE9005E3501 /* AFManager+SelectDataOfDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AFManager+SelectDataOfDevice.h"; sourceTree = "<group>"; };
+		B2CB1EA621CCBEE9005E3501 /* AFManager+SelectDataOfDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AFManager+SelectDataOfDevice.m"; sourceTree = "<group>"; };
 		DE0C485F205FB6A8004C8609 /* DetailWarnCollectionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailWarnCollectionCell.h; sourceTree = "<group>"; };
 		DE0C4860205FB6A8004C8609 /* DetailWarnCollectionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailWarnCollectionCell.m; sourceTree = "<group>"; };
 		DE1137AE20B57CCF00B59C53 /* HTTP_GroupManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HTTP_GroupManager.h; sourceTree = "<group>"; };
@@ -177,8 +188,6 @@
 		DE29C6A8206BACA0001A901E /* DetailInfoController+DetailInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DetailInfoController+DetailInfo.h"; sourceTree = "<group>"; };
 		DE2CF40F206A35C60098F939 /* MyIndicatorView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyIndicatorView.h; sourceTree = "<group>"; };
 		DE2CF410206A35C60098F939 /* MyIndicatorView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyIndicatorView.m; sourceTree = "<group>"; };
-		DE2D77F42050EAF60044AB56 /* UIFont+DIYFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIFont+DIYFont.m"; path = "../../../../Hoologaner/Hoologaner/public/categories/UIFont+DIYFont.m"; sourceTree = "<group>"; };
-		DE2D77F52050EAF60044AB56 /* UIFont+DIYFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIFont+DIYFont.h"; path = "../../../../Hoologaner/Hoologaner/public/categories/UIFont+DIYFont.h"; sourceTree = "<group>"; };
 		DE3536C021C68BBA00B553DE /* TestDB+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TestDB+CoreDataClass.h"; sourceTree = "<group>"; };
 		DE3536C121C68BBA00B553DE /* TestDB+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "TestDB+CoreDataClass.m"; sourceTree = "<group>"; };
 		DE3536C221C68BBA00B553DE /* TestDB+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TestDB+CoreDataProperties.h"; sourceTree = "<group>"; };
@@ -466,13 +475,6 @@
 			path = AddGrou;
 			sourceTree = "<group>";
 		};
-		DE2CF402206A1FBE0098F939 /* extensions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = extensions;
-			sourceTree = "<group>";
-		};
 		DE3536C621C68BD000B553DE /* Test */ = {
 			isa = PBXGroup;
 			children = (
@@ -607,13 +609,6 @@
 			path = XML;
 			sourceTree = "<group>";
 		};
-		DE6DCF5321BBD0FC0051E746 /* CoreData */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = CoreData;
-			sourceTree = "<group>";
-		};
 		DE7504E720510DBF002A72D8 /* HTTP */ = {
 			isa = PBXGroup;
 			children = (
@@ -643,6 +638,10 @@
 				DE8253D921C7F0C8003802FE /* AFManager.m */,
 				DE8253DB21C7F49B003802FE /* AFManager+SelectGroup.h */,
 				DE8253DC21C7F49B003802FE /* AFManager+SelectGroup.m */,
+				B2CB1E9D21CC8B09005E3501 /* AFManager+AFAutoRegister.h */,
+				B2CB1E9E21CC8B09005E3501 /* AFManager+AFAutoRegister.m */,
+				B2CB1EA521CCBEE9005E3501 /* AFManager+SelectDataOfDevice.h */,
+				B2CB1EA621CCBEE9005E3501 /* AFManager+SelectDataOfDevice.m */,
 			);
 			path = AFNet;
 			sourceTree = "<group>";
@@ -944,11 +943,12 @@
 			isa = PBXGroup;
 			children = (
 				DEAEC1C720BC098D008FF82F /* others */,
-				DE2CF402206A1FBE0098F939 /* extensions */,
 				DED7A0C8204FF883006F4342 /* categories */,
 				DED7A0C5204FF858006F4342 /* MyNavigationBar.h */,
 				DED7A0C6204FF858006F4342 /* MyNavigationBar.m */,
 				DED7A0D3204FF920006F4342 /* THPrefixHeader.pch */,
+				B2CB1EA221CCA214005E3501 /* THNavigationBar.h */,
+				B2CB1EA321CCA214005E3501 /* THNavigationBar.m */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -962,8 +962,6 @@
 				DED95752209B0BD90022819F /* NSDate+DIYDate.m */,
 				DED4147820511BF60080D1A3 /* NSString+DIYString.h */,
 				DED4147720511BF60080D1A3 /* NSString+DIYString.m */,
-				DE2D77F52050EAF60044AB56 /* UIFont+DIYFont.h */,
-				DE2D77F42050EAF60044AB56 /* UIFont+DIYFont.m */,
 				DED7A0ED204FFFEF006F4342 /* NSDictionary+DIYDictionary.h */,
 				DED7A0EE204FFFEF006F4342 /* NSDictionary+DIYDictionary.m */,
 				DED7A0D5204FFA22006F4342 /* UIImage+DIYImage.h */,
@@ -979,6 +977,8 @@
 				DEC225A620AEB5BE00D64312 /* UIView+DIYView.m */,
 				DEBA336D21C65AE800A23C87 /* UIScrollView+DIYScrollView.h */,
 				DEBA336E21C65AE800A23C87 /* UIScrollView+DIYScrollView.m */,
+				B2CB1E9A21CC7FE2005E3501 /* UIFont+DIYFont.h */,
+				B2CB1E9B21CC7FE2005E3501 /* UIFont+DIYFont.m */,
 			);
 			path = categories;
 			sourceTree = "<group>";
@@ -1046,7 +1046,6 @@
 			isa = PBXGroup;
 			children = (
 				DE8253D421C7F072003802FE /* AFNet */,
-				DE6DCF5321BBD0FC0051E746 /* CoreData */,
 				DEA19D8C213995070051ABEB /* others */,
 				DE62578320BA98A200A8A31D /* XML */,
 				DED4147F20512E4D0080D1A3 /* BLE */,
@@ -1132,7 +1131,7 @@
 		DED7A09E204FF776006F4342 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = terry;
 				TargetAttributes = {
 					DED7A0A5204FF776006F4342 = {
@@ -1271,6 +1270,7 @@
 				DE8BF19820A96E46003ABFF1 /* MyPeripheral.m in Sources */,
 				DEC6E08B209C62320026F842 /* SuperFMDBManager.m in Sources */,
 				DEA19D96213998900051ABEB /* MainTableViewHeader.m in Sources */,
+				B2CB1E9C21CC7FE2005E3501 /* UIFont+DIYFont.m in Sources */,
 				DED4148820512EA10080D1A3 /* BLEPeripheralInfo.m in Sources */,
 				DEBA338721C6786000A23C87 /* DeviceDB+CoreDataClass.m in Sources */,
 				DED7A0B9204FF776006F4342 /* main.m in Sources */,
@@ -1281,6 +1281,7 @@
 				DE6DCF5D21C2A2BC0051E746 /* DetailInfoController+UI.m in Sources */,
 				DED95753209B0BDA0022819F /* NSDate+DIYDate.m in Sources */,
 				DEC6E098209C63750026F842 /* FMDB_HitoryRecord.m in Sources */,
+				B2CB1E9F21CC8B09005E3501 /* AFManager+AFAutoRegister.m in Sources */,
 				DE4A8AF52068F9560096CBE3 /* APPGlobalObject.m in Sources */,
 				DE1F74A920DCEBAD00A834FA /* My_AlertView.m in Sources */,
 				DEC6E084209C62250026F842 /* FMDatabasePool.m in Sources */,
@@ -1288,6 +1289,7 @@
 				DE5DEBA520B2F5490078B985 /* MyCollectionHeaderView.m in Sources */,
 				DE8253DA21C7F0C8003802FE /* AFManager.m in Sources */,
 				DE18220C21B823F900694E5D /* MainListController+BG.m in Sources */,
+				B2CB1EA721CCBEE9005E3501 /* AFManager+SelectDataOfDevice.m in Sources */,
 				DE3536C521C68BBA00B553DE /* TestDB+CoreDataProperties.m in Sources */,
 				DED7A0F220500201006F4342 /* TestObject.m in Sources */,
 				DE85FE5E2147C3FE00041994 /* MainViewController+BGer.m in Sources */,
@@ -1315,9 +1317,9 @@
 				DE5DEBA620B2F5490078B985 /* MyGroupCollection.m in Sources */,
 				DED7A0AB204FF776006F4342 /* AppDelegate.m in Sources */,
 				DEBA337221C6724300A23C87 /* DetailInfoController+BG.m in Sources */,
+				B2CB1EA421CCA214005E3501 /* THNavigationBar.m in Sources */,
 				DEE3BE9B21AD8B9D00B5FEA7 /* MainListController+Tableview.m in Sources */,
 				DEA19DA6213D3D630051ABEB /* DeviceOfGroup.m in Sources */,
-				DE2D77F62050EAF70044AB56 /* UIFont+DIYFont.m in Sources */,
 				DEA19D9A21399EEF0051ABEB /* MainViewController+Delegate.m in Sources */,
 				DED7A0E5204FFE86006F4342 /* MyDefaultManager.m in Sources */,
 				DE18220F21B82A2500694E5D /* THBLEController.m in Sources */,
@@ -1369,6 +1371,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -1376,6 +1379,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -1424,6 +1428,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -1431,6 +1436,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -1455,6 +1461,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1466,10 +1473,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = DZW9DKAZ2X;
+				DEVELOPMENT_TEAM = "";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Temp&HumiManager/Public/THPrefixHeader.pch";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "Temp&HumiManager/Info.plist";
@@ -1479,7 +1487,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.puxuntech.Temp-HumiManager";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/terry/Desktop/Temp&HumiManager/swifters/Temp&HumiManager-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/swifters/Temp&HumiManager-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1494,10 +1502,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = DZW9DKAZ2X;
+				DEVELOPMENT_TEAM = "";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Temp&HumiManager/Public/THPrefixHeader.pch";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "Temp&HumiManager/Info.plist";
@@ -1507,7 +1516,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.puxuntech.Temp-HumiManager";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/terry/Desktop/Temp&HumiManager/swifters/Temp&HumiManager-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/swifters/Temp&HumiManager-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";

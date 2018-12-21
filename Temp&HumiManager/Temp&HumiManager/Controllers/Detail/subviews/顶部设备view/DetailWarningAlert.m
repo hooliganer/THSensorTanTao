@@ -38,13 +38,15 @@
     CGFloat wHumi = (self.imvHumi.image.size.width/self.imvHumi.image.size.height)*hHumi;
     self.imvHumi.frame = CGRectMake(_labTitle.frame.origin.x + _labTitle.frame.size.width + distance*8.0, self.frame.size.height/2.0 - hHumi/2.0, wHumi, hHumi);
 
-    self.labHumi.center = CGPointMake(_imvHumi.frame.origin.x + _imvHumi.frame.size.width + distance + _labHumi.bounds.size.width/2.0, self.frame.size.height/2.0);
+    self.labHumi.x = _imvHumi.rightX + distance;
+    self.labHumi.cy = self.height/2.0;
 
     CGFloat hTemp = self.frame.size.height*0.5;
     CGFloat wTemp = (self.imvTemp.image.size.width/self.imvTemp.image.size.height)*hTemp;
     self.imvTemp.frame = CGRectMake(_labHumi.frame.origin.x + _labHumi.frame.size.width + distance, self.frame.size.height/2.0 - hHumi/2.0, wTemp, hTemp);
 
-    self.labTemp.center = CGPointMake(_imvTemp.frame.origin.x + _imvTemp.frame.size.width + distance + _labTemp.bounds.size.width/2.0, self.frame.size.height/2.0);
+    self.labTemp.x = self.imvTemp.rightX + distance;
+    self.labTemp.cy = self.height/2.0;
 }
 
 - (UIImageView *)imvWarn{

@@ -9,6 +9,7 @@
 #import "AppDelegate+Catergory.h"
 
 #import "HTTP_ReigistUser.h"
+#import "AFManager+AFAutoRegister.h"
 
 #include <signal.h>
 #include <execinfo.h>
@@ -26,9 +27,9 @@
         UserInfo *user = [MyDefaultManager userInfo];
         if (!user) {
             //注册用户
-            [[HTTP_ReigistUser sharedInstance] autoFirstRegistUser:^(bool success, NSString *info) {
+            [[AFManager shared] autoFirstRegistUser:^(bool success, NSString * _Nonnull info) {
                 if (!success) {
-                    NSLog(@"%@",info);
+                    LRLog(@"%@",info);
                 }
             }];
         }

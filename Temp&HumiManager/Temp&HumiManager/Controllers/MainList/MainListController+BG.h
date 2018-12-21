@@ -24,4 +24,9 @@
  */
 - (void)selectDevicesOfGroup;
 
+///**
+// 查询设备数据
+// */
+//- (void)selectDataOfDevice;
+
 @end

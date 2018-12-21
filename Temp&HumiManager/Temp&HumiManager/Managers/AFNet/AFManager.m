@@ -30,17 +30,25 @@
     return _sessionManager;
 }
 
+- (void)fakeLoadQueue:(dispatch_queue_t)queue Block:(void (^)(void))block{
+    
+    int time = arc4random() % 3 + 1;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), queue, ^{
+        block();
+    });
+}
 
 - (void)fakeLoad{
 
+    
 
-    for (int i=0; i<200; i++) {
-        [self.sessionManager GET:@"https://www.baidu.com" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            NSLog(@"%d",i);
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            NSLog(@"%d",i);
-        }];
-    }
+//    for (int i=0; i<200; i++) {
+//        [self.sessionManager GET:@"https://www.baidu.com" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//            NSLog(@"%d",i);
+//        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//            NSLog(@"%d",i);
+//        }];
+//    }
 
 //    for (int i=0; i<30; i++) {
 //        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
@@ -93,7 +101,7 @@
     });
 }
 
-- (void)selectMembersOfGroupWithGid:(int)gid Block:(void (^)(void))block{
+- (void)selectMembersOfGroupWithGid:(int)gid Block:(void (^)(NSArray<DeviceInfo *> *))block Fail:(void (^)(NSError *))fail{
 
     UserInfo * user = [MyDefaultManager userInfo];
 
@@ -103,19 +111,61 @@
                              @"data":@"yes",
                              @"nio":@"yes"};
 
-    [self.sessionManager GET:url parameters:param progress:^(NSProgress * _Nonnull downloadProgress) {
+    LRWeakSelf(self);
+    [self.sessionManager GET:url parameters:param progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-
+        NSDictionary * dic = [NSDictionary dictionaryWithXMLData:responseObject];
+        id dev = [dic valueForKey:@"dev"];
+        if (!dev) {
+            return ;
+        }
+        NSMutableArray <DeviceInfo *>* devs = [NSMutableArray array];
+        if ([dev isKindOfClass:[NSArray class]]) {
+            for (NSDictionary *dd in dev) {
+                DeviceInfo * device = [weakself deviceWithDic:dd];
+                [devs addObject:device];
+            }
+        } else if ([dev isKindOfClass:[NSDictionary class]]){
+            DeviceInfo * device = [weakself deviceWithDic:dev];
+            [devs addObject:device];
+        } else {
+            LRLog(@"未识别字段“dev”:%@",dev);
+        }
         if (block) {
-            block();
+            block(devs);
         }
 
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-
+        if (fail) {
+            fail(error);
+        }
     }];
 
+}
 
+- (DeviceInfo *)deviceWithDic:(NSDictionary *)dic{
+
+    DeviceInfo * dev = [[DeviceInfo alloc]init];
+    dev.dateline = [[dic valueForKey:@"dateline"] doubleValue];
+    dev.dID = [[dic valueForKey:@"did"] intValue];
+    dev.dType = [[dic valueForKey:@"dtype"] intValue];
+    dev.motostep = [[dic valueForKey:@"motostep"] intValue];
+    dev.mac = [dic valueForKey:@"name"];
+    dev.nickName = [dic valueForKey:@"nickname"];
+    dev.nio = [dic valueForKey:@"nio"];
+    dev.rid = [dic valueForKey:@"rid"];
+    dev.showName = [dic valueForKey:@"showname"];
+    dev.state = [dic valueForKey:@"state"];
+    
+    NSString * dpStr = [dic valueForKey:@"devpost"];
+    dpStr = [dpStr stringByReplacingOccurrencesOfString:@"{" withString:@""];
+    dpStr = [dpStr stringByReplacingOccurrencesOfString:@"}" withString:@""];
+    NSArray * devPostData = [dpStr componentsSeparatedByString:@","];
+    double x = [[devPostData firstObject] floatValue];
+    double y = [[devPostData lastObject] floatValue];
+    dev.devpost = DevicePostMake(x, y);
+    
+    return dev;
 }
 
 @end

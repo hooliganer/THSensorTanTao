@@ -363,6 +363,10 @@
     return [self dateByAddingTimeInterval:day];
 }
 
+- (NSDate *)dateWithSeconds:(NSTimeInterval)seconds{
+    return [self dateByAddingTimeInterval:seconds];
+}
+
 /*!
  * 把日期转换成整点的日期
  */

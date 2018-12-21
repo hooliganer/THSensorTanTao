@@ -16,6 +16,8 @@
 @property (nonatomic,assign)CGFloat width;
 @property (nonatomic,assign)CGFloat y;
 @property (nonatomic,assign)CGFloat x;
+@property (nonatomic,assign)CGFloat cy;
+@property (nonatomic,assign)CGFloat cx;
 
 @property (nonatomic,assign,readonly)CGFloat bottomY;
 @property (nonatomic,assign,readonly)CGFloat rightX;

@@ -67,6 +67,8 @@
  */
 - (NSDate *)dateWithDays:(int)days;
 
+- (NSDate *)dateWithSeconds:(NSTimeInterval)seconds;
+
 /*!
  * 把日期转换成整点的日期
  */

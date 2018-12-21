@@ -63,6 +63,16 @@
 
 }
 
+- (CGFloat)cy{
+    return self.center.y;
+}
+
+- (void)setCy:(CGFloat)cy{
+    
+    self.center = CGPointMake(self.center.x, cy);
+    
+}
+
 - (CGFloat)x{
     return self.frame.origin.x;
 }
@@ -72,6 +82,16 @@
     CGSize size = self.frame.size;
     self.frame = CGRectMake(x, self.frame.origin.y, size.width, size.height);
 
+}
+
+- (CGFloat)cx{
+    return self.center.x;
+}
+
+- (void)setCx:(CGFloat)cx{
+    
+    self.center = CGPointMake(cx, self.center.y);
+    
 }
 
 - (CGFloat)bottomY{

@@ -21,6 +21,7 @@
 }
 
 + (UserInfo *)userInfo{
+    
     NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"UserInfo"];
 
     UserInfo *user ;
@@ -47,10 +48,13 @@
         user.uname = dic[@"uname"];
         user.upwd = dic[@"upwd"];
         user.isLogin = [dic[@"isLogin"] boolValue];
-        user.uname = @"b0:df:c1:6d:09:60";
-        user.upwd = @"b0:df:c1:6d:09:60px";
-        user.uid = 5;
+        user.uname = dic[@"uname"];//@"b0:df:c1:6d:09:60";
+        user.upwd = dic[@"upwd"];//@"b0:df:c1:6d:09:60px";
+        user.uid = [dic[@"uid"] intValue];//5;
     }
+    user.uname = @"b0:df:c1:6d:09:60";
+    user.upwd = @"b0:df:c1:6d:09:60px";
+    user.uid = 5;
     return user;
 }
 

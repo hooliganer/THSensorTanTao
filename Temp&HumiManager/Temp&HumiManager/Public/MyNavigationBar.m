@@ -31,9 +31,9 @@
 @implementation MyNavigationBar
 
 - (instancetype)init{
-    if (self=[super init]) {
-        self.frame=CGRectMake(0, 0, MainScreenWidth, StatusBarHeight + 44.0);
-        self.backgroundColor=[UIColor mainGrayColor];
+    if (self = [super init]) {
+        self.frame = CGRectMake(0, 0, MainScreenWidth, StatusBarHeight + 44.0);
+        self.backgroundColor = [UIColor mainGrayColor];
     }
     return self;
 }
@@ -119,16 +119,13 @@
 #pragma mark - Outside Method
 - (instancetype)initWithTitle:(NSString *)title{
     if (self=[super init]) {
-        self.frame=CGRectMake(0, 0, MainScreenWidth, 64.f);
-        
-        self.labTitle.text=title;
+        self.frame = CGRectMake(0, 0, MainScreenWidth, StatusBarHeight + 44);
+        self.labTitle.text = title;
         [self.labTitle sizeToFit];
-        self.labTitle.center=CGPointMake(self.frame.size.width/2.f, StatusBarHeight+(44.f/2.f));
-
+        self.labTitle.center = CGPointMake(self.frame.size.width/2.0, StatusBarHeight +44/2.0);
     }
     return self;
 }
-
 
 
 
@@ -162,7 +159,7 @@
         }
     }
     
-    UIButton_DIYObject *btn=[[UIButton_DIYObject alloc]initWithFrame:CGRectMake(0, 20.f, 44.f, 44.f) Style:INIT_STYLE_Left];
+    UIButton_DIYObject *btn=[[UIButton_DIYObject alloc]initWithFrame:CGRectMake(0, StatusBarHeight, 44.f, 44.f) Style:INIT_STYLE_Left];
     btn.imageScale = 0.8;
     btn.tintsColor = _tintColor;
     [btn addTarget:self action:@selector(clickAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -271,18 +268,18 @@
         }
     }
     
-    CGFloat distance = (20.f/414.f)*MainScreenWidth;
+    CGFloat distance = Fit_X(20);
     
-    CGFloat height=44.f;
+    CGFloat height = 44;
     CGFloat width=(image.size.width/image.size.height)*height;
-    UIButton_DIYObject *btn=[[UIButton_DIYObject alloc]initWithFrame:CGRectMake(distance+oldWitth, 20.f, width, height)];
+    UIButton_DIYObject *btn = [[UIButton_DIYObject alloc]initWithFrame:CGRectMake(distance+oldWitth, StatusBarHeight, width, height)];
     btn.originalScale = 0.8;
     [btn setBackgroundImage:image forState:UIControlStateNormal];
     [self addSubview:btn];
 
     [btn addTarget:self action:@selector(clickAction:) forControlEvents:UIControlEventTouchUpInside];
     
-    btn.tag=50+_leftActions.count;
+    btn.tag = 50+_leftActions.count;
     
     [_leftActions addObject:btn];
     if (block==nil) {
@@ -321,7 +318,7 @@
     
     CGFloat height=44.f;
     CGFloat width=lab.bounds.size.width;
-    UIButton *btn=[[UIButton alloc]initWithFrame:CGRectMake(Distance+oldWidth, 20.f, width, height)];
+    UIButton *btn=[[UIButton alloc]initWithFrame:CGRectMake(Distance+oldWidth, StatusBarHeight, width, height)];
     [self addSubview:btn];
     [btn addTarget:self action:@selector(clickAction:) forControlEvents:UIControlEventTouchUpInside];
     [btn addTarget:self action:@selector(clickActionDown:) forControlEvents:UIControlEventTouchDown];
@@ -360,7 +357,7 @@
         
         CGFloat height=44.f;
         CGFloat width=(image.size.width/image.size.height)*height;
-        UIButton_DIYObject *btn=[[UIButton_DIYObject alloc]initWithFrame:CGRectMake(self.frame.size.width-distance-width-oldWitth, 20.f, width, height)];
+        UIButton_DIYObject *btn=[[UIButton_DIYObject alloc]initWithFrame:CGRectMake(self.frame.size.width-distance-width-oldWitth, StatusBarHeight, width, height)];
         btn.originalScale = 0.8;
         [btn setBackgroundImage:image forState:UIControlStateNormal];
         [self addSubview:btn];
@@ -403,7 +400,7 @@
     
     CGFloat height=44.f;
     CGFloat width=lab.bounds.size.width;
-    UIButton *btn=[[UIButton alloc]initWithFrame:CGRectMake(self.frame.size.width-Distance-width-oldWidth, 20.f, width, height)];
+    UIButton *btn=[[UIButton alloc]initWithFrame:CGRectMake(self.frame.size.width-Distance-width-oldWidth, StatusBarHeight, width, height)];
     [self addSubview:btn];
     [btn addTarget:self action:@selector(clickAction:) forControlEvents:UIControlEventTouchUpInside];
     [btn addTarget:self action:@selector(clickActionDown:) forControlEvents:UIControlEventTouchDown];

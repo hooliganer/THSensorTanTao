@@ -10,7 +10,7 @@
 #import "DetailInfoController+Extension.h"
 
 @interface DetailInfoController (UI)
-<DetailTypeChooseViewDelegate>
+<DetailTypeChooseViewDelegate,DetailChooseSegmentDelegate>
 
 - (void)setupSubviews;
 

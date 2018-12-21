@@ -15,6 +15,7 @@
 #import "HTTP_MemberDataManager.h"
 
 #import "AFManager+SelectGroup.h"
+#import "AFManager+SelectDataOfDevice.h"
 
 @implementation MainListController (BG)
 
@@ -78,7 +79,7 @@
     LRWeakSelf(self);
     [[AFManager shared] selectGroupOfUser:^(NSArray<TH_GroupInfo *> *groups) {
 
-        //查询回的数据中遍历比较
+        //查询回的分组数据中遍历比较
         for (int i=0; i<groups.count; i++) {
             TH_GroupInfo * newGroup = groups[i];
             int index = -1;
@@ -158,30 +159,17 @@
         for (int i=0; i<self.groupDatasource.count; i++) {
             TH_GroupInfo * group = self.groupDatasource[i][@"group"];
             AFManager * manager = [AFManager shared];
-            [manager selectMembersOfGroupWithGid:group.gid Block:^{
-
+            [manager selectMembersOfGroupWithGid:group.gid Block:^(NSArray<DeviceInfo *> *devices) {
+                
+                [weakself handleDevices:devices CurrentGroup:group];
+            } Fail:^(NSError *error) {
+                LRLog(@"%@",error.description);
             }];
         }
+        sleep(2);
+        [weakself selectDevicesOfGroupData];
 
-
-//        UserInfo * user = [MyDefaultManager userInfo];
-//        for (int i=0; i<self.groupDatasource.count; i++) {
-//            TH_GroupInfo * group = self.groupDatasource[i][@"group"];
-//            HTTP_MemberManager * mng = [[HTTP_MemberManager alloc]init];
-//            [mng.dataSets setValue:group forKey:@"group"];
-//            mng.didGetMembers = ^(HTTP_MemberManager *manager, NSArray<DeviceInfo *> *members) {
-//
-//                //取得当前返回的数据属于哪个组
-//                TH_GroupInfo * group = manager.dataSets[@"group"];
-//                //NSLog(@"%@",group.name);
-//                [weakself handleDevices:members CurrentGroup:group];
-//            };
-//            [mng selectMembersWithUid:user.uid Gid:group.gid];
-//        }
-//        sleep(2);
-//        [weakself selectDevicesOfGroupData];
     });
-
 
 }
 
@@ -194,24 +182,29 @@
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(queue, ^{
 
-        //遍历所有组
-        for (int sec=0; sec<self.groupDatasource.count; sec++) {
-            TH_GroupInfo * group = self.groupDatasource[sec][@"group"];
-            NSMutableArray * devs = self.groupDatasource[sec][@"devices"];
-            //遍历单组（子设备）
-            for (int row=0; row<devs.count; row++) {
-
-                DeviceInfo * dev = devs[row][@"device"];
-
-                HTTP_MemberDataManager* mng = [[HTTP_MemberDataManager alloc]init];
-                [mng.dataSets setValue:group forKey:@"group"];
-                [mng.dataSets setValue:dev forKey:@"device"];
-                [mng selectMemberDataWithMac:dev.mac GMac:group.mac];
-                mng.didGetMemberData = ^(HTTP_MemberDataManager *manager, DeviceInfo *device) {
-
-                };
+        UserInfo * user = [MyDefaultManager userInfo];
+        if (user) {
+            //遍历所有组
+            for (int sec=0; sec<self.groupDatasource.count; sec++) {
+                TH_GroupInfo * group = self.groupDatasource[sec][@"group"];
+                NSMutableArray * devs = self.groupDatasource[sec][@"devices"];
+                //遍历单组（子设备）
+                for (int row=0; row<devs.count; row++) {
+                    
+                    DeviceInfo * dev = devs[row][@"device"];
+                    
+                    [[AFManager shared] selectDataOfDevice:user.uid Mac:dev.mac];
+//                    HTTP_MemberDataManager* mng = [[HTTP_MemberDataManager alloc]init];
+//                    [mng.dataSets setValue:group forKey:@"group"];
+//                    [mng.dataSets setValue:dev forKey:@"device"];
+//                    [mng selectMemberDataWithMac:dev.mac GMac:group.mac];
+//                    mng.didGetMemberData = ^(HTTP_MemberDataManager *manager, DeviceInfo *device) {
+//
+//                    };
+                }
             }
         }
+        
     });
 }
 

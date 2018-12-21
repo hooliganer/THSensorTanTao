@@ -43,7 +43,7 @@
 
 - (void)selectMembersWithUid:(int)uid Gid:(int)gid{
 
-    NSString *strURL=[NSString stringWithFormat:
+    NSString *strURL = [NSString stringWithFormat:
                       @"http://%@:%@/aircondition/group/group_dev_query.jsp"
                       "?uid=%d"
                       "&gid=%d"
@@ -76,7 +76,7 @@
 
 
 /*================XMLDelegate===================*/
-#pragma 开始解析前，在这里可以做一些初始化工作
+#pragma 开始解析前,在这里可以做一些初始化工作
 - (void)parserDidStartDocument:(NSXMLParser *)parser{
     //    NSLog(@"ParseXML Start");
     self.tempMember = [[DeviceInfo alloc]init];
@@ -84,7 +84,7 @@
     
 }
 
-#pragma 当解析器对象遇到xml的开始标记时，调用这个方法,调用多次.    获得结点头的值
+#pragma 当解析器对象遇到xml的开始标记时,调用这个方法,调用多次.    获得结点头的值
 //解析到一个开始tag，开始tag中可能会有properpies，例如<book catalog="Programming">
 //所有的属性都存储在attributeDict中
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary<NSString *,NSString *> *)attributeDict{

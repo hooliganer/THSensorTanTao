@@ -29,8 +29,6 @@
     
     self.bleDatasource = [NSMutableArray array];
 
-    [[AFManager shared] fakeLoad];
-
 //    NSMutableDictionary * group = [NSMutableDictionary dictionary];
 //    [group setValue:@"组名" forKey:@"gname"];
 //    [group setValue:@(false) forKey:@"flex"];

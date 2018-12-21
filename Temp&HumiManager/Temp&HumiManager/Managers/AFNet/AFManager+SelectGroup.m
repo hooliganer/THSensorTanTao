@@ -15,13 +15,13 @@
 
     //http://%@:%@/aircondition/group/group_query.jsp?uid=%d&pwd=%@
     UserInfo * user = [MyDefaultManager userInfo];
+    if (!user) {
+        return ;
+    }
     NSString * url = [NSString stringWithFormat:@"http://%@:%@/aircondition/group/group_query.jsp?",TH_IP,TH_PORT];
-    NSDictionary * param = @{@"uid":@(user.uid),
-                             @"pwd":user.upwd};
+    NSDictionary * param = @{@"uid":@(user.uid),@"pwd":user.upwd};
 
-    [self.sessionManager GET:url parameters:param progress:^(NSProgress * _Nonnull downloadProgress) {
-
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [self.sessionManager GET:url parameters:param progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 
         NSDictionary * dic = [NSDictionary dictionaryWithXMLData:responseObject];
         NSArray * groups = [dic valueForKey:@"group"];
