@@ -10,6 +10,19 @@
 
 @implementation My_AlertView
 
++ (void)showLoading:(void (^)(My_AlertView *))block{
+    My_AlertView * alert = [[My_AlertView alloc]init];
+    UIActivityIndicatorView * indicator = [[UIActivityIndicatorView alloc]init];
+    indicator.size = CGSizeMake(100, 100);
+    indicator.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
+    indicator.layer.masksToBounds = true;
+    indicator.layer.cornerRadius = 8;
+    [indicator startAnimating];
+    indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+    alert.centerView = indicator;
+    [alert showBlock:block];
+}
+
 - (instancetype)init{
     if (self = [super init]) {
         self.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
@@ -24,6 +37,12 @@
         self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
     }
     return self;
+}
+
+- (void)layoutSubviews{
+    [super layoutSubviews];
+    
+    self.centerView.center = CGPointMake(self.width/2.0, self.height/2.0);
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
@@ -78,9 +97,11 @@
                 break;
 
             default:
+                [[[UIApplication sharedApplication] keyWindow] addSubview:self];
                 break;
         }
     }
+    block(self);
 }
 
 - (void)dismiss{

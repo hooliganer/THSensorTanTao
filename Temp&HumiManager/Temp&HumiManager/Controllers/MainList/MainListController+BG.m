@@ -180,32 +180,39 @@
 
     LRWeakSelf(self);
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
-    dispatch_async(queue, ^{
-
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_group_async(group, queue, ^{
+        
         UserInfo * user = [MyDefaultManager userInfo];
         if (user) {
             //遍历所有组
             for (int sec=0; sec<self.groupDatasource.count; sec++) {
-                TH_GroupInfo * group = self.groupDatasource[sec][@"group"];
+                //                TH_GroupInfo * group = self.groupDatasource[sec][@"group"];
                 NSMutableArray * devs = self.groupDatasource[sec][@"devices"];
                 //遍历单组（子设备）
                 for (int row=0; row<devs.count; row++) {
                     
                     DeviceInfo * dev = devs[row][@"device"];
-                 
-                    [[AFManager shared] selectLastDataOfDevice:user.uid Mac:dev.mac];
-//                    [[AFManager shared] selectDataOfDevice:user.uid Mac:dev.mac];
-//                    HTTP_MemberDataManager* mng = [[HTTP_MemberDataManager alloc]init];
-//                    [mng.dataSets setValue:group forKey:@"group"];
-//                    [mng.dataSets setValue:dev forKey:@"device"];
-//                    [mng selectMemberDataWithMac:dev.mac GMac:group.mac];
-//                    mng.didGetMemberData = ^(HTTP_MemberDataManager *manager, DeviceInfo *device) {
-//
-//                    };
+                    dispatch_group_enter(group);
+                    [[AFManager shared] selectLastDataOfDevice:user.uid Mac:dev.mac Block:^(NSString * _Nonnull dataStr) {
+                        dev.sdata = dataStr;
+//                        dev.showName = dev.mac;
+                        dispatch_group_leave(group);
+                    }];
+                    //                    [[AFManager shared] selectDataOfDevice:user.uid Mac:dev.mac];
+                    //                    HTTP_MemberDataManager* mng = [[HTTP_MemberDataManager alloc]init];
+                    //                    [mng.dataSets setValue:group forKey:@"group"];
+                    //                    [mng.dataSets setValue:dev forKey:@"device"];
+                    //                    [mng selectMemberDataWithMac:dev.mac GMac:group.mac];
+                    //                    mng.didGetMemberData = ^(HTTP_MemberDataManager *manager, DeviceInfo *device) {
+                    //
+                    //                    };
                 }
             }
         }
-        
+    });
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        [weakself.groupTable reloadData];
     });
 }
 
@@ -233,6 +240,7 @@
                     DeviceInfo * oldMember = oldDevs[n][@"device"];
                     if ([oldMember.mac isEqualToString:newMember.mac]) {
                         //替换旧设备为新设备
+                        newMember.sdata = oldMember.sdata;
                         [oldDevs[n] setValue:newMember forKey:@"device"];
                         indexM = n;
                         break ;

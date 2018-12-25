@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "DetailHistoryInfoView.h"
 #import "MyLineView.h"
+#import "THLineView.h"
 
 @interface DetailTempView : UIView
 
 @property (nonatomic,strong)DetailHistoryInfoView *tempInfoView;
 @property (nonatomic,strong)MyLineView *lineView;
+@property (nonatomic,strong)THLineView *liner;
 
 @end

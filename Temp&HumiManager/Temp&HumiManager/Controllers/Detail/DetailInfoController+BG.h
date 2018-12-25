@@ -10,6 +10,24 @@
 
 @interface DetailInfoController (BG)
 
+/**
+ 查询温度并刷新（根据）
+ */
+- (void)selectInternetTemparature;
 
+/**
+ 查询湿度并刷新（根据）
+ */
+- (void)selectInternetHumidity;
+
+/**
+ 查询报警记录并刷新
+ */
+- (void)selectInternetWarnRecord;
+
+/**
+ 查询网络信息
+ */
+- (void)selectInternetInfo;
 
 @end

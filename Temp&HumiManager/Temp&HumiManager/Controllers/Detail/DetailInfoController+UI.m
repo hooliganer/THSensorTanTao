@@ -7,7 +7,7 @@
 //
 
 #import "DetailInfoController+UI.h"
-
+#import "DetailInfoController+BG.h"
 
 @implementation DetailInfoController (UI)
 
@@ -19,11 +19,11 @@
 
     LRWeakSelf(self);
     [self.navigationBar addActionRightImage:[UIImage imageNamed:@"ic_edit"] Block:^{
-//        if (weakself.editAlert.hidden) {
-//            [weakself.editAlert show];
-//        } else{
-//            [weakself.editAlert dismiss];
-//        }
+        if (weakself.editer.hidden) {
+            [weakself.editer show];
+        } else{
+            [weakself.editer dismiss];
+        }
     }];
     [self.navigationBar showBackButton:^{
         [weakself.navigationController popViewControllerAnimated:true];
@@ -59,6 +59,13 @@
     self.exportBtn.layer.cornerRadius = Fit_Y(8.0);
     [self.bgScroll addSubview:self.exportBtn];
     
+    self.editer = [[DetailEditAlert alloc]init];
+    [self.editer.btnSave addTarget:self action:@selector(clickEditButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.editer.btnCancel addTarget:self action:@selector(clickEditButton:) forControlEvents:UIControlEventTouchUpInside];
+    self.editer.tfName.text = self.curDevInfo.nickName?self.curDevInfo.nickName:self.curDevInfo.bleInfo.peripheral.name;
+    [self.view insertSubview:self.editer aboveSubview:self.bgScroll];
+
+    
 }
 
 - (void)setupBtmSubviews{
@@ -72,25 +79,34 @@
     self.segmentView.delegate = self;
     self.segmentView.date = [NSDate date];
 
-    self.typeView = [[DetailTypeChooseView alloc]initWithFrame:CGRectMake(0, self.segmentView.bottomY, self.btmView.width, self.btmView.height * 0.1)];
+    self.typeView = [[DetailTypeChooseView alloc]initWithFrame:CGRectMake(0, self.segmentView.bottomY + 5, self.btmView.width, self.btmView.height * 0.1)];
     self.typeView.delegate = self;
     [self.btmView addSubview:self.typeView];
 
-    self.temperatureView = [[DetailTempView alloc]initWithFrame:CGRectMake(0, self.btmView.height * 0.3, self.btmView.width, self.btmView.height * 0.7)];
+    self.temperatureView = [[DetailTempView alloc]initWithFrame:CGRectMake(20, self.btmView.height * 0.3 + 10, self.btmView.width - 40, self.btmView.height * 0.7 - 10)];
     [self.btmView addSubview:self.temperatureView];
 
-    self.humidityView = [[DetailHumidityView alloc]initWithFrame:CGRectMake(0, self.btmView.height * 0.3, self.btmView.width, self.btmView.height * 0.7)];
+    self.humidityView = [[DetailHumidityView alloc]initWithFrame:CGRectMake(20, self.btmView.height * 0.3 + 10, self.btmView.width - 40, self.btmView.height * 0.7 - 10)];
     self.humidityView.hidden = true;
     [self.btmView addSubview:self.humidityView];
 
-    self.warnView = [[DetailWarningView alloc]initWithFrame:CGRectMake(0, self.btmView.height * 0.3, self.btmView.width, self.btmView.height * 0.7)];
+    self.warnView = [[DetailWarningView alloc]initWithFrame:CGRectMake(20, self.btmView.height * 0.3 +10, self.btmView.width - 40, self.btmView.height * 0.7 - 10)];
     self.warnView.hidden = true;
     [self.btmView addSubview:self.warnView];
 
 }
 
 #pragma mark - 事件
-
+- (void)clickEditButton:(UIButton *)sender{
+    [self.editer dismiss];
+    //Save
+    if (sender.tag == 20){
+//        [self setDevName];
+//        [self setDevType];
+//        [self setDevIsAlert];
+//        [self setDevLimitValue];
+    }
+}
 
 #pragma mark - Delegate
 
@@ -98,6 +114,18 @@
     self.temperatureView.hidden = !(type == 0);
     self.humidityView.hidden = !(type == 1);
     self.warnView.hidden = !(type == 2);
+    switch (type) {
+        case 1:
+            [self selectInternetHumidity];
+            break;
+        case 2:
+            [self selectInternetWarnRecord];
+            break;
+            
+        default:
+            [self selectInternetTemparature];
+            break;
+    }
 }
 
 - (void)segmentView:(DetailChooseSegment *)segment chooseLR:(bool)isLeft{
@@ -130,10 +158,50 @@
         }
     }
     segment.date = newDate;
+    
+//    [self selectInternetHistoryRecord];
+    
+    switch (self.typeView.type) {
+        case 1:
+        {
+            [self selectInternetHumidity];
+        }
+            break;
+        case 2:
+        {
+            [self selectInternetWarnRecord];
+        }
+            break;
+            
+        default:
+        {
+            [self selectInternetTemparature];
+        }
+            break;
+    }
+    
 }
 
 - (void)segmentView:(DetailChooseSegment *)segment chooseIndex:(NSInteger)index{
     
+    switch (self.typeView.type) {
+        case 1:
+        {
+            [self selectInternetHumidity];
+        }
+            break;
+        case 2:
+        {
+            [self selectInternetWarnRecord];
+        }
+            break;
+            
+        default:
+        {
+            [self selectInternetTemparature];
+        }
+            break;
+    }
 }
 
 @end

@@ -14,6 +14,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DeviceDB : NSManagedObject
 
++ (DeviceDB *)newDevice;
+
+- (void)insert;
+
++ (DeviceDB *)readBymac:(NSString *)mac;
+
++ (NSArray <DeviceDB *>*)readAll;
+
 @end
 
 NS_ASSUME_NONNULL_END

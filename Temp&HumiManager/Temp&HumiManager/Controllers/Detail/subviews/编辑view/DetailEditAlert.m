@@ -29,7 +29,7 @@
 
 - (instancetype)init{
     if (self = [super init]) {
-        self.frame = CGRectMake(0, 64.0, MainScreenWidth, MainScreenHeight - 64.0);
+        self.frame = CGRectMake(0, StatusBarHeight + 44, MainScreenWidth, MainScreenHeight - (StatusBarHeight + 44));
         self.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.5];
         self.hidden = true;
         self.alpha = 0;

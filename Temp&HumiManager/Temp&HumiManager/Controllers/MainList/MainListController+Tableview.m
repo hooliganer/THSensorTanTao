@@ -57,6 +57,18 @@
         cell.iswifi = true;
         cell.isble = false;
         
+        float temp = [device temeratureBySData];
+        NSString * tpstr = temp == -1000 ? @"--" : [NSString stringWithFormat:@"%.1f˚C",[device temeratureBySData]];
+        cell.labTemp.text = tpstr;
+        
+        int humi = [device humidityBySData];
+        NSString * hmstr = humi == -1000 ? @"--" : [NSString stringWithFormat:@"%d%%",[device humidityBySData]];
+        cell.labHumi.text = hmstr;
+        
+        int power = [device powerBySData];
+        NSString * pwstr = power == -1000 ? @"--" : [NSString stringWithFormat:@"%d%%",[device powerBySData]];
+        cell.labPower.text = pwstr;
+        
     }
     else if (tableView.tag == 2000){
 

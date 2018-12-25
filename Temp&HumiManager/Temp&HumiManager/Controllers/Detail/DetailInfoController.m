@@ -56,7 +56,24 @@ DetailChooseSegmentDelegate>
 //        NSLog(@"%@",device.showName);
         self.topView.labTitle.text = device.showName;
         self.topView.isWifi = true;
+        
+        float temp = [device temeratureBySData];
+        NSString * tpstr = temp == -1000 ? @"--" : [NSString stringWithFormat:@"%.1f˚C",[device temeratureBySData]];
+        self.topView.labTempar.text = tpstr;
+        [self.topView.labTempar sizeToFit];
+        
+        int humi = [device humidityBySData];
+        NSString * hmstr = humi == -1000 ? @"--" : [NSString stringWithFormat:@"%d%%",[device humidityBySData]];
+        self.topView.labHumi.text = hmstr;
+        [self.topView.labHumi sizeToFit];
+        
+        int power = [device powerBySData];
+        NSString * pwstr = power == -1000 ? @"--" : [NSString stringWithFormat:@"%d%%",[device powerBySData]];
+        self.topView.labPower.text = pwstr;
+        [self.topView.labPower sizeToFit];
     }
+    
+    [self selectInternetInfo];
 
     return ;
 

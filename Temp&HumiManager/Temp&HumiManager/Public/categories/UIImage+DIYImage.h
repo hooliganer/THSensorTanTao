@@ -14,4 +14,6 @@
 
 +(UIImage *)boxblurImage:(UIImage *)image withBlurNumber:(CGFloat)blur;
 
+
+
 @end

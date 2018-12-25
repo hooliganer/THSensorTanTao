@@ -57,13 +57,45 @@
 }
 
 - (float)temeratureBySData{
-    return arc4random_uniform(500)/10.0;
+    //  50582D505323 4900 072B 33 5E
+    //  50582D505323 这个为头 截断之后以49位标识 49后面就是数据
+    //  例如50582D505323 4900 0950 49 64 ；
+    //  “0950”，“0”：+，
+    //  温度950 =>16 = 2384/10=23.84℃；
+    //  湿度：49 =>16 = 73%;
+    //  电量：64=>16 =100%
+    if (![self.sdata containsString:@"50582D505323"]) {
+        return -1000;
+    }
+    if (self.sdata.length < 20) {
+        return -1000;
+    }
+    bool is = [[self.sdata substringWithRange:NSMakeRange(16, 1)] boolValue];
+    NSString * temp = [self.sdata substringWithRange:NSMakeRange(17, 3)];
+    float value = is ? -[temp toDecimalByHex]/100.0 : [temp toDecimalByHex]/100.0;
+    return value;
 }
 - (int)humidityBySData{
-    return arc4random_uniform(101);
+    if (![self.sdata containsString:@"50582D505323"]) {
+        return -1000;
+    }
+    if (self.sdata.length < 22) {
+        return -1000;
+    }
+    NSString * temp = [self.sdata substringWithRange:NSMakeRange(20, 2)];
+    int value = [temp toDecimalByHex];
+    return value;
 }
 - (int)powerBySData{
-    return arc4random_uniform(101);
+    if (![self.sdata containsString:@"50582D505323"]) {
+        return -1000;
+    }
+    if (self.sdata.length < 24) {
+        return -1000;
+    }
+    NSString * temp = [self.sdata substringWithRange:NSMakeRange(22, 2)];
+    int value = [temp toDecimalByHex];
+    return value;
 }
 
 

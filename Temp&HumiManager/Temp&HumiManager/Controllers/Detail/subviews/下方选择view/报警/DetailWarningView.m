@@ -8,6 +8,7 @@
 
 #import "DetailWarningView.h"
 #import "DetailWarnCollectionCell.h"
+#import "DetailWarningCell.h"
 
 @interface DetailWarningView ()
 <UICollectionViewDataSource>
@@ -56,7 +57,8 @@ static NSString * reuviewIdentifer = @"reuviewCell";
     if (_collection == nil) {
         _collection = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:self.flowOut];
         _collection.backgroundColor = [UIColor clearColor];
-        [_collection registerClass:[DetailWarnCollectionCell class] forCellWithReuseIdentifier:cellIdentifer];
+//        [_collection registerClass:[DetailWarnCollectionCell class] forCellWithReuseIdentifier:cellIdentifer];
+        [_collection registerNib:[UINib nibWithNibName:@"DetailWarningCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:cellIdentifer];
         _collection.dataSource = self;
         [self addSubview:_collection];
     }
@@ -66,38 +68,36 @@ static NSString * reuviewIdentifer = @"reuviewCell";
 #pragma mark - <UICollectionViewDataSource>
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
 
-    DetailWarnCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifer forIndexPath:indexPath];
+    DetailWarningCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifer forIndexPath:indexPath];
     cell.backgroundColor = [UIColor colorWithRed:229/255.0 green:229/255.0 blue:229/255.0 alpha:1];
     cell.layer.masksToBounds = true;
     cell.layer.cornerRadius = Fit_Y(5.0);
 
-    cell.headLab.text = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
-
-    NSString *unit = [self getTempUnit];
-    FMDB_DeviceWarn *info  = [self.datasArray objectAtIndex:indexPath.row];
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:info.dateLine];
-
-    cell.tempLab.text = [NSString stringWithFormat:@"%.1f%@",info.temperature,unit];
-    [cell.tempLab sizeToFit];
-
-    cell.humiLab.text = [NSString stringWithFormat:@"%d%%",info.humidity];
-    [cell.humiLab sizeToFit];
-
-    cell.dateLab.text = [NSString stringWithFormat:
+    cell.labNumber.text = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
+    
+    DetailWarnSetObject * dev = [self.records objectAtIndex:indexPath.row];
+    
+    NSDate * date = [NSDate dateWithTimeIntervalSince1970:dev.time];
+    cell.labTime.text = [NSString stringWithFormat:
                          @"%@.%02d.%d %02d:%02d:%02d"
-                         ,[NSString englishMonth:[date month] IsAb:true]
-                         ,[date day]
-                         ,[date year]
-                         ,[date hour]
-                         ,[date minute]
-                         ,[date second]];
-    [cell.dateLab sizeToFit];
-
+                         ,[NSString englishMonth:[date nMonth] IsAb:true]
+                         ,[date nDay]
+                         ,[date nYear]
+                         ,[date nHour]
+                         ,[date nMinute]
+                         ,[date nSecond]];
+    
+    NSString *unit = [self getTempUnit];
+    
+    cell.labTemp.text = dev.temparature != -1000 ? [NSString stringWithFormat:@"%.1f%@",dev.temparature,unit] : @"--";
+    
+    cell.labHumi.text = dev.humidity != -1000 ? [NSString stringWithFormat:@"%d%%",dev.humidity] : @"--";
+    
     return cell;
 }
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.datasArray.count;
+    return self.records.count;
 }
 
 

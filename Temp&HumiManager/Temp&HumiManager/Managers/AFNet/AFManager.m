@@ -8,6 +8,11 @@
 
 #import "AFManager.h"
 
+@interface AFManager ()
+
+
+@end
+
 @implementation AFManager
 
 + (AFManager *)shared{
@@ -37,6 +42,7 @@
         block();
     });
 }
+
 
 - (void)fakeLoad{
 

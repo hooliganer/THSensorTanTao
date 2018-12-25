@@ -210,9 +210,6 @@
             CGFloat x1 = self.leftWidth + self.bgLineWidth/2.0 + (self.frame.size.width - self.leftWidth - self.rightWidth - self.bgLineWidth) * percentX1;
 
             switch (self.lineType) {
-                case MyLineType_Beeline:
-                    [path addLineToPoint:CGPointMake(x, y)];
-                    break;
                 case MyLineType_Curveline:
                     [path addCurveToPoint:CGPointMake(x, y)
                             controlPoint1:[self controlPoint1WithEndPoint:CGPointMake(x, y) StartPoint:CGPointMake(x1, y1)]
@@ -224,6 +221,7 @@
                     break;
 
                 default:
+                    [path addLineToPoint:CGPointMake(x, y)];
                     break;
             }
         }

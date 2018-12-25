@@ -14,6 +14,7 @@
 #import "DetailHumidityView.h"
 #import "DetailTempView.h"
 #import "DetailWarningView.h"
+#import "DetailEditAlert.h"
 
 @interface DetailInfoController ()
 
@@ -27,7 +28,8 @@
 @property (nonatomic,strong)DetailHumidityView * humidityView;
 @property (nonatomic,strong)DetailWarningView * warnView;
 @property (nonatomic,strong)UIButton_DIYObject * exportBtn;
-
+@property (nonatomic,strong)DetailEditAlert * editer;
 
 
 @end
+

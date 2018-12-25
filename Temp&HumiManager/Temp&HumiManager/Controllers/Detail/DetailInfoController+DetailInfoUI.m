@@ -672,8 +672,6 @@
 
 
 
-
-
 #pragma mark ----- inside method
 /*!
  * 根据方向重新计算后按钮时间

@@ -14,7 +14,7 @@
 @property (nonatomic,strong)UIButton_DIYObject *btn1;
 @property (nonatomic,strong)UIButton_DIYObject *btn2;
 @property (nonatomic,strong)UIButton_DIYObject *btn3;
-
+@property (nonatomic,readwrite)DCSegmentTime times;
 
 
 
@@ -53,16 +53,17 @@
 #pragma mark - SET 方法
 - (void)setDate:(NSDate *)date{
     _date = date;
+    NSDate * date1;
     switch (self.type) {
         case 1://day
         {
-            NSDate * date1 = [date dateWithDays:-1];
+            date1 = [date dateWithDays:-1];
             self.labCenter.text = [NSString stringWithFormat:@"%02d.%02d-%02d.%02d",[date1 nMonth],[date1 nDay],[date nMonth],[date nDay]];
         }
             break;
         case 2://week
         {
-            NSDate * date1 = [date dateWithDays:-7];
+            date1 = [date dateWithDays:-7];
             NSString * monStr = [NSString englishMonth:[date nMonth] IsAb:true];
             NSString * monStr1 = [NSString englishMonth:[date1 nMonth] IsAb:true];
             //刷新中间时间文本
@@ -72,11 +73,12 @@
             
         default://hour
         {
-            NSDate * date1 = [date dateWithSeconds:-3600];
+            date1 = [date dateWithSeconds:-3600];
             self.labCenter.text = [NSString stringWithFormat:@"%02d:00-%02d:00",[date1 nHour],[date nHour]];
         }
             break;
     }
+    self.times = DCSegmentTimeMake([date timeIntervalSince1970], [date1 timeIntervalSince1970]);
     [self.labCenter sizeToFit];
 }
 
@@ -84,16 +86,17 @@
     _type = type;
     
     NSDate * date = self.date;
+    NSDate * date1;
     switch (type) {
         case 1://day
         {
-            NSDate * date1 = [date dateWithDays:-1];
+            date1 = [date dateWithDays:-1];
             self.labCenter.text = [NSString stringWithFormat:@"%02d.%02d-%02d.%02d",[date1 nMonth],[date1 nDay],[date nMonth],[date nDay]];
         }
             break;
         case 2://week
         {
-            NSDate * date1 = [date dateWithDays:-7];
+            date1 = [date dateWithDays:-7];
             NSString * monStr = [NSString englishMonth:[date nMonth] IsAb:true];
             NSString * monStr1 = [NSString englishMonth:[date1 nMonth] IsAb:true];
             //刷新中间时间文本
@@ -103,11 +106,12 @@
             
         default://hour
         {
-            NSDate * date1 = [date dateWithSeconds:-3600];
+            date1 = [date dateWithSeconds:-3600];
             self.labCenter.text = [NSString stringWithFormat:@"%02d:00-%02d:00",[date1 nHour],[date nHour]];
         }
             break;
     }
+    self.times = DCSegmentTimeMake([date timeIntervalSince1970], [date1 timeIntervalSince1970]);
     [self.labCenter sizeToFit];
 }
 

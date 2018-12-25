@@ -40,7 +40,8 @@
     self.imvWarning.height = (self.height - 30)*0.3;
     self.imvWarning.width = (self.imvWarning.image.size.width/self.imvWarning.image.size.height)*self.imvWarning.height;
 
-    self.labTitle.frame = CGRectMake(self.imvHead.rightX + 10, 10, 100, (self.imvHead.height - 10)/2.0);
+    self.labTitle.frame = CGRectMake(self.imvHead.rightX + 10, 10, 150, (self.imvHead.height - 10)/2.0);
+    self.labTitle.backgroundColor = [UIColor redColor];
 
     if (self.isWifi) {
         CGFloat h = (self.imvHead.height - 10)/2.0;
@@ -63,15 +64,18 @@
     CGFloat h_Bt = (self.imvHead.height - 10)/2.0;
     CGFloat w_Bt = (self.imvBattery.image.size.width/self.imvBattery.image.size.height)*h_Bt;
     self.imvBattery.frame = CGRectMake(self.imvBluetooth.rightX + 10, self.labTitle.bottomY + 10, w_Bt, h_Bt);
+    
+    self.labPower.x = self.imvBattery.rightX + 10;
+    self.labPower.cy = self.imvBattery.cy;
 
-    self.labTempar.center = CGPointMake(self.width - 10 - self.labPower.width/2.0, self.labTitle.center.y);
-
-    self.labTempar.center = CGPointMake(self.width - 10 - self.labPower.width/2.0, self.labTitle.center.y);
+    self.labTempar.center = CGPointMake(self.width - 10 - self.labTempar.width/2.0, self.labTitle.center.y);
 
     CGFloat htemp = (self.imvHead.height - 10)/2.0;
     CGFloat wtemp = (self.imvTempar.image.size.width/self.imvTempar.image.size.height)*htemp;
-    self.imvTempar.frame = CGRectMake(self.labTempar.x - 10 - wtemp, 10, wtemp, htemp);
+    self.imvTempar.frame = CGRectMake(self.labPower.rightX + 80, 10, wtemp, htemp);
 
+    self.labHumi.center = CGPointMake(self.labTempar.cx, self.imvInternet.cy);
+    
     CGFloat hhumi = (self.imvHead.height - 10)/2.0;
     CGFloat whumi = (self.imvHumi.image.size.width/self.imvHumi.image.size.height)*hhumi;
     self.imvHumi.frame = CGRectMake(self.imvTempar.x, self.imvTempar.bottomY + 10, whumi, hhumi);

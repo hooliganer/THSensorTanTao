@@ -15,6 +15,7 @@
 
 + (MyAlertView *)shreadInstance;
 
+
 - (void)dismiss;
 
 /*!
@@ -29,5 +30,7 @@
 - (void)showTHLITitle:(NSString *)title confirm:(NSString *)confirm confirmBlock:(void(^)(MyAlertView *alertView))block THLIViews:(TH_LableImvView *)firstView,... NS_REQUIRES_NIL_TERMINATION;
 
 - (void)showTHLITitle:(NSString *)title confirm:(NSString *)confirm confirmBlock:(void(^)(MyAlertView *alertView))block THLIViewArray:(NSArray<TH_LableImvView *>*)views;
+
+
 
 @end

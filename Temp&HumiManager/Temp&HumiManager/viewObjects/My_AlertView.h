@@ -22,4 +22,7 @@
 - (void)showBlock:(void(^)(My_AlertView *alertView))block;
 - (void)dismiss;
 
++ (void)showLoading:(void(^)(My_AlertView *loading))block;
+
+
 @end
