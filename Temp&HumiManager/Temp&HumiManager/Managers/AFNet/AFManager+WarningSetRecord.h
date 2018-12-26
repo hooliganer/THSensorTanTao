@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)selectAllWarnRecordSetWithMac:(NSString *)mac Block:(void(^)(NSArray <WarnSetRecord *>*tempMax,NSArray <WarnSetRecord *>*tempMin,NSArray <WarnSetRecord *>*humiMax,NSArray <WarnSetRecord *>*humiMin))block;
 
+- (void)setWarnWithMac:(NSString *)mac Type:(NSString *)type IsOn:(bool)ison Uid:(int)uid Value:(NSNumber *)value;
+
 @end
 
 NS_ASSUME_NONNULL_END

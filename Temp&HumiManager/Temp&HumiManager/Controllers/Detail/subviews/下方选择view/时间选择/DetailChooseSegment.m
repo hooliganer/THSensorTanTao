@@ -198,6 +198,10 @@
 }
 
 - (void)clickButton:(UIButton_DIYObject *)sender{
+    
+    if (self.type == sender.tag - 10) {
+        return ;
+    }
 
     self.btn1.backgroundColor = (sender.tag==self.btn1.tag)?[UIColor clearColor]:[UIColor colorWithRed:64/255.0 green:134/255.0 blue:153/255.0 alpha:1];
     self.btn2.backgroundColor = (sender.tag==self.btn2.tag)?[UIColor clearColor]:[UIColor colorWithRed:64/255.0 green:134/255.0 blue:153/255.0 alpha:1];

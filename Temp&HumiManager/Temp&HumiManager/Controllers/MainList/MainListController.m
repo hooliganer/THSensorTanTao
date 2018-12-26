@@ -48,7 +48,6 @@
 
     [self setupSubviews];
 
-
 }
 
 - (void)didReceiveMemoryWarning {

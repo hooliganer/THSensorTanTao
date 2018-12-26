@@ -8,8 +8,56 @@
 
 #import "DetailInfoController+UI.h"
 #import "DetailInfoController+BG.h"
+#import "ShareFileManager.h"
 
 @implementation DetailInfoController (UI)
+
+- (void)showIsWaner:(bool)is{
+    self.warner.size = is ? CGSizeMake(self.bgScroll.width - 40, 50) : CGSizeZero;
+    [self.view setNeedsLayout];
+}
+
+- (int)motostepByType:(int)type{
+    switch (type) {
+        case 0:
+            return 6;
+            break;
+        case 1:
+            return 8;
+            break;
+        case 2:
+            return 7;
+            break;
+        case 3:
+            return 9;
+            break;
+            
+        default:
+            return 6;
+            break;
+    }
+}
+
+- (int)typeByMotostep:(int)moto{
+    switch (moto) {
+        case 6:
+            return 0;
+            break;
+        case 7:
+            return 2;
+            break;
+        case 8:
+            return 1;
+            break;
+        case 9:
+            return 3;
+            break;
+            
+        default:
+            return 0;
+            break;
+    }
+}
 
 - (void)setupSubviews{
 
@@ -36,8 +84,9 @@
 
 - (void)setupScrollSubviews{
 
-    self.warner = [[DetailWarningAlert alloc]initWithFrame:CGRectMake(20, 10, self.bgScroll.width - 40, 50)];
+    self.warner = [[DetailWarningAlert alloc]initWithFrame:CGRectMake(20, 10, 0, 0)];
     [self.bgScroll addSubview:self.warner];
+    [self.warner addTarget:self action:@selector(clickWarner) forControlEvents:UIControlEventTouchUpInside];
 
     self.topView = [[DetailCellView alloc]initWithFrame:CGRectMake(20, 10, self.bgScroll.width - 40, 120)];
     [self.bgScroll addSubview:self.topView];
@@ -51,13 +100,15 @@
 
     [self setupBtmSubviews];
 
-    self.exportBtn = [[UIButton_DIYObject alloc]initWithFrame:CGRectMake(20, 10, self.bgScroll.width - 40, 40)];
+    self.exportBtn = [UIButton_DIYObject buttonWithType:UIButtonTypeSystem];
+    self.exportBtn.frame = CGRectMake(20, 10, self.bgScroll.width - 40, 40);
     [self.exportBtn setTitle:@"SHARE"];
     self.exportBtn.labTitle.textColor = [UIColor whiteColor];
     self.exportBtn.backgroundColor = [UIColor colorWithRed:78/255.0 green:200/255.0 blue:94/255.0 alpha:1];
     self.exportBtn.layer.masksToBounds = true;
     self.exportBtn.layer.cornerRadius = Fit_Y(8.0);
     [self.bgScroll addSubview:self.exportBtn];
+    [self.exportBtn addTarget:self action:@selector(clickShare:) forControlEvents:UIControlEventTouchUpInside];
     
     self.editer = [[DetailEditAlert alloc]init];
     [self.editer.btnSave addTarget:self action:@selector(clickEditButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -98,14 +149,52 @@
 
 #pragma mark - 事件
 - (void)clickEditButton:(UIButton *)sender{
+    
     [self.editer dismiss];
     //Save
     if (sender.tag == 20){
+        [self setInternetDevName];
+        [self setInternetDevType];
+        [self setInternetWarnSet];
 //        [self setDevName];
 //        [self setDevType];
 //        [self setDevIsAlert];
 //        [self setDevLimitValue];
     }
+}
+
+- (void)clickWarner{
+    self.warner.size = CGSizeZero;
+    [self.view setNeedsLayout];
+}
+
+- (void)clickShare:(UIButton *)sender{
+    
+    if (self.currentDatas.count == 0) {
+        [My_AlertView showInfo:@"There is no records to share !" Block:nil];
+        return ;
+    }
+    
+    UIAlertController * alert = [UIAlertController alertControllerWithTitle:nil message:@"Choose a format" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    NSString * time = self.segmentView.labCenter.text;
+    NSMutableString * mstr = [[NSMutableString alloc]init];
+    for (int i = 0;i<self.currentDatas.count;i++) {
+        DeviceInfo *dd = self.currentDatas[i];
+        [mstr appendFormat:@"%d %.1f˚C %d%% %@ \n",i,dd.temeratureBySData,dd.humidityBySData,time];
+    }
+    
+    NSString * name = [NSString stringWithFormat:@"History %@",self.segmentView.labCenter.text];
+    
+    UIAlertAction * action1 = [UIAlertAction actionWithTitle:@"CSV" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [[ShareFileManager shared] shareCSVName:name Substance:mstr InController:self];
+    }];
+    UIAlertAction * action2 = [UIAlertAction actionWithTitle:@"TXT" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [[ShareFileManager shared] shareTXTName:name Substance:mstr InController:self];
+    }];
+    [alert addAction:action1];
+    [alert addAction:action2];
+    [self presentViewController:alert animated:true completion:nil];
 }
 
 #pragma mark - Delegate

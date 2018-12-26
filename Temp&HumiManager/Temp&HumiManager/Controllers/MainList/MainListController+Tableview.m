@@ -44,6 +44,8 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     }
+    
+    cell.logo = [UIImage imageNamed:@"ic_room_car"];
 
     if (tableView.tag == 1000) {
 
@@ -57,8 +59,10 @@
         cell.iswifi = true;
         cell.isble = false;
         
+        cell.logo = [UIImage imageNamed:[device imageNameWithMototype]];
+        
         float temp = [device temeratureBySData];
-        NSString * tpstr = temp == -1000 ? @"--" : [NSString stringWithFormat:@"%.1f˚C",[device temeratureBySData]];
+        NSString * tpstr = temp == -1000 ? @"--" : [NSString stringWithFormat:@"%.1f%@",[device temeratureBySData],[MyDefaultManager unit]];
         cell.labTemp.text = tpstr;
         
         int humi = [device humidityBySData];
@@ -80,7 +84,7 @@
         cell.tempWarning = [mdic[@"tpWarn"] boolValue];
 
         NSString * powerTxt = ([info powerBle] == -1000)?@"--%":[NSString stringWithFormat:@"%d%%",[info powerBle]];
-        NSString * tempTxt = ([info temperatureBle] == -1000)?@"--%":[NSString stringWithFormat:@"%.1f˚C",[info temperatureBle]];
+        NSString * tempTxt = ([info temperatureBle] == -1000)?@"--%":[NSString stringWithFormat:@"%.1f%@",[info temperatureBle],[MyDefaultManager unit]];
         NSString * humiTxt = ([info humidityBle] == -1000)?@"--%":[NSString stringWithFormat:@"%d%%",[info humidityBle]];
 
         cell.labPower.text = powerTxt;
@@ -91,11 +95,8 @@
         cell.isble = true;
     }
 
-    cell.logo = [UIImage imageNamed:@"ic_room_car"];
 
     return cell;
-
-    return nil;
 
 
 //
@@ -377,6 +378,8 @@
     [lock unlock];
 
 }
+
+#pragma mark - 私有方法
 
 
 @end

@@ -30,5 +30,6 @@
 
 - (void)fakeLoadQueue:(dispatch_queue_t)queue Block:(void(^)(void))block;
 
+- (NSString *)fullUrl:(NSString *)url Param:(NSDictionary *)param;
 
 @end

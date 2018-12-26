@@ -20,17 +20,7 @@
                              @"end":@"1",
                              @"pwd":@"12345678"};
     
-//    NSMutableString * ss = [[NSMutableString alloc]initWithString:url];
-//    for (int i=0; i<param.allKeys.count; i++) {
-//        NSString * key = param.allKeys[i];
-//        NSString * value = [NSString stringWithFormat:@"%@",param.allValues[i]];
-//        if (i != 0) {
-//            [ss appendFormat:@"&"];
-//        }
-//        [ss appendFormat:@"%@=%@",key,value];
-//    }
-//    NSLog(@"%@",ss);
-    
+        
     [self.sessionManager POST:url parameters:param progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary * dic = [NSDictionary dictionaryWithXMLData:responseObject];
@@ -56,18 +46,7 @@
                              @"start":@(sindex),
                              @"end":@(eindex),
                              @"pwd":@"12345678"};
-    
-    NSMutableString * ss = [[NSMutableString alloc]initWithString:url];
-    for (int i=0; i<param.allKeys.count; i++) {
-        NSString * key = param.allKeys[i];
-        NSString * value = [NSString stringWithFormat:@"%@",param.allValues[i]];
-        if (i != 0) {
-            [ss appendFormat:@"&"];
-        }
-        [ss appendFormat:@"%@=%@",key,value];
-    }
-    LRLog(@"%@",ss);
-    
+        
     [self.sessionManager POST:url parameters:param progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         //        LRLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);

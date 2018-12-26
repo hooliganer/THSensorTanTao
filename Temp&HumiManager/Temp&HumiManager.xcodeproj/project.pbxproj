@@ -15,6 +15,11 @@
 		B210C4A821D20B2600407F1B /* UIImageView+DIYImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B210C4A721D20B2600407F1B /* UIImageView+DIYImageView.m */; };
 		B210C4AB21D2106C00407F1B /* DetailWarnSetObject.m in Sources */ = {isa = PBXBuildFile; fileRef = B210C4AA21D2106C00407F1B /* DetailWarnSetObject.m */; };
 		B210C4B121D23BE800407F1B /* THLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = B210C4B021D23BE800407F1B /* THLineView.m */; };
+		B210C4B421D315DC00407F1B /* AFManager+DeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B210C4B321D315DC00407F1B /* AFManager+DeviceInfo.m */; };
+		B210C4BD21D35FD400407F1B /* ShareFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B210C4BB21D35FD400407F1B /* ShareFileManager.m */; };
+		B210C4BE21D35FD400407F1B /* MyFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B210C4BC21D35FD400407F1B /* MyFileManager.m */; };
+		B210C4C121D3686500407F1B /* AlertInfoer.xib in Resources */ = {isa = PBXBuildFile; fileRef = B210C4C021D3686500407F1B /* AlertInfoer.xib */; };
+		B210C4C421D36A5E00407F1B /* AlertInfoer.m in Sources */ = {isa = PBXBuildFile; fileRef = B210C4C321D36A5E00407F1B /* AlertInfoer.m */; };
 		B2CB1E9C21CC7FE2005E3501 /* UIFont+DIYFont.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CB1E9B21CC7FE2005E3501 /* UIFont+DIYFont.m */; };
 		B2CB1E9F21CC8B09005E3501 /* AFManager+AFAutoRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CB1E9E21CC8B09005E3501 /* AFManager+AFAutoRegister.m */; };
 		B2CB1EA421CCA214005E3501 /* THNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CB1EA321CCA214005E3501 /* THNavigationBar.m */; };
@@ -166,6 +171,15 @@
 		B210C4AA21D2106C00407F1B /* DetailWarnSetObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailWarnSetObject.m; sourceTree = "<group>"; };
 		B210C4AF21D23BE800407F1B /* THLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THLineView.h; sourceTree = "<group>"; };
 		B210C4B021D23BE800407F1B /* THLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THLineView.m; sourceTree = "<group>"; };
+		B210C4B221D315DC00407F1B /* AFManager+DeviceInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AFManager+DeviceInfo.h"; sourceTree = "<group>"; };
+		B210C4B321D315DC00407F1B /* AFManager+DeviceInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AFManager+DeviceInfo.m"; sourceTree = "<group>"; };
+		B210C4B921D35FD300407F1B /* MyFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyFileManager.h; sourceTree = "<group>"; };
+		B210C4BA21D35FD300407F1B /* ShareFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareFileManager.h; sourceTree = "<group>"; };
+		B210C4BB21D35FD400407F1B /* ShareFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareFileManager.m; sourceTree = "<group>"; };
+		B210C4BC21D35FD400407F1B /* MyFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyFileManager.m; sourceTree = "<group>"; };
+		B210C4C021D3686500407F1B /* AlertInfoer.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlertInfoer.xib; sourceTree = "<group>"; };
+		B210C4C221D36A5E00407F1B /* AlertInfoer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlertInfoer.h; sourceTree = "<group>"; };
+		B210C4C321D36A5E00407F1B /* AlertInfoer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlertInfoer.m; sourceTree = "<group>"; };
 		B2CB1E9A21CC7FE2005E3501 /* UIFont+DIYFont.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIFont+DIYFont.h"; sourceTree = "<group>"; };
 		B2CB1E9B21CC7FE2005E3501 /* UIFont+DIYFont.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIFont+DIYFont.m"; sourceTree = "<group>"; };
 		B2CB1E9D21CC8B09005E3501 /* AFManager+AFAutoRegister.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AFManager+AFAutoRegister.h"; sourceTree = "<group>"; };
@@ -467,6 +481,30 @@
 			path = RecordSet;
 			sourceTree = "<group>";
 		};
+		B210C4B821D35FC600407F1B /* Share */ = {
+			isa = PBXGroup;
+			children = (
+				B210C4B921D35FD300407F1B /* MyFileManager.h */,
+				B210C4BC21D35FD400407F1B /* MyFileManager.m */,
+				B210C4BA21D35FD300407F1B /* ShareFileManager.h */,
+				B210C4BB21D35FD400407F1B /* ShareFileManager.m */,
+			);
+			path = Share;
+			sourceTree = "<group>";
+		};
+		B210C4BF21D3684700407F1B /* Alert */ = {
+			isa = PBXGroup;
+			children = (
+				DE1F74A720DCEBAD00A834FA /* My_AlertView.h */,
+				DE1F74A820DCEBAD00A834FA /* My_AlertView.m */,
+				DE1F74AA20DCEE3D00A834FA /* My_AlertView+My_AlertExtension.h */,
+				B210C4C021D3686500407F1B /* AlertInfoer.xib */,
+				B210C4C221D36A5E00407F1B /* AlertInfoer.h */,
+				B210C4C321D36A5E00407F1B /* AlertInfoer.m */,
+			);
+			path = Alert;
+			sourceTree = "<group>";
+		};
 		B2FDE3AE21D0789500D02F11 /* Device */ = {
 			isa = PBXGroup;
 			children = (
@@ -691,6 +729,8 @@
 				B2CB1EA621CCBEE9005E3501 /* AFManager+SelectDataOfDevice.m */,
 				B210C48C21D07B1A00407F1B /* AFManager+WarningSetRecord.h */,
 				B210C48D21D07B1A00407F1B /* AFManager+WarningSetRecord.m */,
+				B210C4B221D315DC00407F1B /* AFManager+DeviceInfo.h */,
+				B210C4B321D315DC00407F1B /* AFManager+DeviceInfo.m */,
 			);
 			path = AFNet;
 			sourceTree = "<group>";
@@ -1034,6 +1074,7 @@
 		DED7A0CC204FF8B4006F4342 /* viewObjects */ = {
 			isa = PBXGroup;
 			children = (
+				B210C4BF21D3684700407F1B /* Alert */,
 				DECA3EA1209DE2B6001DEE92 /* MyLineView.h */,
 				DECA3EA0209DE2B5001DEE92 /* MyLineView.m */,
 				DEA6B3002061125100E10641 /* MySwitch.h */,
@@ -1052,9 +1093,6 @@
 				DEBDDFC620B7CA0000A4807B /* TH_LableImvView.m */,
 				DE62578A20BAB3D900A8A31D /* MyScrollView.h */,
 				DE62578B20BAB3D900A8A31D /* MyScrollView.m */,
-				DE1F74A720DCEBAD00A834FA /* My_AlertView.h */,
-				DE1F74A820DCEBAD00A834FA /* My_AlertView.m */,
-				DE1F74AA20DCEE3D00A834FA /* My_AlertView+My_AlertExtension.h */,
 				DE1F74AB20DCF8BF00A834FA /* TH_NormalView.h */,
 				DE1F74AC20DCF8BF00A834FA /* TH_NormalView.m */,
 				DE96422E20F509BD002F9403 /* MainViewData.h */,
@@ -1093,6 +1131,7 @@
 		DED7A0E2204FFE68006F4342 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				B210C4B821D35FC600407F1B /* Share */,
 				DE8253D421C7F072003802FE /* AFNet */,
 				DEA19D8C213995070051ABEB /* others */,
 				DE62578320BA98A200A8A31D /* XML */,
@@ -1223,6 +1262,7 @@
 			files = (
 				DED7A0B6204FF776006F4342 /* LaunchScreen.storyboard in Resources */,
 				DED7A0B3204FF776006F4342 /* Assets.xcassets in Resources */,
+				B210C4C121D3686500407F1B /* AlertInfoer.xib in Resources */,
 				DED7A0B1204FF776006F4342 /* Main.storyboard in Resources */,
 				B210C4A221D2004A00407F1B /* DetailWarningCell.xib in Resources */,
 			);
@@ -1275,6 +1315,7 @@
 				DE3E3FC1205A8730007B76DB /* DetailTypeChooseView.m in Sources */,
 				DEBA33D821C67E3D00A23C87 /* DeviceDBManager.m in Sources */,
 				DEC225AA20AEB91600D64312 /* SettingGroupChooseView.m in Sources */,
+				B210C4BD21D35FD400407F1B /* ShareFileManager.m in Sources */,
 				DED7A0EC204FFFD4006F4342 /* OBJCManager.m in Sources */,
 				DED41476205119820080D1A3 /* DeviceInfo.m in Sources */,
 				DE5DEBA720B2F5490078B985 /* MyGroupCollectionLayout.m in Sources */,
@@ -1346,6 +1387,7 @@
 				DE18220C21B823F900694E5D /* MainListController+BG.m in Sources */,
 				B2CB1EA721CCBEE9005E3501 /* AFManager+SelectDataOfDevice.m in Sources */,
 				DE3536C521C68BBA00B553DE /* TestDB+CoreDataProperties.m in Sources */,
+				B210C4C421D36A5E00407F1B /* AlertInfoer.m in Sources */,
 				DED7A0F220500201006F4342 /* TestObject.m in Sources */,
 				DE85FE5E2147C3FE00041994 /* MainViewController+BGer.m in Sources */,
 				B210C48E21D07B1A00407F1B /* AFManager+WarningSetRecord.m in Sources */,
@@ -1368,6 +1410,7 @@
 				DEA6B3022061125100E10641 /* MySwitch.m in Sources */,
 				DE62578220B933C100A8A31D /* MyGroupCollectionObject.m in Sources */,
 				DE1137B620B588D200B59C53 /* UILabel+DIYLabel.m in Sources */,
+				B210C4BE21D35FD400407F1B /* MyFileManager.m in Sources */,
 				DEA19D8721398A150051ABEB /* BlueToothManager+Delegate.m in Sources */,
 				DED41473205117540080D1A3 /* MainViewController+MainBG.m in Sources */,
 				DE5DEBA620B2F5490078B985 /* MyGroupCollection.m in Sources */,
@@ -1387,6 +1430,7 @@
 				DED7A0C7204FF858006F4342 /* MyNavigationBar.m in Sources */,
 				DED98E1C2071E05D006905B4 /* HTTP_ModifyDevInfo.m in Sources */,
 				DEC6E082209C62250026F842 /* FMDatabaseQueue.m in Sources */,
+				B210C4B421D315DC00407F1B /* AFManager+DeviceInfo.m in Sources */,
 				DEBA338B21C678A400A23C87 /* DBManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1533,7 +1577,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WSF8C32N4B;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Temp&HumiManager/Public/THPrefixHeader.pch";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "Temp&HumiManager/Info.plist";
@@ -1562,7 +1606,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WSF8C32N4B;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Temp&HumiManager/Public/THPrefixHeader.pch";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "Temp&HumiManager/Info.plist";

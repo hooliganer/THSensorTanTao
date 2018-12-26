@@ -38,6 +38,18 @@
     return user;
 }
 
++ (NSString *)unit{
+    NSString * value = [[NSUserDefaults standardUserDefaults] stringForKey:@"TemparatureUnit"];
+    if (value) {
+        return value;
+    }
+    return @"˚C";
+}
+
++ (void)saveUnit:(NSString *)unit{
+    [[NSUserDefaults standardUserDefaults] setObject:unit forKey:@"TemparatureUnit"];
+}
+
 - (UserInfo *)readUser{
     NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"UserInfo"];
 

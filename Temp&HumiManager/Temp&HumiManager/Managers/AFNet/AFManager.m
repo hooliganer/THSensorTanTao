@@ -121,6 +121,7 @@
     [self.sessionManager GET:url parameters:param progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 
         NSDictionary * dic = [NSDictionary dictionaryWithXMLData:responseObject];
+//        LRLog(@"%@",dic);
         id dev = [dic valueForKey:@"dev"];
         if (!dev) {
             return ;
@@ -172,6 +173,19 @@
     dev.devpost = DevicePostMake(x, y);
     
     return dev;
+}
+
+- (NSString *)fullUrl:(NSString *)url Param:(NSDictionary *)param{
+    NSMutableString * ss = [[NSMutableString alloc]initWithString:url];
+    for (int i=0; i<param.allKeys.count; i++) {
+        NSString * key = param.allKeys[i];
+        NSString * value = [NSString stringWithFormat:@"%@",param.allValues[i]];
+        if (i != 0) {
+            [ss appendFormat:@"&"];
+        }
+        [ss appendFormat:@"%@=%@",key,value];
+    }
+    return ss;
 }
 
 @end

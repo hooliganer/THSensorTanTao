@@ -12,6 +12,7 @@
 
 @property (nonatomic,assign)bool showLink;
 @property (nonatomic,strong)UIImage * logo;
+@property (nonatomic,strong)UIImageView * imvLogo;
 @property (nonatomic,strong)UILabel * labTitle;
 @property (nonatomic,assign)bool isble;
 @property (nonatomic,assign)bool iswifi;

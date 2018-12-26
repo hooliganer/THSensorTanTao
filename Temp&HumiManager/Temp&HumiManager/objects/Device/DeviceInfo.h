@@ -60,4 +60,10 @@ typedef NS_OPTIONS(NSInteger, DeviceDataType) {
 
 - (int)humidityBySensor;
 
+- (NSString *)imageNameWithMototype;
+
++ (float)temeratureBySData:(NSString *)sdata;
++ (int)humidityBySData:(NSString *)sdata;
++ (int)powerBySData:(NSString *)sdata;
+
 @end

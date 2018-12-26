@@ -10,7 +10,6 @@
 
 @interface MainTableViewCell ()
 
-@property (nonatomic,strong)UIImageView * imvLogo;
 @property (nonatomic,strong)UIImageView * imvTemp;
 @property (nonatomic,strong)UIImageView * imvHumi;
 @property (nonatomic,strong)UIImageView * imvPower;

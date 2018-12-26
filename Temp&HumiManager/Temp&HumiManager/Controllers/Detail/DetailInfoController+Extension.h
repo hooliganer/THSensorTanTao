@@ -30,6 +30,7 @@
 @property (nonatomic,strong)UIButton_DIYObject * exportBtn;
 @property (nonatomic,strong)DetailEditAlert * editer;
 
+@property (nonatomic,strong)NSMutableArray <DeviceInfo *>* currentDatas;///<当前时间段内的温湿度数据等
 
 @end
 

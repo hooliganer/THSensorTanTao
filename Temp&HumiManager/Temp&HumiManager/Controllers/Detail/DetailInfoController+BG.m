@@ -8,9 +8,10 @@
 
 #import "DetailInfoController+BG.h"
 #import "DetailInfoController+Extension.h"
+#import "DetailInfoController+UI.h"
 #import "AFManager+WarningSetRecord.h"
 #import "AFManager+SelectDataOfDevice.h"
-
+#import "AFManager+DeviceInfo.h"
 
 @implementation DetailInfoController (BG)
 
@@ -26,6 +27,7 @@
         //查询数据
         [weakself selectInternetTHData:^(NSArray<DeviceInfo *> *datas) {
             
+            weakself.currentDatas = datas.mutableCopy;
             dispatch_async(dispatch_get_main_queue(), ^{
                 
                 [loading dismiss];
@@ -63,6 +65,8 @@
         
         //查询数据
         [weakself selectInternetTHData:^(NSArray<DeviceInfo *> *datas) {
+            
+            weakself.currentDatas = datas.mutableCopy;
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 
@@ -243,12 +247,9 @@
     LRWeakSelf(self);
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(queue, ^{
+        //查最新一条设置记录
         [[AFManager shared] selectLastWarnSetRecordWithMac:[self macFormDevice] Block:^(WarnSetRecord * _Nonnull record) {
-//            NSLog(@"%.0f - %f",record.threshold.tempMin.time,record.threshold.tempMin.value);
-//            NSLog(@"%.0f - %f",record.threshold.tempMax.time,record.threshold.tempMax.value);
-//            NSLog(@"%.0f - %f",record.threshold.humiMin.time,record.threshold.humiMin.value);
-//            NSLog(@"%.0f - %f",record.threshold.humiMax.time,record.threshold.humiMax.value);
-            
+
             dispatch_async(dispatch_get_main_queue(), ^{
                 weakself.editer.switcher.isOn = record.ison;
                 weakself.editer.limitTemp.tfLess_textField.text = [NSString stringWithFormat:@"%.0f",record.threshold.tempMin.value];
@@ -256,14 +257,87 @@
                 weakself.editer.limitHumi.tfLess_textField.text = [NSString stringWithFormat:@"%.0f",record.threshold.humiMin.value];
                 weakself.editer.limitHumi.tfMore_textField.text = [NSString stringWithFormat:@"%.0f",record.threshold.humiMax.value];
             });
-
+            
+            //如果开关打开，则查询实时数据看是否报警
+            if (record.ison) {
+                int uid = [MyDefaultManager userInfo].uid;
+                [[AFManager shared] selectLastDataOfDevice:uid Mac:[weakself macFormDevice] Block:^(NSString * _Nonnull dataStr) {
+                    
+                    float temp = [DeviceInfo temeratureBySData:dataStr];
+                    int humi = [DeviceInfo humidityBySData:dataStr];
+                    
+                    if (temp < record.threshold.tempMin.value || temp > record.threshold.tempMax.value || humi < record.threshold.humiMin.value || humi > record.threshold.humiMax.value) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            weakself.warner.labTemp.text = [NSString stringWithFormat:@"%.1f%@",temp,[MyDefaultManager unit]];
+                            [weakself.warner.labTemp sizeToFit];
+                            weakself.warner.labHumi.text = [NSString stringWithFormat:@"%d%%",humi];
+                            [weakself.warner.labHumi sizeToFit];
+                            [weakself showIsWaner:true];
+                        });
+                    }
+                    
+                    
+                }];
+            }
         }];
     });
     
 }
 
+- (void)setInternetDevName{
+    
+    NSString * name = self.editer.tfName.text;
+    NSString * mac = [self macFormDevice];
+    UserInfo * user = [MyDefaultManager userInfo];
+    [[AFManager shared] setDeviceName:name Mac:mac Uid:user.uid Result:^(bool success, NSString * _Nonnull info) {
+        if (!success) {
+            LRLog(@"设置名称失败！%@",info);
+        }
+    }];
+}
 
+- (void)setInternetDevType{
+    int type;
+    switch (self.editer.type) {
+        case 1:
+            type = 8;
+            break;
+        case 2:
+            type = 7;
+            break;
+        case 3:
+            type = 9;
+            break;
+            
+        default:
+            type = 6;
+            break;
+    }
+    NSString * mac = [self macFormDevice];
+    UserInfo * user = [MyDefaultManager userInfo];
+    [[AFManager shared] setDeviceType:type Mac:mac Uid:user.uid Result:^(bool success, NSString * _Nonnull info) {
+        if (!success) {
+            LRLog(@"设置类型失败！%@",info);
+        }
+    }];
+}
 
+/**
+设置报警参数阈值及其是否打开
+ */
+- (void)setInternetWarnSet{
+    
+    bool ison = self.editer.switcher.isOn;
+    int uid = [MyDefaultManager userInfo].uid;
+    float tempmin = [self.editer.limitTemp.tfLess_textField.text floatValue];
+    float tempmax = [self.editer.limitTemp.tfMore_textField.text floatValue];
+    int humimin = [self.editer.limitHumi.tfLess_textField.text floatValue];
+    int humimax = [self.editer.limitHumi.tfMore_textField.text floatValue];
+    [[AFManager shared] setWarnWithMac:[self macFormDevice] Type:@"01" IsOn:ison Uid:uid Value:@(tempmin)];
+    [[AFManager shared] setWarnWithMac:[self macFormDevice] Type:@"02" IsOn:ison Uid:uid Value:@(tempmax)];
+    [[AFManager shared] setWarnWithMac:[self macFormDevice] Type:@"03" IsOn:ison Uid:uid Value:@(humimin)];
+    [[AFManager shared] setWarnWithMac:[self macFormDevice] Type:@"04" IsOn:ison Uid:uid Value:@(humimax)];
+}
 
 /**
  查询选择时间段内的数据

@@ -294,27 +294,35 @@
  * 点击温度选择圈
  */
 - (void)clickSelectCircle:(UIButton *)sender{
+    
+    self.btn_C.selected = sender.tag == 2;
+    [self.btn_C setBackgroundImage:[UIImage imageNamed:(sender.tag == 2) ? @"cycn_circle":@"gray_circle"] forState:UIControlStateNormal];
+    
+    self.btn_F.selected = sender.tag == 3;
+    [self.btn_F setBackgroundImage:[UIImage imageNamed:(sender.tag == 3) ? @"cycn_circle":@"gray_circle"] forState:UIControlStateNormal];
+    
+    [MyDefaultManager saveUnit:sender.tag == 2 ? @"˚C" :@"˚F"];
 
-    switch (sender.tag) {
-        case 2:
-        {
-            self.btn_C.selected = true;
-            [self.btn_C setBackgroundImage:[UIImage imageNamed:@"cycn_circle"] forState:UIControlStateNormal];
-
-            self.btn_F.selected = false;
-            [self.btn_F setBackgroundImage:[UIImage imageNamed:@"gray_circle"] forState:UIControlStateNormal];
-        }
-            break;
-
-        case 3:
-        {
-            self.btn_C.selected = false;
-            [self.btn_C setBackgroundImage:[UIImage imageNamed:@"gray_circle"] forState:UIControlStateNormal];
-
-            self.btn_F.selected = true;
-            [self.btn_F setBackgroundImage:[UIImage imageNamed:@"cycn_circle"] forState:UIControlStateNormal];
-        }
-            break;
+//    switch (sender.tag) {
+//        case 2:
+//        {
+//            self.btn_C.selected = true;
+//            [self.btn_C setBackgroundImage:[UIImage imageNamed:@"cycn_circle"] forState:UIControlStateNormal];
+//
+//            self.btn_F.selected = false;
+//            [self.btn_F setBackgroundImage:[UIImage imageNamed:@"gray_circle"] forState:UIControlStateNormal];
+//        }
+//            break;
+//
+//        case 3:
+//        {
+//            self.btn_C.selected = false;
+//            [self.btn_C setBackgroundImage:[UIImage imageNamed:@"gray_circle"] forState:UIControlStateNormal];
+//
+//            self.btn_F.selected = true;
+//            [self.btn_F setBackgroundImage:[UIImage imageNamed:@"cycn_circle"] forState:UIControlStateNormal];
+//        }
+//            break;
 //        case 12:
 //        {
 ////            self.btn_wfi.selected = true;
@@ -343,9 +351,9 @@
 //        }
 //            break;
 
-        default:
-            break;
-    }
+//        default:
+//            break;
+//    }
 }
 
 

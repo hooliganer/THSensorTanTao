@@ -23,6 +23,19 @@
     [alert showBlock:block];
 }
 
++ (void)showInfo:(NSString *)info Block:(void (^)(My_AlertView *))block{
+    My_AlertView * alert = [[My_AlertView alloc]init];
+    alert.animType = My_AlertAnimateType_Fade;
+    AlertInfoer * infoview = [AlertInfoer instanceWithFrame:CGRectMake(0, 0, alert.width * 0.65, 0)];
+    infoview.infoLab.text = info;
+    infoview.btn.tag = 1001;
+    [infoview.btn addTarget:alert action:@selector(clickAlertButton:) forControlEvents:UIControlEventTouchUpInside];
+    infoview.tag = 10001;
+    
+    alert.centerView = infoview;
+    [alert showBlock:block];
+}
+
 - (instancetype)init{
     if (self = [super init]) {
         self.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
@@ -43,6 +56,7 @@
     [super layoutSubviews];
     
     self.centerView.center = CGPointMake(self.width/2.0, self.height/2.0);
+    
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
@@ -101,7 +115,9 @@
                 break;
         }
     }
-    block(self);
+    if (block) {
+        block(self);
+    }
 }
 
 - (void)dismiss{
@@ -136,6 +152,18 @@
 
         default:
             [self removeFromSuperview];
+            break;
+    }
+}
+
+
+- (void)clickAlertButton:(UIButton *)sender{
+    switch (sender.tag) {
+        case 1001:
+            [self dismiss];
+            break;
+            
+        default:
             break;
     }
 }

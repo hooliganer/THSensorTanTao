@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "My_AlertView+My_AlertExtension.h"
-
+#import "AlertInfoer.h"
 
 /*!
  * 基于UIView的视图弹窗，通过在 keywindow 加入此view呈现
@@ -23,6 +23,6 @@
 - (void)dismiss;
 
 + (void)showLoading:(void(^)(My_AlertView *loading))block;
-
++ (void)showInfo:(NSString *)info Block:(void(^)(My_AlertView *loading))block;
 
 @end

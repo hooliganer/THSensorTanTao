@@ -70,6 +70,10 @@
 }
 
 - (void)clickButton:(UIButton_DIYObject *)sender{
+    
+    if (self.type == sender.tag - 10) {
+        return ;
+    }
 
     UIButton_DIYObject *btn1 = [self viewWithTag:10];
     [btn1 setBackgroundImage:[UIImage imageNamed:btn1.tag==sender.tag?@"温度选中":@"温度未选中"] forState:UIControlStateNormal];

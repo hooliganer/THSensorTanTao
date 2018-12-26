@@ -52,13 +52,19 @@ DetailChooseSegmentDelegate>
         self.topView.labTitle.text = device.peripheral.name ? device.peripheral.name : @"(null)";
         self.topView.isBle = true;
     } else if ([self.deviceInfo isKindOfClass:[DeviceInfo class]]){
+        
         DeviceInfo * device = self.deviceInfo;
 //        NSLog(@"%@",device.showName);
         self.topView.labTitle.text = device.showName;
         self.topView.isWifi = true;
+        self.topView.imvHead.image = [UIImage imageNamed:[device imageNameWithMototype]];
+        
+        self.editer.tfName.text = device.showName;
+        self.editer.type = [self typeByMotostep:device.motostep];
+        self.editer.limitTemp.labUnit.text = [MyDefaultManager unit];
         
         float temp = [device temeratureBySData];
-        NSString * tpstr = temp == -1000 ? @"--" : [NSString stringWithFormat:@"%.1f˚C",[device temeratureBySData]];
+        NSString * tpstr = temp == -1000 ? @"--" : [NSString stringWithFormat:@"%.1f%@",[device temeratureBySData],[MyDefaultManager unit]];
         self.topView.labTempar.text = tpstr;
         [self.topView.labTempar sizeToFit];
         
@@ -71,9 +77,11 @@ DetailChooseSegmentDelegate>
         NSString * pwstr = power == -1000 ? @"--" : [NSString stringWithFormat:@"%d%%",[device powerBySData]];
         self.topView.labPower.text = pwstr;
         [self.topView.labPower sizeToFit];
+        
+        [self selectInternetInfo];
+
     }
     
-    [self selectInternetInfo];
 
     return ;
 
@@ -154,17 +162,17 @@ DetailChooseSegmentDelegate>
     return _mainScroll;
 }
 
-- (DetailEditAlert *)editAlert{
-    if (_editAlert == nil) {
-        _editAlert = [[DetailEditAlert alloc]init];
-        [_editAlert.btnSave addTarget:self action:@selector(clickEditButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_editAlert.btnCancel addTarget:self action:@selector(clickEditButton:) forControlEvents:UIControlEventTouchUpInside];
-        _editAlert.tfName.text = self.curDevInfo.nickName?self.curDevInfo.nickName:self.curDevInfo.bleInfo.peripheral.name;
-        _editAlert.type = [self getEditAlertTypeWithDType:self.curDevInfo.motostep];
-        [self.view insertSubview:_editAlert aboveSubview:self.mainScroll];
-    }
-    return _editAlert;
-}
+//- (DetailEditAlert *)editAlert{
+//    if (_editAlert == nil) {
+//        _editAlert = [[DetailEditAlert alloc]init];
+//        [_editAlert.btnSave addTarget:self action:@selector(clickEditButton:) forControlEvents:UIControlEventTouchUpInside];
+//        [_editAlert.btnCancel addTarget:self action:@selector(clickEditButton:) forControlEvents:UIControlEventTouchUpInside];
+//        _editAlert.tfName.text = self.curDevInfo.nickName?self.curDevInfo.nickName:self.curDevInfo.bleInfo.peripheral.name;
+//        _editAlert.type = [self getEditAlertTypeWithDType:self.curDevInfo.motostep];
+//        [self.view insertSubview:_editAlert aboveSubview:self.mainScroll];
+//    }
+//    return _editAlert;
+//}
 
 - (dispatch_source_t)historyTimer{
     if (_historyTimer == nil) {
@@ -334,26 +342,26 @@ DetailChooseSegmentDelegate>
 
 #pragma mark - inside method
 
-- (int)getEditAlertTypeWithDType:(int)dtype{
-
-    switch (dtype) {
-        case 6:
-            return 0;
-            break;
-        case 7:
-            return 1;
-            break;
-        case 8:
-            return 2;
-            break;
-        case 9:
-            return 3;
-            break;
-
-        default:
-            return 0;
-            break;
-    }
-}
+//- (int)getEditAlertTypeWithDType:(int)dtype{
+//
+//    switch (dtype) {
+//        case 6:
+//            return 0;
+//            break;
+//        case 7:
+//            return 1;
+//            break;
+//        case 8:
+//            return 2;
+//            break;
+//        case 9:
+//            return 3;
+//            break;
+//
+//        default:
+//            return 0;
+//            break;
+//    }
+//}
 
 @end

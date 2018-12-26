@@ -23,6 +23,21 @@
 - (UserInfo *)readUser;
 + (UserInfo *)userInfo;
 
+
+/**
+ 读本地单位
+
+ @return 单位字符串
+ */
++ (NSString *)unit;
+
+/**
+ 保存单位
+
+ @param unit 单位字符串
+ */
++ (void)saveUnit:(NSString *)unit;
+
 - (void)saveUser:(UserInfo *)user;
 
 

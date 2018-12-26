@@ -259,12 +259,16 @@
                 }
                 [oldDevs addObject:mdicM];
             }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.groupTable reloadSections:[NSIndexSet indexSetWithIndex:j] withRowAnimation:UITableViewRowAnimationNone];
-            });
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [self.groupTable reloadSections:[NSIndexSet indexSetWithIndex:j] withRowAnimation:UITableViewRowAnimationNone];
+//            });
             break ;
         }
     }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.groupTable reloadData];
+    });
 }
 
 @end

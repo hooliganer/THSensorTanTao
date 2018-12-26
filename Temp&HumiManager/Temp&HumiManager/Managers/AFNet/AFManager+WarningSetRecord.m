@@ -118,6 +118,29 @@
     }];
 }
 
+- (void)setWarnWithMac:(NSString *)mac Type:(NSString *)type IsOn:(bool)ison Uid:(int)uid Value:(NSNumber *)value{
+    
+    // http://www.easyhomeai.com:8080/aircondition/dev/set_dev_trigger.jsp?isbiger=0&enable=0&mac=CF1206168A6D&uid=5&otype=10&ocode=03&save=yes&stype=01&value=30
+    // /aircondition/dev/set_dev_trigger.jsp?
+    // 参数 mac= ，stype= 数据类型 01 - 表示该值为温度最小值 02 - 温度最大值 03 - 湿度最小值 04 - 湿度最大值 isbiger=0,enable= 当前报警开关 0 - 关 1 - 开； otype=10；ocode=03；uid 用户id value=值，save=yes，表示保存；
+    NSString * url = [NSString stringWithFormat:@"http://%@:%@/aircondition/dev/set_dev_trigger.jsp?",TH_IP,TH_PORT];
+    NSDictionary * param = @{@"mac":mac,
+                             @"stype":type,
+                             @"isbiger":@"0",
+                             @"enable":@(ison),
+                             @"uid":@(uid),
+                             @"otype":@"10",
+                             @"ocode":@"03",
+                             @"value":value,
+                             @"save":@"yes"};
+//    NSString * fl = [self fullUrl:url Param:param];
+    [self.sessionManager POST:url parameters:param progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+    
+}
 
 #pragma mark - 私有方法
 

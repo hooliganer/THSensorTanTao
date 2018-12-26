@@ -30,6 +30,9 @@
     [self.view addSubview:self.mainTable];
     self.mainTable.dataSource = self;
     self.mainTable.delegate = self;
+    self.mainTable.estimatedRowHeight = 0;
+    self.mainTable.estimatedSectionHeaderHeight = 0;
+    self.mainTable.estimatedSectionFooterHeight = 0;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didGetBleDevice:) name:NotiName_ToBLEController object:nil];
 
@@ -69,7 +72,11 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifer];
     }
 
-    cell.textLabel.text = self.datasource[indexPath.row].peripheral.name;
+    NSString * name = self.datasource[indexPath.row].peripheral.name;
+    name = name ? name : self.datasource[indexPath.row].peripheral.identifier.UUIDString;
+    cell.textLabel.text = name;
+    
+//    cell.textLabel.text =  @"d";
 
     return cell;
 }

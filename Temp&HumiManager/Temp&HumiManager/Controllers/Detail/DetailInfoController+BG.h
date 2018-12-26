@@ -26,8 +26,20 @@
 - (void)selectInternetWarnRecord;
 
 /**
- 查询网络信息
+ 查询网络信息(报警设置、数据等)
  */
 - (void)selectInternetInfo;
+
+/**
+ 修改网络名称
+ */
+- (void)setInternetDevName;
+
+/**
+ 修改设备网络类型
+ */
+- (void)setInternetDevType;
+
+- (void)setInternetWarnSet;
 
 @end

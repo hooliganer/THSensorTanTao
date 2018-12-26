@@ -17,4 +17,6 @@
 @property (nonatomic,strong)UILabel *labTemp;
 @property (nonatomic,strong)UILabel *labHumi;
 
+
+
 @end

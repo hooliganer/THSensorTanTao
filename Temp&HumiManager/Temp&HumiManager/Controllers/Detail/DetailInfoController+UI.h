@@ -14,4 +14,9 @@
 
 - (void)setupSubviews;
 
+- (int)motostepByType:(int)type;
+- (int)typeByMotostep:(int)moto;
+
+- (void)showIsWaner:(bool)is;
+
 @end

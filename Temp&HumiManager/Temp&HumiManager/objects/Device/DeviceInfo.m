@@ -98,6 +98,61 @@
     return value;
 }
 
++ (float)temeratureBySData:(NSString *)sdata{
+    if (![sdata containsString:@"50582D505323"]) {
+        return -1000;
+    }
+    if (sdata.length < 20) {
+        return -1000;
+    }
+    bool is = [[sdata substringWithRange:NSMakeRange(16, 1)] boolValue];
+    NSString * temp = [sdata substringWithRange:NSMakeRange(17, 3)];
+    float value = is ? -[temp toDecimalByHex]/100.0 : [temp toDecimalByHex]/100.0;
+    return value;
+}
++ (int)humidityBySData:(NSString *)sdata{
+    if (![sdata containsString:@"50582D505323"]) {
+        return -1000;
+    }
+    if (sdata.length < 22) {
+        return -1000;
+    }
+    NSString * temp = [sdata substringWithRange:NSMakeRange(20, 2)];
+    int value = [temp toDecimalByHex];
+    return value;
+}
++ (int)powerBySData:(NSString *)sdata{
+    if (![sdata containsString:@"50582D505323"]) {
+        return -1000;
+    }
+    if (sdata.length < 24) {
+        return -1000;
+    }
+    NSString * temp = [sdata substringWithRange:NSMakeRange(22, 2)];
+    int value = [temp toDecimalByHex];
+    return value;
+}
+
+- (NSString *)imageNameWithMototype{
+    switch (self.motostep) {
+        case 6:
+            return @"ic_room_wc";
+            break;
+        case 7:
+            return @"ic_room_bar";
+            break;
+        case 8://bed
+            return @"ic_room_car";
+            break;
+        case 9:
+            return@"ic_room_baby";
+            break;
+            
+        default:
+            return @"ic_room_car";
+            break;
+    }
+}
 
 - (float)temeratureBySensor{
     float tp = -1000;

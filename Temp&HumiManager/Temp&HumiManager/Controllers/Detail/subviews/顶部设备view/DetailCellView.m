@@ -41,7 +41,6 @@
     self.imvWarning.width = (self.imvWarning.image.size.width/self.imvWarning.image.size.height)*self.imvWarning.height;
 
     self.labTitle.frame = CGRectMake(self.imvHead.rightX + 10, 10, 150, (self.imvHead.height - 10)/2.0);
-    self.labTitle.backgroundColor = [UIColor redColor];
 
     if (self.isWifi) {
         CGFloat h = (self.imvHead.height - 10)/2.0;
