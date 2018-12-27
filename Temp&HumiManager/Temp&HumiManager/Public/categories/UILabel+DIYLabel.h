@@ -16,7 +16,19 @@
  */
 - (void)fitHeight:(CGFloat)height WithWeight:(CGFloat)weight;
 
+/**
+ 宽度固定，高度自适应
+
+ @param width 固定的宽度
+ */
 - (void)fitWidth:(CGFloat)width;
+
+/**
+ 限制最大宽度，若超过此宽度，限制回此最大宽度，若小于此宽度，则为文字宽度
+
+ @param width 最大宽度
+ */
+- (void)fitMaxWidth:(CGFloat)width;
 
 - (instancetype)initWithText:(NSString *)text;
 

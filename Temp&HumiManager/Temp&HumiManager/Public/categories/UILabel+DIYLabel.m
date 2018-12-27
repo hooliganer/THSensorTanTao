@@ -54,4 +54,11 @@
     self.frame = rect;
 }
 
+- (void)fitMaxWidth:(CGFloat)width{
+    [self sizeToFit];
+    if (self.bounds.size.width > width) {
+        [self fitWidth:width];
+    }
+}
+
 @end

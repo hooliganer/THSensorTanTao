@@ -98,19 +98,18 @@
     LRWeakSelf(self);
     dispatch_queue_t mainQueue = dispatch_get_main_queue();
     dispatch_async(mainQueue, ^{
-
-        //显示加载框
+        
         MyIndicatorView *indicator = [[MyIndicatorView alloc]init];
         LRWeakSelf(indicator);
         indicator.labText.text = [NSString stringWithFormat:@"Connecting '%@'..",info.peripheral.name];
         [indicator.labText sizeToFit];
         [indicator showBlock:^(MyIndicatorView *indicator) {
-
+            
             dispatch_queue_t golbalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
             dispatch_async(golbalQueue, ^{
                 //连接设备
                 [[BLEManager shareInstance] connectCBPeripheral:info.peripheral Block:^(bool success, NSString *info, CBPeripheral *peripheral) {
-
+                    
                     dispatch_async(dispatch_get_main_queue(), ^{
                         //连接成功
                         if (success) {
@@ -123,7 +122,7 @@
                             [weakself showAlertTipTitle:@"Tip" Message:@"Connect Fail !" DismissTime:1.5];
                         }
                     });
-
+                    
                 }];
             });
         }];

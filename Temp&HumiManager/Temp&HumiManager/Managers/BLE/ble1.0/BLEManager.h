@@ -39,6 +39,13 @@ CBPeripheralDelegate,CBCentralManagerDelegate,CBPeripheralManagerDelegate
  */
 - (void)connectCBPeripheral:(CBPeripheral *)peripheral Block:(void(^)(bool success,NSString *info,CBPeripheral *peripheral))block;
 
+- (void)cancelConnectCBPeripheral:(CBPeripheral *)peripheral;
+
+/**
+ 断开连接
+
+ @param peripheral 蓝牙设备
+ */
 - (void)disConnectCBPeripheral:(CBPeripheral *)peripheral;
 
 - (void)queryWithData:(NSData *)data CBPeripheral:(CBPeripheral *)peripheral;

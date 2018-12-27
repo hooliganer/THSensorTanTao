@@ -2,8 +2,8 @@
 //  DeviceDB+CoreDataProperties.m
 //  Temp&HumiManager
 //
-//  Created by terry on 2018/12/16.
-//  Copyright © 2018年 terry. All rights reserved.
+//  Created by tantao on 2018/12/27.
+//  Copyright © 2018 terry. All rights reserved.
 //
 //
 
@@ -12,18 +12,19 @@
 @implementation DeviceDB (CoreDataProperties)
 
 + (NSFetchRequest<DeviceDB *> *)fetchRequest {
-	return [[NSFetchRequest alloc] initWithEntityName:@"DeviceDB"];
+	return [NSFetchRequest fetchRequestWithEntityName:@"DeviceDB"];
 }
 
-@dynamic isWarn;
-@dynamic lessTemper;
-@dynamic overTemper;
-@dynamic lessHumidi;
-@dynamic overHumidi;
-@dynamic mac;
-@dynamic tempTime;
-@dynamic humiTime;
 @dynamic dbName;
 @dynamic devType;
+@dynamic humiTime;
+@dynamic isWarn;
+@dynamic lessHumidi;
+@dynamic lessTemper;
+@dynamic mac;
+@dynamic overHumidi;
+@dynamic overTemper;
+@dynamic tempTime;
+@dynamic warnSetRecords;
 
 @end

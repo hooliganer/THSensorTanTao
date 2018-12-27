@@ -2,13 +2,15 @@
 //  DeviceDB+CoreDataClass.h
 //  Temp&HumiManager
 //
-//  Created by terry on 2018/12/16.
-//  Copyright © 2018年 terry. All rights reserved.
+//  Created by tantao on 2018/12/27.
+//  Copyright © 2018 terry. All rights reserved.
 //
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+
+@class WarnRecordSetDB;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,11 +18,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (DeviceDB *)newDevice;
 
-- (void)insert;
-
 + (DeviceDB *)readBymac:(NSString *)mac;
 
++ (void)deleteAll;
+
 + (NSArray <DeviceDB *>*)readAll;
+
++ (void)deleteByMac:(NSString *)mac;
+
+/**
+ 此方法并不是指保存一条数据，而是指保存当前操作的DeviceDB对象的状态
+ */
+- (void)save;
+
+
 
 @end
 

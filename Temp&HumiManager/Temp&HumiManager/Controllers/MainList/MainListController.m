@@ -64,6 +64,12 @@
 //    [self startTimer];
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    
+}
+
 - (void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
 

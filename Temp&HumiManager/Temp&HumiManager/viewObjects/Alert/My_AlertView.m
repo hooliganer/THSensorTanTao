@@ -23,6 +23,43 @@
     [alert showBlock:block];
 }
 
++ (void)showLoadingWithText:(NSString *)text Block:(void (^)(My_AlertView *, UILabel *))block{
+    
+    My_AlertView * alert = [[My_AlertView alloc]init];
+    
+    UILabel * lab = [[UILabel alloc]init];
+//    lab.backgroundColor = [UIColor redColor];
+    lab.text = text;
+    lab.textColor = [UIColor whiteColor];
+    lab.textAlignment = NSTextAlignmentCenter;
+    [lab fitMaxWidth:150];
+    
+    UIActivityIndicatorView * indicator = [[UIActivityIndicatorView alloc]init];
+    indicator.size = CGSizeMake(50, 50);
+    [indicator startAnimating];
+    indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+    
+    CGFloat w = lab.width < 90 ? 100 : lab.width + 10;
+    UIView * view = [[UIView alloc]init];
+    view.size = CGSizeMake(w, lab.height + indicator.height + 20);
+    indicator.y = 10;
+    indicator.cx = view.width/2.0;
+    lab.y = indicator.bottomY + 5;
+    lab.cx = view.width/2.0;
+    [view addSubview:lab];
+    [view addSubview:indicator];
+    view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
+    view.layer.masksToBounds = true;
+    view.layer.cornerRadius = 8;
+    
+    alert.centerView = view;
+    [alert showBlock:^(My_AlertView *alertView) {
+        if (block) {
+            block(alertView,lab);
+        }
+    }];
+}
+
 + (void)showInfo:(NSString *)info Block:(void (^)(My_AlertView *))block{
     My_AlertView * alert = [[My_AlertView alloc]init];
     alert.animType = My_AlertAnimateType_Fade;

@@ -15,6 +15,8 @@
 @property (nonatomic,strong)NSNumber * rssi;
 @property (nonatomic,copy)NSDictionary * advertisement;
 
+@property (nonatomic,strong)id objc;
+
 /**
  * 设备的Mac地址（广播包里的）
  */

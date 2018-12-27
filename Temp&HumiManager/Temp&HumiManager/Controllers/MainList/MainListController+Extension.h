@@ -8,7 +8,7 @@
 
 #import "MainListController.h"
 #import "MyScrollView.h"
-#import "MyPeripheral.h"
+#import "BLEManager.h"
 
 typedef NS_OPTIONS(NSInteger, MainListTag) {
     MainListTag_MainCollection = 100 ,

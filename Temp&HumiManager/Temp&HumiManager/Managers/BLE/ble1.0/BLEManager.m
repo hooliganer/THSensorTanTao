@@ -378,13 +378,19 @@ NSString * const responseCharacteristic1 = @"0000fff7-0000-1000-8000-00805f9b34f
 }
 
 - (void)connectCBPeripheral:(CBPeripheral *)peripheral Block:(void (^)(bool, NSString *, CBPeripheral *))block{
-    if (peripheral) {
-        connectCBPeripheralBlock = block;
-        [self.centralManager connectPeripheral:peripheral options:nil];
-        LRLog(@"start connect");
-    } else {
+    if (!peripheral) {
         LRLog(@"can`t connect nil peripheral");
     }
+    connectCBPeripheralBlock = block;
+    [self.centralManager connectPeripheral:peripheral options:nil];
+}
+
+- (void)cancelConnectCBPeripheral:(CBPeripheral *)peripheral{
+    if (!peripheral) {
+        LRLog(@"空的蓝牙设备，不能取消连接!");
+        return ;
+    }
+    [self.centralManager cancelPeripheralConnection:peripheral];
 }
 
 - (void)queryWithData:(NSData *)data CBPeripheral:(CBPeripheral *)peripheral{

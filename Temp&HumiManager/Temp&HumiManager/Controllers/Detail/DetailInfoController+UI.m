@@ -8,6 +8,7 @@
 
 #import "DetailInfoController+UI.h"
 #import "DetailInfoController+BG.h"
+#import "DetailInfoController+BGBLE.h"
 #import "ShareFileManager.h"
 
 @implementation DetailInfoController (UI)
@@ -111,6 +112,7 @@
     [self.exportBtn addTarget:self action:@selector(clickShare:) forControlEvents:UIControlEventTouchUpInside];
     
     self.editer = [[DetailEditAlert alloc]init];
+    self.editer.switcher.isOn = true;
     [self.editer.btnSave addTarget:self action:@selector(clickEditButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.editer.btnCancel addTarget:self action:@selector(clickEditButton:) forControlEvents:UIControlEventTouchUpInside];
     self.editer.tfName.text = self.curDevInfo.nickName?self.curDevInfo.nickName:self.curDevInfo.bleInfo.peripheral.name;
@@ -148,14 +150,26 @@
 }
 
 #pragma mark - 事件
+/**
+ 点击编辑view里的按钮
+
+ @param sender 按钮
+ */
 - (void)clickEditButton:(UIButton *)sender{
     
     [self.editer dismiss];
     //Save
     if (sender.tag == 20){
-        [self setInternetDevName];
-        [self setInternetDevType];
-        [self setInternetWarnSet];
+        if (self.devType == 0) {
+            [self setInternetDevName];
+            [self setInternetDevType];
+            [self setInternetWarnSet];
+        } else if (self.devType == 1){
+            [self saveLocalInfo];
+//            [self saveLocalWarnSetRecord];
+        }
+        
+        
 //        [self setDevName];
 //        [self setDevType];
 //        [self setDevIsAlert];

@@ -14,6 +14,7 @@
 #import "DetailInfoController.h"
 #import "BlueToothInfo.h"
 
+
 @implementation MainListController (Tableview)
 
 - (void)setupMainTable{
@@ -347,10 +348,22 @@
         [self.navigationController pushViewController:dvc animated:true];
     } else if (tableView.tag == 2000) {
         NSMutableDictionary * mdic = self.bleDatasource[indexPath.row];
-        MyPeripheral * ble = mdic[@"ble"];
-        DetailInfoController * dvc = [[DetailInfoController alloc]init];
-        dvc.deviceInfo = ble;
-        [self.navigationController pushViewController:dvc animated:true];
+//        MyPeripheral * ble = mdic[@"ble"];
+        LRWeakSelf(self);
+        [My_AlertView showLoadingWithText:@"Connect Blue Tooth…" Block:^(My_AlertView *loading, UILabel *infoLab) {
+//            [[BLEManager shareInstance] connectCBPeripheral:ble.peripheral Block:^(bool success, NSString *info, CBPeripheral *peripheral) {
+//                DetailInfoController * dvc = [[DetailInfoController alloc]init];
+//                dvc.deviceInfo = ble;
+//                [weakself.navigationController pushViewController:dvc animated:true];
+//            }];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [loading dismiss];
+                DetailInfoController * dvc = [[DetailInfoController alloc]init];
+                dvc.deviceInfo = mdic[@"fakeble"];
+                [weakself.navigationController pushViewController:dvc animated:true];
+            });
+        }];
+        
     }
 
 }

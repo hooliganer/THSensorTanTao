@@ -22,6 +22,16 @@
 #pragma mark - 外部调用方法
 
 - (void)startBlueToothScan{
+    
+    NSDictionary * bled = @{@"name":@"啊哈哈哈",@"mac":@"df36fbc37df"};
+    NSMutableDictionary * mdic = @{@"fakeble":bled}.mutableCopy;
+    NSDictionary * bled1 = @{@"name":@"打算放弃而为",@"mac":@"df36c38ea"};
+    NSMutableDictionary * mdic1 = @{@"fakeble":bled1}.mutableCopy;
+    [self.bleDatasource addObject:mdic];
+    [self.bleDatasource addObject:mdic1];
+    [self.bleTable reloadData];
+    
+    return ;
 
     LRWeakSelf(self);
     BLEManager * ble = [BLEManager shareInstance];

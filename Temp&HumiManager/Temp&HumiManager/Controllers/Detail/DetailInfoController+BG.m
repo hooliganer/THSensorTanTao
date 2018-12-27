@@ -363,14 +363,8 @@
 }
 
 - (NSString *)macFormDevice{
-    if ([self.deviceInfo isKindOfClass:[MyPeripheral class]]) {
-        MyPeripheral * device = self.deviceInfo;
-        return device.macAddress;
-    } else if ([self.deviceInfo isKindOfClass:[DeviceInfo class]]){
-        DeviceInfo * device = self.deviceInfo;
-        return device.mac;
-    }
-    return nil;
+    DeviceInfo * device = self.deviceInfo;
+    return device.mac;
 }
 
 

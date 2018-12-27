@@ -10,6 +10,8 @@
 
 @interface DetailInfoController (BG)
 
+
+
 /**
  查询温度并刷新（根据）
  */

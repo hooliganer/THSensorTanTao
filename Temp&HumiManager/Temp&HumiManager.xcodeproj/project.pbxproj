@@ -20,6 +20,13 @@
 		B210C4BE21D35FD400407F1B /* MyFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B210C4BC21D35FD400407F1B /* MyFileManager.m */; };
 		B210C4C121D3686500407F1B /* AlertInfoer.xib in Resources */ = {isa = PBXBuildFile; fileRef = B210C4C021D3686500407F1B /* AlertInfoer.xib */; };
 		B210C4C421D36A5E00407F1B /* AlertInfoer.m in Sources */ = {isa = PBXBuildFile; fileRef = B210C4C321D36A5E00407F1B /* AlertInfoer.m */; };
+		B210C4C721D47E5900407F1B /* DetailInfoController+BGBLE.m in Sources */ = {isa = PBXBuildFile; fileRef = B210C4C621D47E5900407F1B /* DetailInfoController+BGBLE.m */; };
+		B210C4DF21D4BEE800407F1B /* WarnRecordSetDB+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B210C4DD21D4BEE800407F1B /* WarnRecordSetDB+CoreDataClass.m */; };
+		B210C4E021D4BEE800407F1B /* WarnRecordSetDB+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B210C4DE21D4BEE800407F1B /* WarnRecordSetDB+CoreDataProperties.m */; };
+		B210C4E521D4BF5100407F1B /* DeviceDB+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B210C4E321D4BF5100407F1B /* DeviceDB+CoreDataClass.m */; };
+		B210C4E621D4BF5100407F1B /* DeviceDB+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B210C4E421D4BF5100407F1B /* DeviceDB+CoreDataProperties.m */; };
+		B210C4F221D4D2BD00407F1B /* WarnHistoryRecordDB+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B210C4F021D4D2BD00407F1B /* WarnHistoryRecordDB+CoreDataClass.m */; };
+		B210C4F321D4D2BD00407F1B /* WarnHistoryRecordDB+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B210C4F121D4D2BD00407F1B /* WarnHistoryRecordDB+CoreDataProperties.m */; };
 		B2CB1E9C21CC7FE2005E3501 /* UIFont+DIYFont.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CB1E9B21CC7FE2005E3501 /* UIFont+DIYFont.m */; };
 		B2CB1E9F21CC8B09005E3501 /* AFManager+AFAutoRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CB1E9E21CC8B09005E3501 /* AFManager+AFAutoRegister.m */; };
 		B2CB1EA421CCA214005E3501 /* THNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CB1EA321CCA214005E3501 /* THNavigationBar.m */; };
@@ -97,8 +104,6 @@
 		DEBA336F21C65AE800A23C87 /* UIScrollView+DIYScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBA336E21C65AE800A23C87 /* UIScrollView+DIYScrollView.m */; };
 		DEBA337221C6724300A23C87 /* DetailInfoController+BG.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBA337121C6724300A23C87 /* DetailInfoController+BG.m */; };
 		DEBA337521C672C100A23C87 /* THDataBase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DEBA337321C672C100A23C87 /* THDataBase.xcdatamodeld */; };
-		DEBA338721C6786000A23C87 /* DeviceDB+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBA338421C6786000A23C87 /* DeviceDB+CoreDataClass.m */; };
-		DEBA338821C6786000A23C87 /* DeviceDB+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBA338621C6786000A23C87 /* DeviceDB+CoreDataProperties.m */; };
 		DEBA338B21C678A400A23C87 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBA338A21C678A400A23C87 /* DBManager.m */; };
 		DEBA33D821C67E3D00A23C87 /* DeviceDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBA33D721C67E3D00A23C87 /* DeviceDBManager.m */; };
 		DEBBD3AF205289A0002FCE1F /* MyValueTextfield.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBBD3AE205289A0002FCE1F /* MyValueTextfield.m */; };
@@ -180,6 +185,20 @@
 		B210C4C021D3686500407F1B /* AlertInfoer.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlertInfoer.xib; sourceTree = "<group>"; };
 		B210C4C221D36A5E00407F1B /* AlertInfoer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlertInfoer.h; sourceTree = "<group>"; };
 		B210C4C321D36A5E00407F1B /* AlertInfoer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlertInfoer.m; sourceTree = "<group>"; };
+		B210C4C521D47E5900407F1B /* DetailInfoController+BGBLE.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DetailInfoController+BGBLE.h"; sourceTree = "<group>"; };
+		B210C4C621D47E5900407F1B /* DetailInfoController+BGBLE.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "DetailInfoController+BGBLE.m"; sourceTree = "<group>"; };
+		B210C4DB21D4BEE800407F1B /* WarnRecordSetDB+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WarnRecordSetDB+CoreDataProperties.h"; sourceTree = "<group>"; };
+		B210C4DC21D4BEE800407F1B /* WarnRecordSetDB+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WarnRecordSetDB+CoreDataClass.h"; sourceTree = "<group>"; };
+		B210C4DD21D4BEE800407F1B /* WarnRecordSetDB+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "WarnRecordSetDB+CoreDataClass.m"; sourceTree = "<group>"; };
+		B210C4DE21D4BEE800407F1B /* WarnRecordSetDB+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "WarnRecordSetDB+CoreDataProperties.m"; sourceTree = "<group>"; };
+		B210C4E121D4BF5100407F1B /* DeviceDB+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DeviceDB+CoreDataProperties.h"; sourceTree = "<group>"; };
+		B210C4E221D4BF5100407F1B /* DeviceDB+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DeviceDB+CoreDataClass.h"; sourceTree = "<group>"; };
+		B210C4E321D4BF5100407F1B /* DeviceDB+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "DeviceDB+CoreDataClass.m"; sourceTree = "<group>"; };
+		B210C4E421D4BF5100407F1B /* DeviceDB+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "DeviceDB+CoreDataProperties.m"; sourceTree = "<group>"; };
+		B210C4EE21D4D2BD00407F1B /* WarnHistoryRecordDB+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WarnHistoryRecordDB+CoreDataProperties.h"; sourceTree = "<group>"; };
+		B210C4EF21D4D2BD00407F1B /* WarnHistoryRecordDB+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WarnHistoryRecordDB+CoreDataClass.h"; sourceTree = "<group>"; };
+		B210C4F021D4D2BD00407F1B /* WarnHistoryRecordDB+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "WarnHistoryRecordDB+CoreDataClass.m"; sourceTree = "<group>"; };
+		B210C4F121D4D2BD00407F1B /* WarnHistoryRecordDB+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "WarnHistoryRecordDB+CoreDataProperties.m"; sourceTree = "<group>"; };
 		B2CB1E9A21CC7FE2005E3501 /* UIFont+DIYFont.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIFont+DIYFont.h"; sourceTree = "<group>"; };
 		B2CB1E9B21CC7FE2005E3501 /* UIFont+DIYFont.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIFont+DIYFont.m"; sourceTree = "<group>"; };
 		B2CB1E9D21CC8B09005E3501 /* AFManager+AFAutoRegister.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AFManager+AFAutoRegister.h"; sourceTree = "<group>"; };
@@ -339,10 +358,6 @@
 		DEBA337021C6724300A23C87 /* DetailInfoController+BG.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DetailInfoController+BG.h"; sourceTree = "<group>"; };
 		DEBA337121C6724300A23C87 /* DetailInfoController+BG.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "DetailInfoController+BG.m"; sourceTree = "<group>"; };
 		DEBA337421C672C100A23C87 /* THDataBase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = THDataBase.xcdatamodel; sourceTree = "<group>"; };
-		DEBA338321C6786000A23C87 /* DeviceDB+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DeviceDB+CoreDataClass.h"; sourceTree = "<group>"; };
-		DEBA338421C6786000A23C87 /* DeviceDB+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "DeviceDB+CoreDataClass.m"; sourceTree = "<group>"; };
-		DEBA338521C6786000A23C87 /* DeviceDB+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DeviceDB+CoreDataProperties.h"; sourceTree = "<group>"; };
-		DEBA338621C6786000A23C87 /* DeviceDB+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "DeviceDB+CoreDataProperties.m"; sourceTree = "<group>"; };
 		DEBA338921C678A400A23C87 /* DBManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBManager.h; sourceTree = "<group>"; };
 		DEBA338A21C678A400A23C87 /* DBManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBManager.m; sourceTree = "<group>"; };
 		DEBA33D621C67E3D00A23C87 /* DeviceDBManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceDBManager.h; sourceTree = "<group>"; };
@@ -505,13 +520,35 @@
 			path = Alert;
 			sourceTree = "<group>";
 		};
+		B210C4CE21D4AB6D00407F1B /* WarnRecordSet */ = {
+			isa = PBXGroup;
+			children = (
+				B210C4DC21D4BEE800407F1B /* WarnRecordSetDB+CoreDataClass.h */,
+				B210C4DD21D4BEE800407F1B /* WarnRecordSetDB+CoreDataClass.m */,
+				B210C4DB21D4BEE800407F1B /* WarnRecordSetDB+CoreDataProperties.h */,
+				B210C4DE21D4BEE800407F1B /* WarnRecordSetDB+CoreDataProperties.m */,
+			);
+			path = WarnRecordSet;
+			sourceTree = "<group>";
+		};
+		B210C4E721D4D20600407F1B /* WarnHistoryRecord */ = {
+			isa = PBXGroup;
+			children = (
+				B210C4EF21D4D2BD00407F1B /* WarnHistoryRecordDB+CoreDataClass.h */,
+				B210C4F021D4D2BD00407F1B /* WarnHistoryRecordDB+CoreDataClass.m */,
+				B210C4EE21D4D2BD00407F1B /* WarnHistoryRecordDB+CoreDataProperties.h */,
+				B210C4F121D4D2BD00407F1B /* WarnHistoryRecordDB+CoreDataProperties.m */,
+			);
+			path = WarnHistoryRecord;
+			sourceTree = "<group>";
+		};
 		B2FDE3AE21D0789500D02F11 /* Device */ = {
 			isa = PBXGroup;
 			children = (
-				DEBA338321C6786000A23C87 /* DeviceDB+CoreDataClass.h */,
-				DEBA338421C6786000A23C87 /* DeviceDB+CoreDataClass.m */,
-				DEBA338521C6786000A23C87 /* DeviceDB+CoreDataProperties.h */,
-				DEBA338621C6786000A23C87 /* DeviceDB+CoreDataProperties.m */,
+				B210C4E121D4BF5100407F1B /* DeviceDB+CoreDataProperties.h */,
+				B210C4E221D4BF5100407F1B /* DeviceDB+CoreDataClass.h */,
+				B210C4E321D4BF5100407F1B /* DeviceDB+CoreDataClass.m */,
+				B210C4E421D4BF5100407F1B /* DeviceDB+CoreDataProperties.m */,
 			);
 			path = Device;
 			sourceTree = "<group>";
@@ -832,6 +869,8 @@
 		DEBA337A21C6755000A23C87 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				B210C4E721D4D20600407F1B /* WarnHistoryRecord */,
+				B210C4CE21D4AB6D00407F1B /* WarnRecordSet */,
 				B2FDE3AE21D0789500D02F11 /* Device */,
 				DE3536C621C68BD000B553DE /* Test */,
 				DEBA338921C678A400A23C87 /* DBManager.h */,
@@ -853,6 +892,8 @@
 				DE6DCF5C21C2A2BC0051E746 /* DetailInfoController+UI.m */,
 				DEBA337021C6724300A23C87 /* DetailInfoController+BG.h */,
 				DEBA337121C6724300A23C87 /* DetailInfoController+BG.m */,
+				B210C4C521D47E5900407F1B /* DetailInfoController+BGBLE.h */,
+				B210C4C621D47E5900407F1B /* DetailInfoController+BGBLE.m */,
 				DE29C6A8206BACA0001A901E /* DetailInfoController+DetailInfo.h */,
 				DE29C6A2206B55E3001A901E /* DetailInfoController+DetailInfoBG.h */,
 				DE29C6A3206B55E3001A901E /* DetailInfoController+DetailInfoBG.m */,
@@ -1301,6 +1342,7 @@
 				DEE3BE9721AD8A1600B5FEA7 /* MainListController+UI.m in Sources */,
 				DED7A0FC2050211D006F4342 /* MainCollectionCell.m in Sources */,
 				B210C4A821D20B2600407F1B /* UIImageView+DIYImageView.m in Sources */,
+				B210C4E521D4BF5100407F1B /* DeviceDB+CoreDataClass.m in Sources */,
 				DE45BFA820624EF500BA04B8 /* SwiftPrefixHeader.swift in Sources */,
 				DE1137B020B57CCF00B59C53 /* HTTP_GroupManager.m in Sources */,
 				DE4D45E1205BD330000C9CCA /* DetailWarningView.m in Sources */,
@@ -1308,7 +1350,6 @@
 				DEBA337521C672C100A23C87 /* THDataBase.xcdatamodeld in Sources */,
 				DE45BFA620624EA000BA04B8 /* DetailLimitView.swift in Sources */,
 				DE8BF19A20A96E46003ABFF1 /* BLE_ChildManager.m in Sources */,
-				DEBA338821C6786000A23C87 /* DeviceDB+CoreDataProperties.m in Sources */,
 				DEC6E086209C62250026F842 /* FMDatabaseAdditions.m in Sources */,
 				DE1DA17120DA581800B17761 /* ConstNotification.m in Sources */,
 				DED4148520512E8D0080D1A3 /* BLE_Manager.m in Sources */,
@@ -1323,7 +1364,9 @@
 				DEE3BE9421AD89DF00B5FEA7 /* MainListController.m in Sources */,
 				DE96423020F509BD002F9403 /* MainViewData.m in Sources */,
 				DE4D45E4205BD467000C9CCA /* DetailWarnTopView.m in Sources */,
+				B210C4E621D4BF5100407F1B /* DeviceDB+CoreDataProperties.m in Sources */,
 				B210C4A121D2004A00407F1B /* DetailWarningCell.m in Sources */,
+				B210C4F221D4D2BD00407F1B /* WarnHistoryRecordDB+CoreDataClass.m in Sources */,
 				DED7A0CB204FF896006F4342 /* UIColor+DIYColor.m in Sources */,
 				DED7A0CF204FF8C2006F4342 /* UIButton_DIYObject.m in Sources */,
 				DED7A0EF204FFFEF006F4342 /* NSDictionary+DIYDictionary.m in Sources */,
@@ -1343,6 +1386,7 @@
 				DE62578C20BAB3D900A8A31D /* MyScrollView.m in Sources */,
 				DEBA336F21C65AE800A23C87 /* UIScrollView+DIYScrollView.m in Sources */,
 				DEC6E085209C62250026F842 /* FMDatabase.m in Sources */,
+				B210C4E021D4BEE800407F1B /* WarnRecordSetDB+CoreDataProperties.m in Sources */,
 				DE1F74A620DCE31000A834FA /* AddNewGroupController.m in Sources */,
 				DE8BF19920A96E46003ABFF1 /* BLEManager.m in Sources */,
 				DE3592AA2140116F000E392C /* AppDelegate+Catergory.m in Sources */,
@@ -1360,6 +1404,7 @@
 				DEC6E083209C62250026F842 /* FMResultSet.m in Sources */,
 				DEA6B2EB2060E3A800E10641 /* DetailEditAlert.m in Sources */,
 				DEEC461D205BA943006504EA /* NSArray+DIYArray.m in Sources */,
+				B210C4DF21D4BEE800407F1B /* WarnRecordSetDB+CoreDataClass.m in Sources */,
 				DE12CF19206CEEB9000A12EC /* HTTP_ReigistUser.m in Sources */,
 				DED7A0E1204FFDF4006F4342 /* MainViewController.m in Sources */,
 				DE8BF19820A96E46003ABFF1 /* MyPeripheral.m in Sources */,
@@ -1367,7 +1412,6 @@
 				DEA19D96213998900051ABEB /* MainTableViewHeader.m in Sources */,
 				B2CB1E9C21CC7FE2005E3501 /* UIFont+DIYFont.m in Sources */,
 				DED4148820512EA10080D1A3 /* BLEPeripheralInfo.m in Sources */,
-				DEBA338721C6786000A23C87 /* DeviceDB+CoreDataClass.m in Sources */,
 				DED7A0B9204FF776006F4342 /* main.m in Sources */,
 				DEBBD3B320529A50002FCE1F /* DetailInfoController.m in Sources */,
 				DE28B0A420A3F0EC00D5627F /* FMDB_DeviceInfo.m in Sources */,
@@ -1380,6 +1424,7 @@
 				DE4A8AF52068F9560096CBE3 /* APPGlobalObject.m in Sources */,
 				B210C49221D07F4700407F1B /* WarnSetRecord.m in Sources */,
 				DE1F74A920DCEBAD00A834FA /* My_AlertView.m in Sources */,
+				B210C4F321D4D2BD00407F1B /* WarnHistoryRecordDB+CoreDataProperties.m in Sources */,
 				DEC6E084209C62250026F842 /* FMDatabasePool.m in Sources */,
 				DE3E3FBD205A85E5007B76DB /* DetailHistoryInfoView.m in Sources */,
 				DE5DEBA520B2F5490078B985 /* MyCollectionHeaderView.m in Sources */,
@@ -1414,6 +1459,7 @@
 				DEA19D8721398A150051ABEB /* BlueToothManager+Delegate.m in Sources */,
 				DED41473205117540080D1A3 /* MainViewController+MainBG.m in Sources */,
 				DE5DEBA620B2F5490078B985 /* MyGroupCollection.m in Sources */,
+				B210C4C721D47E5900407F1B /* DetailInfoController+BGBLE.m in Sources */,
 				DED7A0AB204FF776006F4342 /* AppDelegate.m in Sources */,
 				DEBA337221C6724300A23C87 /* DetailInfoController+BG.m in Sources */,
 				B2CB1EA421CCA214005E3501 /* THNavigationBar.m in Sources */,

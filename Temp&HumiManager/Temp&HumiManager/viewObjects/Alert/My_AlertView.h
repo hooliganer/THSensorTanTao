@@ -23,6 +23,7 @@
 - (void)dismiss;
 
 + (void)showLoading:(void(^)(My_AlertView *loading))block;
++ (void)showLoadingWithText:(NSString *)text Block:(void (^)(My_AlertView *loading,UILabel *infoLab))block;
 + (void)showInfo:(NSString *)info Block:(void(^)(My_AlertView *loading))block;
 
 @end
