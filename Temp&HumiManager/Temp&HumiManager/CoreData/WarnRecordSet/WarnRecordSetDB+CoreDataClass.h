@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (WarnRecordSetDB *)newWarnSetRecord;
 
 + (WarnRecordSetDB *)readByTime:(NSTimeInterval)time;
++ (NSArray <WarnRecordSetDB *>*)readAllOrderByMac:(NSString *)mac;
 
 + (void)deleteAll;
 

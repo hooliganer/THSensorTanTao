@@ -24,7 +24,7 @@
     LRWeakSelf(self);
     [My_AlertView showLoading:^(My_AlertView *loading) {
         
-        //查询数据
+        //查询网络温湿度数据
         [weakself selectInternetTHData:^(NSArray<DeviceInfo *> *datas) {
             
             weakself.currentDatas = datas.mutableCopy;
@@ -242,6 +242,9 @@
     
 }
 
+/**
+ 查询网络基本信息
+ */
 - (void)selectInternetInfo{
     
     LRWeakSelf(self);
@@ -358,7 +361,12 @@
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(queue, ^{
         //查时间段之内的所有温湿度记录
-        [[AFManager shared] selectDataOfDevice:user.uid Mac:[self macFormDevice] SIndex:start EIndex:count Result:block];
+        [[AFManager shared] selectDataOfDevice:user.uid Mac:[self macFormDevice] SIndex:start EIndex:count Result:^(NSArray<DeviceInfo *> * _Nonnull datas) {
+            
+            if (block) {
+                block(datas);
+            }
+        }];
     });
 }
 

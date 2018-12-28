@@ -22,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSArray <WarnHistoryRecordDB *>*)readAll;
 + (NSArray <WarnHistoryRecordDB *>*)readAllByMac:(NSString *)mac;
++ (NSArray<WarnHistoryRecordDB *> *)readAllOrderByMac:(NSString *)mac;
++ (NSArray<WarnHistoryRecordDB *> *)readAllOrderByMac:(NSString *)mac Stime:(NSTimeInterval)stime Etime:(NSTimeInterval)etime;
 + (NSArray <WarnHistoryRecordDB *>*)readAllByMac:(NSString *)mac Time:(NSTimeInterval)time;
 
 - (void)save;

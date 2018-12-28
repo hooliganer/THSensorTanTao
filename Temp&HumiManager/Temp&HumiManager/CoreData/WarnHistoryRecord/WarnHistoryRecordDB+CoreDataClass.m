@@ -77,6 +77,56 @@
     return results;
 }
 
++ (NSArray<WarnHistoryRecordDB *> *)readAllOrderByMac:(NSString *)mac Stime:(NSTimeInterval)stime Etime:(NSTimeInterval)etime{
+    
+    //创建查询请求
+    NSFetchRequest *request = [WarnHistoryRecordDB fetchRequest];
+    NSManagedObjectContext * context = [DBManager shareInstance].managedObjectContext;
+    
+    //条件
+    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"mac = %@ and time >= %f and time <= %f",mac,stime,etime];
+    request.predicate = predicate;
+    
+    //排序
+    NSSortDescriptor * sort = [[NSSortDescriptor alloc]initWithKey:@"time" ascending:false];
+    request.sortDescriptors = @[sort];
+    
+    // 从第几页开始显示
+    // 通过这个属性实现分页
+    //request.fetchOffset = 0;
+    // 每页显示多少条数据
+    //request.fetchLimit = 6;
+    
+    //发送查询请求
+    NSArray <WarnHistoryRecordDB *>* results = [context executeFetchRequest:request error:nil];
+    return results;
+}
+
++ (NSArray<WarnHistoryRecordDB *> *)readAllOrderByMac:(NSString *)mac{
+    
+    //创建查询请求
+    NSFetchRequest *request = [WarnHistoryRecordDB fetchRequest];
+    NSManagedObjectContext * context = [DBManager shareInstance].managedObjectContext;
+    
+    //条件
+    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"mac = %@",mac];
+    request.predicate = predicate;
+    
+    //排序
+    NSSortDescriptor * sort = [[NSSortDescriptor alloc]initWithKey:@"time" ascending:false];
+    request.sortDescriptors = @[sort];
+    
+    // 从第几页开始显示
+    // 通过这个属性实现分页
+    //request.fetchOffset = 0;
+    // 每页显示多少条数据
+    //request.fetchLimit = 6;
+    
+    //发送查询请求
+    NSArray <WarnHistoryRecordDB *>* results = [context executeFetchRequest:request error:nil];
+    return results;
+}
+
 + (NSArray<WarnHistoryRecordDB *> *)readAllByMac:(NSString *)mac{
     
     //创建查询请求
@@ -130,24 +180,9 @@
 + (void)logAll{
     NSArray * all = [WarnHistoryRecordDB readAll];
     for (WarnHistoryRecordDB *whd in all) {
-        [WarnHistoryRecordDB logObject:whd];
+        [OBJCManager logObject:whd];
     }
 }
 
-+ (void)logObject:(id)objc{
-    
-    unsigned int count ,i;
-    objc_property_t *propertyArray = class_copyPropertyList([objc class], &count);
-    NSMutableString * mstr = @"{ \n".mutableCopy;
-    
-    for (i = 0; i < count; i++) {
-        objc_property_t property = propertyArray[i];
-        NSString * key = [NSString stringWithCString:property_getName(property) encoding:NSUTF8StringEncoding];
-        id value = [objc valueForKey:key];
-        [mstr appendFormat:@"%@ - %@ \n",key,value];
-    }
-    [mstr appendFormat:@"\n }"];
-    LRLog(@"%@",mstr);
-}
 
 @end

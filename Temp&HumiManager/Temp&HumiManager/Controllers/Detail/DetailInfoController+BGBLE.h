@@ -27,10 +27,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)saveLocalInfo;
 
-///**
-// 保存报警设置的记录
-// */
-//- (void)saveLocalWarnSetRecord;
+/**
+ 读本地温度记录
+ */
+- (void)readLocalTemparatureRecord;
+
+/**
+ 读本地湿度记录
+ */
+- (void)readLocalHumidityRecord;
+
 
 @end
 

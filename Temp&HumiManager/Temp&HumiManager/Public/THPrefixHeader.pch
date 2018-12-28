@@ -13,6 +13,7 @@
 #import "ConstNotification.h"
 #import "My_AlertView.h"
 #import "TH_NormalView.h"
+#import "OBJCManager.h"
 
 #import "UIColor+DIYColor.h"
 #import "UIFont+DIYFont.h"

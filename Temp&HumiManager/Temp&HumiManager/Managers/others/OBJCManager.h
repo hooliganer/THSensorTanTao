@@ -69,4 +69,7 @@
 + (id)object:(id)object ValueWithKey:(NSString *)key;
 
 
++ (void)logObject:(id)objc;
+
+
 @end

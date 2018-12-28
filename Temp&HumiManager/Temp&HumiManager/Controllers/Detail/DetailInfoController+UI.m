@@ -160,11 +160,14 @@
     [self.editer dismiss];
     //Save
     if (sender.tag == 20){
+        //网络
         if (self.devType == 0) {
             [self setInternetDevName];
             [self setInternetDevType];
             [self setInternetWarnSet];
-        } else if (self.devType == 1){
+        }
+        //蓝牙
+        else if (self.devType == 1){
             [self saveLocalInfo];
 //            [self saveLocalWarnSetRecord];
         }
@@ -214,21 +217,44 @@
 #pragma mark - Delegate
 
 - (void)typeChooseView:(DetailTypeChooseView *)chooseView ChooseType:(int)type{
+    
     self.temperatureView.hidden = !(type == 0);
     self.humidityView.hidden = !(type == 1);
     self.warnView.hidden = !(type == 2);
-    switch (type) {
-        case 1:
-            [self selectInternetHumidity];
-            break;
-        case 2:
-            [self selectInternetWarnRecord];
-            break;
-            
-        default:
-            [self selectInternetTemparature];
-            break;
+    
+    if (self.devType == 0) {
+        switch (type) {
+            case 1:
+            {
+                [self selectInternetHumidity];
+            }
+                break;
+            case 2:
+                [self selectInternetWarnRecord];
+                break;
+                
+            default:
+                [self selectInternetTemparature];
+                break;
+        }
+    } else if (self.devType == 1){
+        switch (type) {
+            case 1:
+            {
+                [self readLocalHumidityRecord];
+            }
+                break;
+            case 2:
+                break;
+                
+            default:
+            {
+                [self readLocalTemparatureRecord];
+            }
+                break;
+        }
     }
+    
 }
 
 - (void)segmentView:(DetailChooseSegment *)segment chooseLR:(bool)isLeft{
@@ -264,46 +290,89 @@
     
 //    [self selectInternetHistoryRecord];
     
-    switch (self.typeView.type) {
-        case 1:
-        {
-            [self selectInternetHumidity];
+    if (self.devType == 0) {
+        switch (self.typeView.type) {
+            case 1:
+            {
+                [self selectInternetHumidity];
+            }
+                break;
+            case 2:
+            {
+                [self selectInternetWarnRecord];
+            }
+                break;
+                
+            default:
+            {
+                [self selectInternetTemparature];
+            }
+                break;
         }
-            break;
-        case 2:
-        {
-            [self selectInternetWarnRecord];
+    } else if (self.devType == 1){
+        switch (self.typeView.type) {
+            case 1:
+            {
+                [self readLocalHumidityRecord];
+            }
+                break;
+            case 2:
+            {
+
+            }
+                break;
+                
+            default:
+            {
+                [self readLocalTemparatureRecord];
+            }
+                break;
         }
-            break;
-            
-        default:
-        {
-            [self selectInternetTemparature];
-        }
-            break;
+        
     }
     
 }
 
 - (void)segmentView:(DetailChooseSegment *)segment chooseIndex:(NSInteger)index{
     
-    switch (self.typeView.type) {
-        case 1:
-        {
-            [self selectInternetHumidity];
+    if (self.devType == 0) {
+        switch (self.typeView.type) {
+            case 1:
+            {
+                [self selectInternetHumidity];
+            }
+                break;
+            case 2:
+            {
+                [self selectInternetWarnRecord];
+            }
+                break;
+                
+            default:
+            {
+                [self selectInternetTemparature];
+            }
+                break;
         }
-            break;
-        case 2:
-        {
-            [self selectInternetWarnRecord];
+    } else if (self.devType == 1){
+        switch (self.typeView.type) {
+            case 1:
+            {
+                [self readLocalHumidityRecord];
+            }
+                break;
+            case 2:
+            {
+
+            }
+                break;
+                
+            default:
+            {
+                [self readLocalTemparatureRecord];
+            }
+                break;
         }
-            break;
-            
-        default:
-        {
-            [self selectInternetTemparature];
-        }
-            break;
     }
 }
 

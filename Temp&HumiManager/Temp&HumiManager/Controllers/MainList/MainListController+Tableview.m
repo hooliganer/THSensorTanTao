@@ -8,6 +8,7 @@
 
 #import "MainListController+Tableview.h"
 #import "MainListController+Extension.h"
+#import "MainListController+BG.h"
 #import "MainTableViewCell.h"
 #import "MainTableViewHeader.h"
 #import "TH_GroupInfo.h"
@@ -47,6 +48,8 @@
     }
     
     cell.logo = [UIImage imageNamed:@"ic_room_car"];
+    cell.tempWarning = false;
+    cell.humiWarning = false;
 
     if (tableView.tag == 1000) {
 
@@ -54,7 +57,9 @@
         NSArray * devs = mdic[@"devices"];
         NSMutableDictionary * mdic1 = devs[indexPath.row];
         DeviceInfo * device = mdic1[@"device"];
+        NSMutableDictionary * warn = mdic1[@"warn"];
         cell.labTitle.text = device.showName;
+
         cell.tempWarning = [mdic1[@"tpWarn"] boolValue];
 
         cell.iswifi = true;
@@ -73,6 +78,9 @@
         int power = [device powerBySData];
         NSString * pwstr = power == -1000 ? @"--" : [NSString stringWithFormat:@"%d%%",[device powerBySData]];
         cell.labPower.text = pwstr;
+        
+        cell.tempWarning = [warn[@"tempWarn"] boolValue];
+        cell.humiWarning = [warn[@"humiWarn"] boolValue];
         
     }
     else if (tableView.tag == 2000){
@@ -338,14 +346,37 @@
 
 #pragma mark - 选择某行
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    
 
     if (tableView.tag == 1000) {
         NSMutableDictionary * mdic = self.groupDatasource[indexPath.section];
         NSArray * devs = mdic[@"devices"];
         DeviceInfo * device = devs[indexPath.row][@"device"];
-        DetailInfoController * dvc = [[DetailInfoController alloc]init];
-        dvc.deviceInfo = device;
-        [self.navigationController pushViewController:dvc animated:true];
+        NSMutableDictionary * warn = devs[indexPath.row][@"warn"];
+        if ([warn[@"tempWarn"] boolValue] || [warn[@"humiWarn"] boolValue]) {
+            LRWeakSelf(self);
+            [My_AlertView showConfrimAlertWithTempText:@"aaaa" HumiText:@"bbbbbbb" Completion:^(My_AlertView *alert) {
+                NSMutableDictionary * sec = weakself.groupDatasource[indexPath.section];
+                NSMutableArray * rows = sec[@"devices"];
+                NSMutableDictionary * row = rows[indexPath.row];
+                [row[@"warn"] setValue:@(false) forKey:@"humiWarn"];
+                [row[@"warn"] setValue:@(false) forKey:@"tempWarn"];
+                
+                [weakself.groupTable reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                
+                [weakself saveWarnConfirmWithMac:device.mac];
+
+                DetailInfoController * dvc = [[DetailInfoController alloc]init];
+                dvc.deviceInfo = device;
+                [weakself.navigationController pushViewController:dvc animated:true];
+            }];
+        } else {
+            DetailInfoController * dvc = [[DetailInfoController alloc]init];
+            dvc.deviceInfo = device;
+            [self.navigationController pushViewController:dvc animated:true];
+        }
+       
     } else if (tableView.tag == 2000) {
         NSMutableDictionary * mdic = self.bleDatasource[indexPath.row];
 //        MyPeripheral * ble = mdic[@"ble"];

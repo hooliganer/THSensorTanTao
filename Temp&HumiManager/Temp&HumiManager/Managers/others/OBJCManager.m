@@ -444,4 +444,21 @@ static OBJCManager *manager;
     return dicer;
 }
 
++ (void)logObject:(id)objc{
+    
+    unsigned int count ,i;
+    objc_property_t *propertyArray = class_copyPropertyList([objc class], &count);
+    NSMutableString * mstr = @"{ \n".mutableCopy;
+    
+    for (i = 0; i < count; i++) {
+        objc_property_t property = propertyArray[i];
+        NSString * key = [NSString stringWithCString:property_getName(property) encoding:NSUTF8StringEncoding];
+        id value = [objc valueForKey:key];
+        [mstr appendFormat:@"%@ - %@ \n",key,value];
+    }
+    [mstr appendFormat:@"\n }"];
+    LRLog(@"%@",mstr);
+}
+
+
 @end

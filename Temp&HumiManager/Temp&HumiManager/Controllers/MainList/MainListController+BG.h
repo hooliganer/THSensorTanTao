@@ -29,4 +29,11 @@
 // */
 //- (void)selectDataOfDevice;
 
+/**
+ 保存某个设备确认报警的信息
+
+ @param mac MAC地址
+ */
+- (void)saveWarnConfirmWithMac:(NSString *)mac;
+
 @end

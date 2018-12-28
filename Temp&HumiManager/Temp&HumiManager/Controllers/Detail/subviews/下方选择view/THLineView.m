@@ -44,15 +44,21 @@
 }
 
 
+
 #pragma mark - 私有方法
 
 - (void)drawValues:(NSArray<NSNumber *> *)values{
+    
+    if (values.count <= 1) {
+        return ;
+    }
     
     //每个点横间距
     CGFloat unitW = self.frame.size.width/(values.count - 1.0);//(self.frame.size.width - self.bgLineWidth*values.count)/(values.count - 1.0);
     
     CAShapeLayer * layer = [CAShapeLayer layer];
     CGMutablePathRef path =  CGPathCreateMutable();
+//    CGPathRef path = CGPathCreateWithRoundedRect(self.frame, 1, 2, nil);
     [layer setFillColor:[[UIColor clearColor] CGColor]];
     [layer setStrokeColor:[self.lineColor CGColor]];
     layer.lineWidth = self.lineWidth ;
@@ -86,12 +92,21 @@
         }
         tempPoint = CGPointMake(x, y);
     }
-    
     [layer setPath:path];
+    
+    //动画
+    CABasicAnimation * anim = [CABasicAnimation animationWithKeyPath:NSStringFromSelector(@selector(strokeEnd))];
+    anim.fromValue = @(0);
+    anim.toValue = @(1);
+    anim.duration = 1;
+    [layer addAnimation:anim forKey:NSStringFromSelector(@selector(strokeEnd))];
+    
     CGPathRelease(path);
+    
     layer.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     [self.layer insertSublayer:layer atIndex:1];
     self.lineLayer = layer;
+    
 }
 
 - (void)drawX:(float)x Y:(float)y{

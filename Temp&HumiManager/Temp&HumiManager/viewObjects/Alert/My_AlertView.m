@@ -8,7 +8,20 @@
 
 #import "My_AlertView.h"
 
+@interface My_AlertView ()
+
+@property (nonatomic,strong)NSMutableDictionary * blocks;
+
+@end
+
 @implementation My_AlertView
+
+- (NSMutableDictionary *)blocks{
+    if (_blocks == nil) {
+        _blocks = [NSMutableDictionary dictionary];
+    }
+    return _blocks;
+}
 
 + (void)showLoading:(void (^)(My_AlertView *))block{
     My_AlertView * alert = [[My_AlertView alloc]init];
@@ -71,6 +84,22 @@
     
     alert.centerView = infoview;
     [alert showBlock:block];
+}
+
++ (void)showConfrimAlertWithTempText:(NSString *)tpText HumiText:(NSString *)hmText Completion:(void (^)(My_AlertView *))completion{
+    
+    My_AlertView * alert = [[My_AlertView alloc]init];
+    THAlert * confirmer = [THAlert instanceWithFrame:CGRectMake(0, 0, 300, 200)];
+    confirmer.type = THAlert_Type_WarnConfirm;
+    confirmer.titleLab.text = @"Tip";
+    confirmer.confirmTempLab.text = tpText;
+    confirmer.confirmHumiLab.text = hmText;
+    confirmer.confirmBtn.tag = 1002;
+    [confirmer.confirmBtn addTarget:alert action:@selector(clickAlertButton:) forControlEvents:UIControlEventTouchUpInside];
+    alert.centerView = confirmer;
+    alert.animType = My_AlertAnimateType_Fade;
+    [alert.blocks setValue:completion forKey:@"confirmWarnBlock"];
+    [alert showBlock:nil];
 }
 
 - (instancetype)init{
@@ -198,6 +227,15 @@
     switch (sender.tag) {
         case 1001:
             [self dismiss];
+            break;
+        case 1002:
+        {
+            [self dismiss];
+            if (self.blocks[@"confirmWarnBlock"]) {
+                void(^block)(My_AlertView *) = self.blocks[@"confirmWarnBlock"];
+                block(self);
+            }
+        }
             break;
             
         default:

@@ -10,10 +10,17 @@
 
 @implementation AFManager (WarningSetRecord)
 
-- (void)selectLastWarnSetRecordWithMac:(NSString *)mac Block:(nonnull void (^)(WarnSetRecord * _Nonnull))block{
+- (void)selectLastWarnSetRecordWithMac:(NSString *)mac Block:(nonnull void (^)(WarnSetRecord *))block{
     // /aircondition/dev/query_dev_trigger_history.jsp? 参数：mac= ，stype=4，all=yes，
-    [self queryWithMac:mac Block:^(NSArray<NSDictionary *> *triggers) {
-       
+    [self queryWithMac:mac IsShort:true Block:^(NSArray<NSDictionary *> *triggers) {
+        
+        if (triggers.count == 0) {
+            if (block) {
+                block(nil);
+            }
+            return ;
+        }
+        
         NSDictionary * trigger = triggers.firstObject;
         WarnSetRecord * record = [[WarnSetRecord alloc]initWithDictionary:trigger];
         WarnSetRecordThreshold threshold = WarnSetRecordThresholdDefault();
@@ -63,9 +70,8 @@
 
 - (void)selectAllWarnRecordSetWithMac:(NSString *)mac Block:(nonnull void (^)(NSArray<WarnSetRecord *> * _Nonnull, NSArray<WarnSetRecord *> * _Nonnull, NSArray<WarnSetRecord *> * _Nonnull, NSArray<WarnSetRecord *> * _Nonnull))block{
     
-    [self queryWithMac:mac Block:^(NSArray<NSDictionary *> *triggers) {
+    [self queryWithMac:mac IsShort:false Block:^(NSArray<NSDictionary *> *triggers) {
         
-//        NSLog(@"%@",triggers);
         NSMutableDictionary *res = [NSMutableDictionary dictionary];
         
         for (NSDictionary *dic in triggers){
@@ -82,7 +88,7 @@
         NSArray * arr02 = res[@"02"];
         NSArray * arr03 = res[@"03"];
         NSArray * arr04 = res[@"04"];
-    
+        
         NSMutableArray * tpmins = [NSMutableArray array];
         for (NSDictionary * dic in arr01) {
             WarnSetRecord * wsr = [[WarnSetRecord alloc]initWithDictionary:dic];
@@ -96,14 +102,14 @@
             wsr.valueType = WarnSetValueType_TempMax;
             [tpmaxs addObject:wsr];
         }
-
+        
         NSMutableArray * hmmins = [NSMutableArray array];
         for (NSDictionary * dic in arr03) {
             WarnSetRecord * wsr = [[WarnSetRecord alloc]initWithDictionary:dic];
             wsr.valueType = WarnSetValueType_HumiMin;
             [hmmins addObject:wsr];
         }
-
+        
         NSMutableArray * hmmaxs = [NSMutableArray array];
         for (NSDictionary * dic in arr04) {
             WarnSetRecord * wsr = [[WarnSetRecord alloc]initWithDictionary:dic];
@@ -114,7 +120,6 @@
         if (block) {
             block(tpmaxs,tpmins,hmmaxs,hmmins);
         }
-
     }];
 }
 
@@ -144,16 +149,18 @@
 
 #pragma mark - 私有方法
 
-- (void)queryWithMac:(NSString *)mac Block:(void (^)(NSArray <NSDictionary *>*triggers))block{
+- (void)queryWithMac:(NSString *)mac IsShort:(bool)isShort Block:(void (^)(NSArray <NSDictionary *>*triggers))block{
     
     NSString * url = [NSString stringWithFormat:@"http://%@:%@/aircondition/dev/query_dev_trigger_history.jsp?",TH_IP,TH_PORT];
     NSDictionary * param = @{
                              @"mac":mac,
                              @"stype":@"4",
-                             @"all":@"yes"
+                             @"all":!isShort?@"yes":@"no"
                              };
+
     [self.sessionManager POST:url parameters:param progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
+        NSLog(@"------%@",mac);
         NSDictionary * dic = [NSDictionary dictionaryWithXMLData:responseObject];
         NSArray * triggers = dic[@"trigger"];
         block(triggers);

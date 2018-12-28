@@ -14,6 +14,5 @@
 @property (nonatomic,strong)MainCollectionObject *curDevInfo;///<当前页面的设备
 
 @property (nonatomic,strong)id deviceInfo;
-@property (nonatomic,assign)int devType;
 
 @end

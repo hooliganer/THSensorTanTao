@@ -45,6 +45,10 @@ typedef NS_OPTIONS(NSInteger, DeviceDataType) {
 
 @property (nonatomic,strong)NSMutableArray<NSValue *>* sensors;///<MemberSensor结构体集
 
+@property (nonatomic,assign)float temparature;
+@property (nonatomic,assign)float humidity;
+@property (nonatomic,assign)float power;
+
 
 - (instancetype)initWithNewDevice:(DeviceInfo *)dev;
 

@@ -18,6 +18,8 @@
 
 @interface DetailInfoController ()
 
+#pragma mark - UI视图
+
 @property (nonatomic,strong)UIScrollView * bgScroll;
 @property (nonatomic,strong)DetailWarningAlert * warner;
 @property (nonatomic,strong)DetailCellView * topView;
@@ -30,7 +32,10 @@
 @property (nonatomic,strong)UIButton_DIYObject * exportBtn;
 @property (nonatomic,strong)DetailEditAlert * editer;
 
+#pragma mark - 其他数据
 @property (nonatomic,strong)NSMutableArray <DeviceInfo *>* currentDatas;///<当前时间段内的温湿度数据等
+@property (nonatomic,assign)int devType;///<当前的设备类型，0为网络，1位蓝牙
+@property (nonatomic,assign)bool isBLEHistory;///<是否接收到蓝牙历史数据的标识
 
 @end
 

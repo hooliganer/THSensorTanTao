@@ -16,20 +16,32 @@
 
 #import "AFManager+SelectGroup.h"
 #import "AFManager+SelectDataOfDevice.h"
+#import "AFManager+WarningSetRecord.h"
+#import "WarnConfirm+CoreDataClass.h"
 
 @implementation MainListController (BG)
 
 #pragma mark - 外部调用方法
 
+- (void)saveWarnConfirmWithMac:(NSString *)mac{
+    WarnConfirm * wc = [WarnConfirm readByMac:mac];
+    if (!wc) {
+        wc = [WarnConfirm newWarnConfirm];
+        wc.mac = mac;
+    }
+    wc.time = [[NSDate date] timeIntervalSince1970];
+    [wc save];
+}
+
 - (void)startBlueToothScan{
     
-    NSDictionary * bled = @{@"name":@"啊哈哈哈",@"mac":@"df36fbc37df"};
-    NSMutableDictionary * mdic = @{@"fakeble":bled}.mutableCopy;
-    NSDictionary * bled1 = @{@"name":@"打算放弃而为",@"mac":@"df36c38ea"};
-    NSMutableDictionary * mdic1 = @{@"fakeble":bled1}.mutableCopy;
-    [self.bleDatasource addObject:mdic];
-    [self.bleDatasource addObject:mdic1];
-    [self.bleTable reloadData];
+//    NSDictionary * bled = @{@"name":@"啊哈哈哈",@"mac":@"df36fbc37df"};
+//    NSMutableDictionary * mdic = @{@"fakeble":bled}.mutableCopy;
+//    NSDictionary * bled1 = @{@"name":@"打算放弃而为",@"mac":@"df36c38ea"};
+//    NSMutableDictionary * mdic1 = @{@"fakeble":bled1}.mutableCopy;
+//    [self.bleDatasource addObject:mdic];
+//    [self.bleDatasource addObject:mdic1];
+//    [self.bleTable reloadData];
     
     return ;
 
@@ -115,45 +127,9 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakself.groupTable reloadData];
         });
+        //查询子设备
         [weakself selectDevicesOfGroup];
     }];
-
-//    HTTP_GroupManager * gmanager = [HTTP_GroupManager shreadInstance];
-//    UserInfo * user = [MyDefaultManager userInfo];
-//    if (user) {
-//        [gmanager selectGroupOfUserWithUid:user.uid Pwd:user.upwd];
-//    }
-//    gmanager.didGetGroups = ^(NSArray<TH_GroupInfo *> *groups) {
-//
-//        //查询回的数据中遍历比较
-//        for (int i=0; i<groups.count; i++) {
-//            TH_GroupInfo * newGroup = groups[i];
-//            int index = -1;
-//            for (int j=0; j<weakself.groupDatasource.count; j++) {
-//                TH_GroupInfo * oldGroup = [weakself.groupDatasource[j] valueForKey:@"group"];
-//                //如果新旧数据一样，则替换掉旧数据
-//                if ([oldGroup.mac isEqual:newGroup.mac]) {
-//                    [weakself.groupDatasource[j] setValue:newGroup forKey:@"group"];
-//                    index = j;
-//                    break ;
-//                }
-//            }
-//            //有新旧数据的更迭,执行下一个循环
-//            if (index >= 0) {
-//                continue ;
-//            }
-//            //没有数据的更换，添加新数据
-//            NSMutableDictionary * mdic = [NSMutableDictionary dictionary];
-//            [mdic setValue:newGroup forKey:@"group"];
-//            [mdic setValue:@(false) forKey:@"flex"];
-//            [weakself.groupDatasource addObject:mdic];
-//        }
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [weakself.groupTable reloadData];
-//        });
-//        [weakself selectDevicesOfGroup];
-//
-//    };
 
 }
 
@@ -177,6 +153,7 @@
             }];
         }
         sleep(2);
+        //查询子设备信息
         [weakself selectDevicesOfGroupData];
 
     });
@@ -209,24 +186,58 @@
 //                        dev.showName = dev.mac;
                         dispatch_group_leave(group);
                     }];
-                    //                    [[AFManager shared] selectDataOfDevice:user.uid Mac:dev.mac];
-                    //                    HTTP_MemberDataManager* mng = [[HTTP_MemberDataManager alloc]init];
-                    //                    [mng.dataSets setValue:group forKey:@"group"];
-                    //                    [mng.dataSets setValue:dev forKey:@"device"];
-                    //                    [mng selectMemberDataWithMac:dev.mac GMac:group.mac];
-                    //                    mng.didGetMemberData = ^(HTTP_MemberDataManager *manager, DeviceInfo *device) {
-                    //
-                    //                    };
                 }
+            }
+        }
+    });
+    dispatch_group_notify(group, queue, ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+           [weakself.groupTable reloadData];
+        });
+        [weakself selectInternetWarnInfo];
+    });
+}
+
+/**
+ 查询网络报警信息
+ */
+- (void)selectInternetWarnInfo{
+    //查询报警设置信息
+    LRWeakSelf(self);
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_group_async(group, queue, ^{
+        
+        //遍历所有组
+        for (int sec=0; sec<self.groupDatasource.count; sec++) {
+
+            NSMutableArray * devs = self.groupDatasource[sec][@"devices"];
+            //遍历单组（子设备）
+            for (int row=0; row<devs.count; row++) {
+                
+                NSMutableDictionary * devDic = devs[row];
+                NSMutableDictionary * warnDic = devDic[@"warn"];
+                if (!warnDic) {
+                    warnDic = [NSMutableDictionary dictionary];
+                    [devDic setValue:warnDic forKey:@"warn"];
+                }
+                DeviceInfo * dev = devDic[@"device"];
+                dispatch_group_enter(group);
+                [[AFManager shared] selectLastWarnSetRecordWithMac:dev.mac Block:^(WarnSetRecord * _Nonnull record) {
+                    
+                    [weakself handleWarnSetRecord:record Device:dev WarnDict:warnDic];
+                    
+                    dispatch_group_leave(group);
+                }];
+                
             }
         }
     });
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
         [weakself.groupTable reloadData];
     });
+    
 }
-
-//- (void)handleDevicesData:(NSArray <DeviceInfo *>*)members CurrentGroup:(TH_GroupInfo *)grou
 
 /**
  处理查回的分组子设备
@@ -279,6 +290,59 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.groupTable reloadData];
     });
+}
+
+/**
+ 处理查回的报警设置记录
+ 
+ @param record 报警设置记录
+ @param dev 当前操作的设备
+ @param warnDic 当前操作的对应报警字典
+ */
+- (void)handleWarnSetRecord:(WarnSetRecord *)record Device:(DeviceInfo *)dev WarnDict:(NSMutableDictionary *)warnDic{
+    
+    float tpmin = record ? record.threshold.tempMin.value : 0;
+    float tpmax = record ? record.threshold.tempMax.value : 30;
+    float hmmin = record ? record.threshold.humiMin.value : 10;
+    float hmmax = record ? record.threshold.humiMax.value : 70;
+    bool ison = record ? record.ison : true;
+    
+    [warnDic setValue:@(tpmin) forKey:@"tempMin"];
+    [warnDic setValue:@(tpmax) forKey:@"tempMax"];
+    [warnDic setValue:@(hmmin) forKey:@"humiMin"];
+    [warnDic setValue:@(hmmax) forKey:@"humiMax"];
+    
+    //3分钟内不再报警
+    NSTimeInterval lastTime = [WarnConfirm readByMac:dev.mac].time;
+    NSTimeInterval nowTime = [[NSDate date] timeIntervalSince1970];
+    if (nowTime - lastTime < 180) {
+        return ;
+    }
+    
+    //温度判断
+    if (dev.temeratureBySData == -1000) {
+        [warnDic setValue:@(false) forKey:@"tempWarn"];
+    } else {
+        if (dev.temeratureBySData <= tpmin ||
+            dev.temeratureBySData >= tpmax) {
+            [warnDic setValue:@(ison) forKey:@"tempWarn"];
+        }else {
+            [warnDic setValue:@(false) forKey:@"tempWarn"];
+        }
+    }
+    
+    //湿度判断
+    if (dev.humidityBySData == -1000) {
+        [warnDic setValue:@(false) forKey:@"humiWarn"];
+    } else{
+        if (dev.humidityBySData <= hmmin ||
+            dev.humidityBySData >= hmmax) {
+            [warnDic setValue:@(ison) forKey:@"humiWarn"];
+        }else {
+            [warnDic setValue:@(false) forKey:@"humiWarn"];
+        }
+    }
+    
 }
 
 @end
