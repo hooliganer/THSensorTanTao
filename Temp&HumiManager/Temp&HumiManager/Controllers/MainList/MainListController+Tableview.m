@@ -459,8 +459,8 @@
  */
 - (void)handleSelcectBLEDeviceWithIndexPath:(NSIndexPath *)indexPath{
     
-    [self handleFakeBLEDevice:indexPath];
-    return ;
+//    [self handleFakeBLEDevice:indexPath];
+//    return ;
     
     LRWeakSelf(self);
     NSMutableDictionary * mdic = self.bleDatasource[indexPath.row];
@@ -512,13 +512,23 @@
             [My_AlertView showLoadingWithText:@"Connect Blue Tooth…" Block:^(My_AlertView *loading, UILabel *infoLab) {
 
                 //连接蓝牙
-                [[BLEManager shareInstance] connectCBPeripheral:ble.peripheral Block:^(bool success, NSString *info, CBPeripheral *peripheral) {
-                    
-                    [loading dismiss];
-                    DetailInfoController * dvc = [[DetailInfoController alloc]init];
-                    dvc.deviceInfo = ble;
-                    [weakself.navigationController pushViewController:dvc animated:true];
-                }];
+                dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+                dispatch_async(queue, ^{
+                    [[BLEManager shareInstance] connectCBPeripheral:ble.peripheral OverTime:30 Queue:queue Result:^(bool success, NSString *info, CBPeripheral *peripheral) {
+                        
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [loading dismiss];
+                            if (success) {
+                                DetailInfoController * dvc = [[DetailInfoController alloc]init];
+                                dvc.deviceInfo = ble;
+                                [weakself.navigationController pushViewController:dvc animated:true];
+                            } else {
+                                [My_AlertView showInfo:info Block:nil];
+                            }
+                        });
+                        
+                    }];
+                });
             }];
 
             
@@ -529,13 +539,23 @@
         [My_AlertView showLoadingWithText:@"Connect Blue Tooth…" Block:^(My_AlertView *loading, UILabel *infoLab) {
             
             //连接蓝牙
-            [[BLEManager shareInstance] connectCBPeripheral:ble.peripheral Block:^(bool success, NSString *info, CBPeripheral *peripheral) {
-                
-                [loading dismiss];
-                DetailInfoController * dvc = [[DetailInfoController alloc]init];
-                dvc.deviceInfo = ble;
-                [weakself.navigationController pushViewController:dvc animated:true];
-            }];
+            dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+            dispatch_async(queue, ^{
+                [[BLEManager shareInstance] connectCBPeripheral:ble.peripheral OverTime:30 Queue:queue Result:^(bool success, NSString *info, CBPeripheral *peripheral) {
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [loading dismiss];
+                        if (success) {
+                            DetailInfoController * dvc = [[DetailInfoController alloc]init];
+                            dvc.deviceInfo = ble;
+                            [weakself.navigationController pushViewController:dvc animated:true];
+                        } else {
+                            [My_AlertView showInfo:info Block:nil];
+                        }
+                    });
+                    
+                }];
+            });
         }];
 
     }

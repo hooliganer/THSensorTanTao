@@ -356,8 +356,6 @@
 //    }
 }
 
-
-
 - (void)clickButton:(UIButton *)sender{
     switch (sender.tag) {
         case 1001:

@@ -70,14 +70,15 @@
     self.tfWifi.tintsColor = [UIColor lightGrayColor];
     [self.wifiView addSubview:self.tfWifi];
     self.tfWifi.tag = 100;
-    self.tfWifi.delegate = self;
+//    self.tfWifi.delegate = self;
 
-    self.wifiTable = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
-    [self.mainScroll addSubview:self.wifiTable];
-    self.wifiTable.dataSource = self;
-
-    UITapGestureRecognizer *gesWifi = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapTextfield:)];
-    [self.tfWifi addGestureRecognizer:gesWifi];
+    
+//    self.wifiTable = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
+//    [self.mainScroll addSubview:self.wifiTable];
+//    self.wifiTable.dataSource = self;
+//
+//    UITapGestureRecognizer *gesWifi = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapTextfield:)];
+//    [self.tfWifi addGestureRecognizer:gesWifi];
 }
 
 

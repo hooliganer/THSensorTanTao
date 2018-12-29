@@ -38,6 +38,7 @@ CBPeripheralDelegate,CBCentralManagerDelegate,CBPeripheralManagerDelegate
  * 链接设备
  */
 - (void)connectCBPeripheral:(CBPeripheral *)peripheral Block:(void(^)(bool success,NSString *info,CBPeripheral *peripheral))block;
+- (void)connectCBPeripheral:(CBPeripheral *)peripheral OverTime:(NSTimeInterval)time Queue:(dispatch_queue_t)queue Result:(void (^)(bool success, NSString *info, CBPeripheral *peripheral))result;
 
 - (void)cancelConnectCBPeripheral:(CBPeripheral *)peripheral;
 

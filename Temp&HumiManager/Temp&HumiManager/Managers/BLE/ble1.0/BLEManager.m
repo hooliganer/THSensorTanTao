@@ -385,6 +385,21 @@ NSString * const responseCharacteristic1 = @"0000fff7-0000-1000-8000-00805f9b34f
     [self.centralManager connectPeripheral:peripheral options:nil];
 }
 
+- (void)connectCBPeripheral:(CBPeripheral *)peripheral OverTime:(NSTimeInterval)time Queue:(dispatch_queue_t)queue Result:(void (^)(bool, NSString *, CBPeripheral *))result{
+    
+    if (!peripheral) {
+        LRLog(@"can`t connect nil peripheral");
+    }
+    connectCBPeripheralBlock = result;
+    [self.centralManager connectPeripheral:peripheral options:nil];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), queue, ^{
+        if (result) {
+            result(false,@"Connection timed out !",peripheral);
+        }
+        [self.centralManager cancelPeripheralConnection:peripheral];
+    });
+}
+
 - (void)cancelConnectCBPeripheral:(CBPeripheral *)peripheral{
     if (!peripheral) {
         LRLog(@"空的蓝牙设备，不能取消连接!");

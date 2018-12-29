@@ -139,22 +139,24 @@
         }
         
         WarnRecordSetDB * wrs = [WarnRecordSetDB readAllOrderByMac:mac].firstObject;
-        
-        if (wrs.ison) {
-            if (temp <= wrs.tempMin || temp >= wrs.tempMax) {
-                [warnDic setValue:@(true) forKey:@"tempWarn"];
-            } else {
-                [warnDic setValue:@(false) forKey:@"tempWarn"];
-            }
-            if (humi <= wrs.humiMin || humi >= wrs.humiMax) {
-                [warnDic setValue:@(true) forKey:@"humiWarn"];
-            } else{
-                [warnDic setValue:@(false) forKey:@"humiWarn"];
-            }
-        } else{
+        float tpmin = wrs ? wrs.tempMin : 0;
+        float tpmax = wrs ? wrs.tempMax : 30;
+        float hmmin = wrs ? wrs.humiMin : 10;
+        float hmmax = wrs ? wrs.humiMax : 70;
+        bool ison = wrs ? wrs.ison : true;
+
+        if (temp <= tpmin || temp >= tpmax) {
+            [warnDic setValue:@(temp == -1000 ? false : ison) forKey:@"tempWarn"];
+        } else {
             [warnDic setValue:@(false) forKey:@"tempWarn"];
+        }
+        
+        if (humi <= hmmin || humi >= hmmax) {
+            [warnDic setValue:@(humi == -1000 ? false : ison) forKey:@"humiWarn"];
+        } else{
             [warnDic setValue:@(false) forKey:@"humiWarn"];
         }
+
     }
     
     [self.bleTable reloadData];
