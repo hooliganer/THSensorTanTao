@@ -109,7 +109,6 @@
 		DEBA337221C6724300A23C87 /* DetailInfoController+BG.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBA337121C6724300A23C87 /* DetailInfoController+BG.m */; };
 		DEBA337521C672C100A23C87 /* THDataBase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DEBA337321C672C100A23C87 /* THDataBase.xcdatamodeld */; };
 		DEBA338B21C678A400A23C87 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBA338A21C678A400A23C87 /* DBManager.m */; };
-		DEBA33D821C67E3D00A23C87 /* DeviceDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBA33D721C67E3D00A23C87 /* DeviceDBManager.m */; };
 		DEBBD3AF205289A0002FCE1F /* MyValueTextfield.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBBD3AE205289A0002FCE1F /* MyValueTextfield.m */; };
 		DEBBD3B320529A50002FCE1F /* DetailInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBBD3B220529A50002FCE1F /* DetailInfoController.m */; };
 		DEBBD3BC2052A1FF002FCE1F /* DetailCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBBD3BB2052A1FF002FCE1F /* DetailCellView.m */; };
@@ -371,8 +370,6 @@
 		DEBA337421C672C100A23C87 /* THDataBase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = THDataBase.xcdatamodel; sourceTree = "<group>"; };
 		DEBA338921C678A400A23C87 /* DBManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBManager.h; sourceTree = "<group>"; };
 		DEBA338A21C678A400A23C87 /* DBManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBManager.m; sourceTree = "<group>"; };
-		DEBA33D621C67E3D00A23C87 /* DeviceDBManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceDBManager.h; sourceTree = "<group>"; };
-		DEBA33D721C67E3D00A23C87 /* DeviceDBManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceDBManager.m; sourceTree = "<group>"; };
 		DEBBD3AD205289A0002FCE1F /* MyValueTextfield.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyValueTextfield.h; sourceTree = "<group>"; };
 		DEBBD3AE205289A0002FCE1F /* MyValueTextfield.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyValueTextfield.m; sourceTree = "<group>"; };
 		DEBBD3B120529A50002FCE1F /* DetailInfoController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailInfoController.h; sourceTree = "<group>"; };
@@ -901,8 +898,6 @@
 				DE3536C621C68BD000B553DE /* Test */,
 				DEBA338921C678A400A23C87 /* DBManager.h */,
 				DEBA338A21C678A400A23C87 /* DBManager.m */,
-				DEBA33D621C67E3D00A23C87 /* DeviceDBManager.h */,
-				DEBA33D721C67E3D00A23C87 /* DeviceDBManager.m */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -1291,7 +1286,7 @@
 				TargetAttributes = {
 					DED7A0A5204FF776006F4342 = {
 						CreatedOnToolsVersion = 9.2;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = "";
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -1382,7 +1377,6 @@
 				DE1DA17120DA581800B17761 /* ConstNotification.m in Sources */,
 				DED4148520512E8D0080D1A3 /* BLE_Manager.m in Sources */,
 				DE3E3FC1205A8730007B76DB /* DetailTypeChooseView.m in Sources */,
-				DEBA33D821C67E3D00A23C87 /* DeviceDBManager.m in Sources */,
 				DEC225AA20AEB91600D64312 /* SettingGroupChooseView.m in Sources */,
 				B210C4BD21D35FD400407F1B /* ShareFileManager.m in Sources */,
 				DED7A0EC204FFFD4006F4342 /* OBJCManager.m in Sources */,
@@ -1665,7 +1659,8 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/swifters/Temp&HumiManager-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
@@ -1693,7 +1688,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/swifters/Temp&HumiManager-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 			};

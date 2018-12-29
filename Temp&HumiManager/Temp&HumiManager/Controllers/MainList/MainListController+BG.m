@@ -18,6 +18,7 @@
 #import "AFManager+SelectDataOfDevice.h"
 #import "AFManager+WarningSetRecord.h"
 #import "WarnConfirm+CoreDataClass.h"
+#import "WarnRecordSetDB+CoreDataClass.h"
 
 @implementation MainListController (BG)
 
@@ -35,15 +36,29 @@
 
 - (void)startBlueToothScan{
     
-//    NSDictionary * bled = @{@"name":@"啊哈哈哈",@"mac":@"df36fbc37df"};
+//    // 介绍 : 模拟扫描到2个蓝牙设备
+//
+//    [self.bleDatasource removeAllObjects];
+//    NSDictionary * bled = @{
+//                            @"name":@"啊哈哈哈",
+//                            @"mac":@"df36fbc37df",
+//                            @"temp":@(arc4random()%50),
+//                            @"humi":@(arc4random()%100)
+//                            };
 //    NSMutableDictionary * mdic = @{@"fakeble":bled}.mutableCopy;
-//    NSDictionary * bled1 = @{@"name":@"打算放弃而为",@"mac":@"df36c38ea"};
+//
+//    NSDictionary * bled1 = @{
+//                             @"name":@"打算放弃而为",
+//                             @"mac":@"df36c38ea",
+//                             @"temp":@(arc4random()%50),
+//                             @"humi":@(arc4random()%100)
+//                             };
 //    NSMutableDictionary * mdic1 = @{@"fakeble":bled1}.mutableCopy;
+//
 //    [self.bleDatasource addObject:mdic];
 //    [self.bleDatasource addObject:mdic1];
 //    [self.bleTable reloadData];
-    
-    return ;
+//    return ;
 
     LRWeakSelf(self);
     BLEManager * ble = [BLEManager shareInstance];
@@ -55,6 +70,7 @@
 
         //刷新蓝牙table
         dispatch_async(dispatch_get_main_queue(), ^{
+            
             NSLock * lock = [[NSLock alloc]init];
             [lock lock];
 
@@ -88,9 +104,109 @@
     dispatch_source_set_timer(self.timer1, DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC, 0 * NSEC_PER_SEC);
     dispatch_source_set_event_handler(self.timer1, ^{
         [self selectGroupData];
-        [self selectDevicesOfGroup];
+        [self judgeBLEWhetherWarn];
+//        [self selectDevicesOfGroup];
     });
     dispatch_resume(self.timer1);
+}
+
+/**
+ 判断蓝牙数据是否报警
+ */
+- (void)judgeBLEWhetherWarn{
+    
+//    [self judgeFakeBLEWarn];
+//    return ;
+    
+    for (int row=0;row<self.bleDatasource.count;row++) {
+        
+        NSMutableDictionary * rowDic = self.bleDatasource[row];
+        MyPeripheral * peri = rowDic[@"ble"];
+        NSString * mac = peri.macAddress;
+        float temp = peri.temperatureBle;
+        int humi= peri.humidityBle;
+        NSMutableDictionary * warnDic = rowDic[@"warn"];
+        if (!warnDic) {
+            warnDic = @{}.mutableCopy;
+            [rowDic setValue:warnDic forKey:@"warn"];
+        }
+        
+        WarnConfirm * wc = [WarnConfirm readByMac:mac];
+        NSTimeInterval time = wc.time;
+        NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+        if (now - time < 180) {
+            continue ;
+        }
+        
+        WarnRecordSetDB * wrs = [WarnRecordSetDB readAllOrderByMac:mac].firstObject;
+        
+        if (wrs.ison) {
+            if (temp <= wrs.tempMin || temp >= wrs.tempMax) {
+                [warnDic setValue:@(true) forKey:@"tempWarn"];
+            } else {
+                [warnDic setValue:@(false) forKey:@"tempWarn"];
+            }
+            if (humi <= wrs.humiMin || humi >= wrs.humiMax) {
+                [warnDic setValue:@(true) forKey:@"humiWarn"];
+            } else{
+                [warnDic setValue:@(false) forKey:@"humiWarn"];
+            }
+        } else{
+            [warnDic setValue:@(false) forKey:@"tempWarn"];
+            [warnDic setValue:@(false) forKey:@"humiWarn"];
+        }
+    }
+    
+    [self.bleTable reloadData];
+    
+}
+
+
+/**
+ 判断假的蓝牙报警
+ */
+- (void)judgeFakeBLEWarn{
+    
+    for (int row=0;row<self.bleDatasource.count;row++) {
+        
+        NSMutableDictionary * rowDic = self.bleDatasource[row];
+        NSDictionary * peri = rowDic[@"fakeble"];
+        NSString * mac = peri[@"mac"];
+        float temp = [peri[@"temp"] floatValue];
+        int humi= [peri[@"humi"] intValue];
+        NSMutableDictionary * warnDic = rowDic[@"warn"];
+        if (!warnDic) {
+            warnDic = @{}.mutableCopy;
+            [rowDic setValue:warnDic forKey:@"warn"];
+        }
+        
+        WarnConfirm * wc = [WarnConfirm readByMac:mac];
+        NSTimeInterval time = wc.time;
+        NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+        if (now - time < 180) {
+            continue ;
+        }
+        
+        WarnRecordSetDB * wrs = [WarnRecordSetDB readAllOrderByMac:mac].firstObject;
+        
+        if (wrs.ison) {
+            if (temp <= wrs.tempMin || temp >= wrs.tempMax) {
+                [warnDic setValue:@(true) forKey:@"tempWarn"];
+            } else {
+                [warnDic setValue:@(false) forKey:@"tempWarn"];
+            }
+            if (humi <= wrs.humiMin || humi >= wrs.humiMax) {
+                [warnDic setValue:@(true) forKey:@"humiWarn"];
+            } else{
+                [warnDic setValue:@(false) forKey:@"humiWarn"];
+            }
+        } else{
+            [warnDic setValue:@(false) forKey:@"tempWarn"];
+            [warnDic setValue:@(false) forKey:@"humiWarn"];
+        }
+    }
+    
+    [self.bleTable reloadData];
 }
 
 /**
@@ -202,6 +318,7 @@
  查询网络报警信息
  */
 - (void)selectInternetWarnInfo{
+    
     //查询报警设置信息
     LRWeakSelf(self);
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
@@ -223,6 +340,7 @@
                 }
                 DeviceInfo * dev = devDic[@"device"];
                 dispatch_group_enter(group);
+                //查最后一套设置记录
                 [[AFManager shared] selectLastWarnSetRecordWithMac:dev.mac Block:^(WarnSetRecord * _Nonnull record) {
                     
                     [weakself handleWarnSetRecord:record Device:dev WarnDict:warnDic];

@@ -138,8 +138,11 @@
                              @"ocode":@"03",
                              @"value":value,
                              @"save":@"yes"};
-//    NSString * fl = [self fullUrl:url Param:param];
+    
     [self.sessionManager POST:url parameters:param progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSDictionary * dic = [NSDictionary dictionaryWithXMLData:responseObject];
+        NSLog(@"%@",dic);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
@@ -151,16 +154,20 @@
 
 - (void)queryWithMac:(NSString *)mac IsShort:(bool)isShort Block:(void (^)(NSArray <NSDictionary *>*triggers))block{
     
+    if (mac == nil) {
+        LRLog(@"Mac为空，不能查询！！");
+        return ;
+    }
     NSString * url = [NSString stringWithFormat:@"http://%@:%@/aircondition/dev/query_dev_trigger_history.jsp?",TH_IP,TH_PORT];
     NSDictionary * param = @{
                              @"mac":mac,
                              @"stype":@"4",
-                             @"all":!isShort?@"yes":@"no"
+                             @"all":@"yes"
                              };
 
     [self.sessionManager POST:url parameters:param progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        NSLog(@"------%@",mac);
+//        NSLog(@"------%@",mac);
         NSDictionary * dic = [NSDictionary dictionaryWithXMLData:responseObject];
         NSArray * triggers = dic[@"trigger"];
         block(triggers);

@@ -137,8 +137,11 @@
 
     //3.加载存储器
     [_persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription * description, NSError * error) {
-        NSLog(@"%@",description);
-        NSLog(@"%@",error);
+//        NSLog(@"%@",description);
+//        NSLog(@"%@",error);
+        if (error) {
+            LRLog(@"%@",error);
+        }
     }];
 
     return _persistentContainer;

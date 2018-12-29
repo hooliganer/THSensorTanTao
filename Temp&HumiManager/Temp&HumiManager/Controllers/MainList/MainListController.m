@@ -60,8 +60,8 @@
 
     [self startBlueToothScan];
 
-    [self selectGroupData];
-//    [self startTimer];
+//    [self selectGroupData];
+    [self startTimer];
 }
 
 - (void)viewDidAppear:(BOOL)animated{

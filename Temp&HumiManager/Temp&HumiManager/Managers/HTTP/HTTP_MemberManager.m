@@ -96,7 +96,7 @@
 
 }
 
-#pragma 当解析器找到开始标记和结束标记之间的字符时，调用这个方法。
+#pragma 当解析器找到开始标记和结束标记之间的字符时,调用这个方法。
 //解析器，从两个结点之间读取具体内容
 -  (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string{
 
@@ -105,7 +105,7 @@
 }
 
 
-#pragma 当解析器对象遇到xml的结束标记时，调用这个方法。
+#pragma 当解析器对象遇到xml的结束标记时,调用这个方法。
 //获取结点结尾的值，此处为一Tag的完成
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
 

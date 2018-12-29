@@ -15,13 +15,13 @@ import UIKit
 
 public class DetailLimitView: UIView {
 
-    public lazy var imvHead : UIImageView = {
+    @objc public lazy var imvHead : UIImageView = {
         let imv = UIImageView();
         self.addSubview(imv);
         return imv;
     } ();
 
-    public lazy var labUnit : UILabel = {
+    @objc public lazy var labUnit : UILabel = {
         let lab = UILabel();
         lab.textAlignment = .center;
         self.addSubview(lab);
@@ -45,13 +45,13 @@ public class DetailLimitView: UIView {
         return tf;
     } ();
 
-    var tfLess_textField : UITextField? {
+    @objc var tfLess_textField : UITextField? {
         get {
             return self.tfLess.textField;
         }
     }
 
-    var tfMore_textField : UITextField? {
+    @objc var tfMore_textField : UITextField? {
         get {
             return self.tfMore.textField;
         }

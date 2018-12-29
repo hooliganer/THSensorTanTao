@@ -136,14 +136,14 @@
 
 
 /*================XMLDelegate===================*/
-#pragma 开始解析前，在这里可以做一些初始化工作
+#pragma 开始解析前,在这里可以做一些初始化工作
 - (void)parserDidStartDocument:(NSXMLParser *)parser{
     //    NSLog(@"ParseXML Start");
     self.tempGroup = [[TH_GroupInfo alloc]init];
     self.groups = [NSMutableArray array];
 }
 
-#pragma 当解析器对象遇到xml的开始标记时，调用这个方法,调用多次.    获得结点头的值
+#pragma 当解析器对象遇到xml的开始标记时,调用这个方法,调用多次.    获得结点头的值
 //解析到一个开始tag，开始tag中可能会有properpies，例如<book catalog="Programming">
 //所有的属性都存储在attributeDict中
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary<NSString *,NSString *> *)attributeDict{
@@ -155,7 +155,7 @@
 
 }
 
-#pragma 当解析器找到开始标记和结束标记之间的字符时，调用这个方法。
+#pragma 当解析器找到开始标记和结束标记之间的字符时,调用这个方法。
 //解析器，从两个结点之间读取具体内容
 -  (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string{
 
@@ -164,7 +164,7 @@
 }
 
 
-#pragma 当解析器对象遇到xml的结束标记时，调用这个方法。
+#pragma 当解析器对象遇到xml的结束标记时,调用这个方法。
 //获取结点结尾的值，此处为一Tag的完成
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
 

@@ -60,8 +60,6 @@
         NSMutableDictionary * warn = mdic1[@"warn"];
         cell.labTitle.text = device.showName;
 
-        cell.tempWarning = [mdic1[@"tpWarn"] boolValue];
-
         cell.iswifi = true;
         cell.isble = false;
         
@@ -90,7 +88,6 @@
         cell.labTitle.text = info.peripheral.name ? info.peripheral.name : info.macAddress;
         cell.iswifi = false;
         cell.isble = true;
-        cell.tempWarning = [mdic[@"tpWarn"] boolValue];
 
         NSString * powerTxt = ([info powerBle] == -1000)?@"--%":[NSString stringWithFormat:@"%d%%",[info powerBle]];
         NSString * tempTxt = ([info temperatureBle] == -1000)?@"--%":[NSString stringWithFormat:@"%.1f%@",[info temperatureBle],[MyDefaultManager unit]];
@@ -102,6 +99,16 @@
 
         cell.iswifi = false;
         cell.isble = true;
+        
+        NSMutableDictionary * warn = mdic[@"warn"];
+        cell.tempWarning = [warn[@"tempWarn"] boolValue];
+        cell.humiWarning = [warn[@"humiWarn"] boolValue];
+        
+        if (mdic[@"fakeble"]) {
+            cell.labTemp.text = [NSString stringWithFormat:@"%.1f%@",[mdic[@"fakeble"][@"temp"] floatValue],[MyDefaultManager unit]];
+            cell.labHumi.text = [NSString stringWithFormat:@"%d%%",[mdic[@"fakeble"][@"humi"] intValue]];
+        }
+        
     }
 
 
@@ -226,24 +233,24 @@
 
     return nil;
 
-    NSObject * object = self.groupDatasource[section];
-
-    NSString * name = @"no name";
-    if ([object isKindOfClass:[NSDictionary class]]) {
-        NSDictionary * dic = (NSDictionary *)object;
-        name = [dic valueForKey:@"gname"];
-    } else {
-        return nil;
-    }
-
-    MainTableViewHeader * header = [[MainTableViewHeader alloc]init];
-    header.labTitle.text = name;
-    header.section = section;
-
-    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapHeader:)];
-    [header addGestureRecognizer:tap];
-
-    return header;
+//    NSObject * object = self.groupDatasource[section];
+//
+//    NSString * name = @"no name";
+//    if ([object isKindOfClass:[NSDictionary class]]) {
+//        NSDictionary * dic = (NSDictionary *)object;
+//        name = [dic valueForKey:@"gname"];
+//    } else {
+//        return nil;
+//    }
+//
+//    MainTableViewHeader * header = [[MainTableViewHeader alloc]init];
+//    header.labTitle.text = name;
+//    header.section = section;
+//
+//    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapHeader:)];
+//    [header addGestureRecognizer:tap];
+//
+//    return header;
 
     //    MainTableObject * mto = nil;
     //    if (section < self.dataSources.count) {
@@ -347,54 +354,11 @@
 #pragma mark - 选择某行
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
-
     if (tableView.tag == 1000) {
-        NSMutableDictionary * mdic = self.groupDatasource[indexPath.section];
-        NSArray * devs = mdic[@"devices"];
-        DeviceInfo * device = devs[indexPath.row][@"device"];
-        NSMutableDictionary * warn = devs[indexPath.row][@"warn"];
-        if ([warn[@"tempWarn"] boolValue] || [warn[@"humiWarn"] boolValue]) {
-            LRWeakSelf(self);
-            [My_AlertView showConfrimAlertWithTempText:@"aaaa" HumiText:@"bbbbbbb" Completion:^(My_AlertView *alert) {
-                NSMutableDictionary * sec = weakself.groupDatasource[indexPath.section];
-                NSMutableArray * rows = sec[@"devices"];
-                NSMutableDictionary * row = rows[indexPath.row];
-                [row[@"warn"] setValue:@(false) forKey:@"humiWarn"];
-                [row[@"warn"] setValue:@(false) forKey:@"tempWarn"];
-                
-                [weakself.groupTable reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-                
-                [weakself saveWarnConfirmWithMac:device.mac];
-
-                DetailInfoController * dvc = [[DetailInfoController alloc]init];
-                dvc.deviceInfo = device;
-                [weakself.navigationController pushViewController:dvc animated:true];
-            }];
-        } else {
-            DetailInfoController * dvc = [[DetailInfoController alloc]init];
-            dvc.deviceInfo = device;
-            [self.navigationController pushViewController:dvc animated:true];
-        }
-       
-    } else if (tableView.tag == 2000) {
-        NSMutableDictionary * mdic = self.bleDatasource[indexPath.row];
-//        MyPeripheral * ble = mdic[@"ble"];
-        LRWeakSelf(self);
-        [My_AlertView showLoadingWithText:@"Connect Blue Tooth…" Block:^(My_AlertView *loading, UILabel *infoLab) {
-//            [[BLEManager shareInstance] connectCBPeripheral:ble.peripheral Block:^(bool success, NSString *info, CBPeripheral *peripheral) {
-//                DetailInfoController * dvc = [[DetailInfoController alloc]init];
-//                dvc.deviceInfo = ble;
-//                [weakself.navigationController pushViewController:dvc animated:true];
-//            }];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [loading dismiss];
-                DetailInfoController * dvc = [[DetailInfoController alloc]init];
-                dvc.deviceInfo = mdic[@"fakeble"];
-                [weakself.navigationController pushViewController:dvc animated:true];
-            });
-        }];
-        
+        [self handleSelectInternetDeviceWithIndexPath:indexPath];
+    }
+    else if (tableView.tag == 2000) {
+        [self handleSelcectBLEDeviceWithIndexPath:indexPath];
     }
 
 }
@@ -424,6 +388,243 @@
 }
 
 #pragma mark - 私有方法
+
+/**
+ 处理点击网络设备的操作
+
+ @param indexPath 点击第几个
+ */
+- (void)handleSelectInternetDeviceWithIndexPath:(NSIndexPath *)indexPath{
+    
+    LRWeakSelf(self);
+    NSMutableDictionary * mdic = self.groupDatasource[indexPath.section];
+    NSArray * devs = mdic[@"devices"];
+    DeviceInfo * device = devs[indexPath.row][@"device"];
+    NSMutableDictionary * warn = devs[indexPath.row][@"warn"];
+    if ([warn[@"tempWarn"] boolValue] || [warn[@"humiWarn"] boolValue]) {
+        
+        float tpmin = [warn[@"tempMin"] floatValue];
+        float tpmax = [warn[@"tempMax"] floatValue];
+        int hmmin = [warn[@"humiMin"] intValue];
+        int hmmax = [warn[@"humiMax"] intValue];
+        bool tpwarn = [warn[@"tempWarn"] boolValue];
+        bool hmwarn = [warn[@"humiWarn"] boolValue];
+        
+        NSString * tpText = @"No Warning";
+        if (tpwarn) {
+            NSString * unit = [MyDefaultManager unit];
+            if (device.temeratureBySData <= tpmin) {
+                tpText = [NSString stringWithFormat:@"%.1f%@    <=    %.1f%@",device.temeratureBySData,unit,tpmin,unit];
+            } else{
+                tpText = [NSString stringWithFormat:@"%.1f%@    >=    %.1f%@",device.temeratureBySData,unit,tpmax,unit];
+            }
+        }
+        NSString * hmText = @"No Warning";
+        if (hmwarn) {
+            NSString * unit1 = @"%";
+            if (device.humidityBySData <= hmmin) {
+                hmText = [NSString stringWithFormat:@"%d%@    <=    %d%@",device.humidityBySData,unit1,hmmin,unit1];
+            } else{
+                hmText = [NSString stringWithFormat:@"%d%@    >=    %d%@",device.humidityBySData,unit1,hmmax,unit1];
+            }
+        }
+        
+        [My_AlertView showConfrimAlertWithTempText:tpText HumiText:hmText Completion:^(My_AlertView *alert) {
+            
+            NSMutableDictionary * sec = weakself.groupDatasource[indexPath.section];
+            NSMutableArray * rows = sec[@"devices"];
+            NSMutableDictionary * row = rows[indexPath.row];
+            [row[@"warn"] setValue:@(false) forKey:@"humiWarn"];
+            [row[@"warn"] setValue:@(false) forKey:@"tempWarn"];
+            
+            [weakself.groupTable reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            
+            [weakself saveWarnConfirmWithMac:device.mac];
+            
+            DetailInfoController * dvc = [[DetailInfoController alloc]init];
+            dvc.deviceInfo = device;
+            [weakself.navigationController pushViewController:dvc animated:true];
+        }];
+    } else {
+        DetailInfoController * dvc = [[DetailInfoController alloc]init];
+        dvc.deviceInfo = device;
+        [self.navigationController pushViewController:dvc animated:true];
+    }
+}
+
+/**
+ 处理点击蓝牙设备的操作
+
+ @param indexPath 第几个
+ */
+- (void)handleSelcectBLEDeviceWithIndexPath:(NSIndexPath *)indexPath{
+    
+    [self handleFakeBLEDevice:indexPath];
+    return ;
+    
+    LRWeakSelf(self);
+    NSMutableDictionary * mdic = self.bleDatasource[indexPath.row];
+    NSMutableDictionary * warn = mdic[@"warn"];
+    MyPeripheral * ble = mdic[@"ble"];
+    
+    //有报警，先弹报警窗
+    if ([warn[@"tempWarn"] boolValue] || [warn[@"humiWarn"] boolValue]) {
+        
+        float tpmin = [warn[@"tempMin"] floatValue];
+        float tpmax = [warn[@"tempMax"] floatValue];
+        int hmmin = [warn[@"humiMin"] intValue];
+        int hmmax = [warn[@"humiMax"] intValue];
+        bool tpwarn = [warn[@"tempWarn"] boolValue];
+        bool hmwarn = [warn[@"humiWarn"] boolValue];
+        
+        float temp = ble.temperatureBle;
+        int humi = ble.humidityBle;
+        NSString * mac = ble.macAddress;
+        
+        NSString * tpText = @"No Warning";
+        if (tpwarn) {
+            NSString * unit = [MyDefaultManager unit];
+            if (temp <= tpmin) {
+                tpText = [NSString stringWithFormat:@"%.1f%@    <=    %.1f%@",temp,unit,tpmin,unit];
+            } else{
+                tpText = [NSString stringWithFormat:@"%.1f%@    >=    %.1f%@",temp,unit,tpmax,unit];
+            }
+        }
+        NSString * hmText = @"No Warning";
+        if (hmwarn) {
+            NSString * unit1 = @"%";
+            if (humi <= hmmin) {
+                hmText = [NSString stringWithFormat:@"%d%@    <=    %d%@",humi,unit1,hmmin,unit1];
+            } else{
+                hmText = [NSString stringWithFormat:@"%d%@    >=    %d%@",humi,unit1,hmmax,unit1];
+            }
+        }
+        
+        //show确认报警
+        [My_AlertView showConfrimAlertWithTempText:tpText HumiText:hmText Completion:^(My_AlertView *alert) {
+            
+            [warn setValue:@(false) forKey:@"tempWarn"];
+            [warn setValue:@(false) forKey:@"humiWarn"];
+            [self.bleTable reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [weakself saveWarnConfirmWithMac:mac];
+            
+            //show连接提示
+            [My_AlertView showLoadingWithText:@"Connect Blue Tooth…" Block:^(My_AlertView *loading, UILabel *infoLab) {
+
+                //连接蓝牙
+                [[BLEManager shareInstance] connectCBPeripheral:ble.peripheral Block:^(bool success, NSString *info, CBPeripheral *peripheral) {
+                    
+                    [loading dismiss];
+                    DetailInfoController * dvc = [[DetailInfoController alloc]init];
+                    dvc.deviceInfo = ble;
+                    [weakself.navigationController pushViewController:dvc animated:true];
+                }];
+            }];
+
+            
+        }];
+    } else {
+        
+        //show连接提示
+        [My_AlertView showLoadingWithText:@"Connect Blue Tooth…" Block:^(My_AlertView *loading, UILabel *infoLab) {
+            
+            //连接蓝牙
+            [[BLEManager shareInstance] connectCBPeripheral:ble.peripheral Block:^(bool success, NSString *info, CBPeripheral *peripheral) {
+                
+                [loading dismiss];
+                DetailInfoController * dvc = [[DetailInfoController alloc]init];
+                dvc.deviceInfo = ble;
+                [weakself.navigationController pushViewController:dvc animated:true];
+            }];
+        }];
+
+    }
+    
+}
+
+/**
+ 处理假的点击蓝牙设备的操作
+
+ @param indexPath 第几个
+ */
+- (void)handleFakeBLEDevice:(NSIndexPath *)indexPath{
+    
+    LRWeakSelf(self);
+    NSMutableDictionary * mdic = self.bleDatasource[indexPath.row];
+    NSMutableDictionary * warn = mdic[@"warn"];
+    NSMutableDictionary * ble = mdic[@"fakeble"];
+    
+    //有报警，先弹报警窗
+    if ([warn[@"tempWarn"] boolValue] || [warn[@"humiWarn"] boolValue]) {
+        
+        float tpmin = [warn[@"tempMin"] floatValue];
+        float tpmax = [warn[@"tempMax"] floatValue];
+        int hmmin = [warn[@"humiMin"] intValue];
+        int hmmax = [warn[@"humiMax"] intValue];
+        bool tpwarn = [warn[@"tempWarn"] boolValue];
+        bool hmwarn = [warn[@"humiWarn"] boolValue];
+        float temp = [ble[@"temp"] floatValue];
+        int humi = [ble[@"humi"] intValue];
+        NSString * mac = ble[@"mac"];
+        
+        NSString * tpText = @"No Warning";
+        if (tpwarn) {
+            NSString * unit = [MyDefaultManager unit];
+            if (temp <= tpmin) {
+                tpText = [NSString stringWithFormat:@"%.1f%@    <=    %.1f%@",temp,unit,tpmin,unit];
+            } else{
+                tpText = [NSString stringWithFormat:@"%.1f%@    >=    %.1f%@",temp,unit,tpmax,unit];
+            }
+        }
+        NSString * hmText = @"No Warning";
+        if (hmwarn) {
+            NSString * unit1 = @"%";
+            if (humi <= hmmin) {
+                hmText = [NSString stringWithFormat:@"%d%@    <=    %d%@",humi,unit1,hmmin,unit1];
+            } else{
+                hmText = [NSString stringWithFormat:@"%d%@    >=    %d%@",humi,unit1,hmmax,unit1];
+            }
+        }
+        
+        //show 确认报警
+        [My_AlertView showConfrimAlertWithTempText:tpText HumiText:hmText Completion:^(My_AlertView *alert) {
+            
+            //置为不报警
+            [warn setValue:@(false) forKey:@"tempWarn"];
+            [warn setValue:@(false) forKey:@"humiWarn"];
+            [self.bleTable reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [weakself saveWarnConfirmWithMac:mac];
+            
+            //show 连接蓝牙的弹窗
+            [My_AlertView showLoadingWithText:@"Connect Blue Tooth…" Block:^(My_AlertView *loading, UILabel *infoLab) {
+                
+                //假装连接成功，推送到下一个界面
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [loading dismiss];
+                    DetailInfoController * dvc = [[DetailInfoController alloc]init];
+                    dvc.deviceInfo = mdic[@"fakeble"];
+                    [weakself.navigationController pushViewController:dvc animated:true];
+                });
+
+            }];
+        }];
+    } else {
+        
+        //show连接蓝牙
+        [My_AlertView showLoadingWithText:@"Connect Blue Tooth…" Block:^(My_AlertView *loading, UILabel *infoLab) {
+            
+            //假装连接成功，推送
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [loading dismiss];
+                DetailInfoController * dvc = [[DetailInfoController alloc]init];
+                dvc.deviceInfo = mdic[@"fakeble"];
+                [weakself.navigationController pushViewController:dvc animated:true];
+            });
+            return ;
+        }];
+        
+    }
+}
 
 
 @end

@@ -100,8 +100,8 @@
 
     CGFloat distance = (self.frame.size.height - self.thumb.frame.size.height)/2.0;
     [UIView animateWithDuration:0.25 animations:^{
-        self.thumb.center = CGPointMake(_isOn?(self.frame.size.width - _thumb.frame.size.width/2.0 - distance):(_thumb.frame.size.width/2.0 + distance), _thumb.center.y);
-        self.backgroundColor = _isOn?self.onColor:self.offColor;
+        self.thumb.center = CGPointMake(isOn?(self.frame.size.width - self.thumb.frame.size.width/2.0 - distance):(self.thumb.frame.size.width/2.0 + distance), self.thumb.center.y);
+        self.backgroundColor = isOn?self.onColor:self.offColor;
 
     }];
 }

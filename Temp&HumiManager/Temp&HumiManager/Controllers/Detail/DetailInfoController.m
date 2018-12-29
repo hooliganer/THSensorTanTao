@@ -47,11 +47,11 @@
 
     if ([self.deviceInfo isKindOfClass:[MyPeripheral class]]) {
         
-        self.devType = 0;
+        self.devType = 1;
         [self handleInterDeviceInfo];
         
     } else if ([self.deviceInfo isKindOfClass:[DeviceInfo class]]){
-        self.devType = 1;
+        self.devType = 0;
         [self handleInterDeviceInfo];
 
     } else if ([self.deviceInfo isKindOfClass:[NSDictionary class]]){

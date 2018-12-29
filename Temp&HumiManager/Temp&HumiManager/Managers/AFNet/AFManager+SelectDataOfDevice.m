@@ -12,6 +12,10 @@
 
 - (void)selectLastDataOfDevice:(int)uid Mac:(NSString *)mac Block:(nonnull void (^)(NSString *))block{
     
+    if (mac == nil) {
+        LRLog(@"mac为空！不能查询！");
+        return ;
+    }
     NSString * url = [NSString stringWithFormat:@"http://%@:%@/aircondition/app/sensordb_query_ex.jsp?",TH_IP,TH_PORT];
     NSDictionary * param = @{@"uid":@(uid),
                              @"tmac":mac,
@@ -20,7 +24,6 @@
                              @"end":@"1",
                              @"pwd":@"12345678"};
     
-        
     [self.sessionManager POST:url parameters:param progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary * dic = [NSDictionary dictionaryWithXMLData:responseObject];

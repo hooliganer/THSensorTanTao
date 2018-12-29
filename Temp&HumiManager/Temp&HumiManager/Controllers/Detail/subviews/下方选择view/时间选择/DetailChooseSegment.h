@@ -35,6 +35,7 @@ DCSegmentTimeMake(NSTimeInterval next, NSTimeInterval last)
 @property (nonatomic,assign)int type;///<0:Hour,1:Day,2:Week
 @property (nonatomic,strong)NSDate *date;
 @property (nonatomic,readonly)DCSegmentTime times;///<时间段
+@property (nonatomic,assign)bool changeDate;///<是否改变了时间
 @property (nonatomic,strong)UILabel *labCenter;
 @property (nonatomic,weak)id<DetailChooseSegmentDelegate>delegate;
 
