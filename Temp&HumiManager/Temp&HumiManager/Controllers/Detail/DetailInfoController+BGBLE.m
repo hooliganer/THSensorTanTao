@@ -9,9 +9,11 @@
 #import "DetailInfoController+BGBLE.h"
 #import "DetailInfoController+Extension.h"
 #import "DetailInfoController+UI.h"
+
 #import "DeviceDB+CoreDataClass.h"
 #import "WarnRecordSetDB+CoreDataClass.h"
 #import "WarnHistoryRecordDB+CoreDataClass.h"
+
 #import "BLEManager.h"
 
 @implementation DetailInfoController (BGBLE)
@@ -19,7 +21,6 @@
 #pragma mark - 蓝牙请求
 - (void)startBLE{
     
-    [self judgeWhetherWarnByBLETemp:1 Humi:1];
     BLEManager *manager = [BLEManager shareInstance];
     
     //设置蓝牙的回调
@@ -40,14 +41,11 @@
         
         //实时温湿度
         if (recByte[3] == 'P' && recByte[4] == 'S') {
-            
-//            [weakself parseBLEData:characteristic.value];
+            [weakself parseBLETHData:characteristic.value];
         }
         //历史数据
         else if (recByte[3] == 'M' && recByte[4] == 'S')
         {
-//            weakself.getBLEHistory = true;
-//            [weakself parseHistoryDataWithData:characteristic.value];
             weakself.isBLEHistory = true;
             [weakself parseHistoryDataWithData:characteristic.value];
         }
@@ -216,7 +214,68 @@
     }];
 }
 
+- (void)readLocalWarnRecord{
+    
+    //先读出本地该时间段内所有温湿度数据
+    LRWeakSelf(self);
+    [My_AlertView showLoading:^(My_AlertView *loading) {
+        
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+        dispatch_async(queue, ^{
+            
+            [weakself readLocalTHData:^(NSArray<WarnHistoryRecordDB *> *records) {
+                
+                NSString * mac = [weakself macFromPeripheral];//[self macFromPeripheral];
+                
+                //再读出所有报警设置的记录
+                NSArray <WarnRecordSetDB *>* sets = [WarnRecordSetDB readAllOrderByMac:mac];
+                NSMutableArray <DetailWarnSetObject *>* warns = [NSMutableArray array];
+                for (WarnHistoryRecordDB * record in records) {
+                    for (WarnRecordSetDB * set in sets) {
+                        if (record.time >= set.settime) {
+                            if (set.ison) {
+                                DetailWarnSetObject * warn;
+                                //温度判断是否超过阈值
+                                if (record.temparature <= set.tempMin ||
+                                    record.temparature >= set.tempMax) {
+                                    if (!warn) {
+                                        warn = [[DetailWarnSetObject alloc]init];
+                                    }
+                                    warn.temparature = record.temparature;
+                                }
+                                //湿度判断是否超过阈值
+                                if (record.humidity <= set.humiMin ||
+                                    record.humidity >= set.humiMax) {
+                                    if (!warn) {
+                                        warn = [[DetailWarnSetObject alloc]init];
+                                    }
+                                    warn.humidity = record.humidity;
+                                }
+                                if (warn) {
+                                    warn.time = record.time;
+                                    [warns addObject:warn];
+                                }
+                            }
+                            break ;
+                        }
+                    }
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [loading dismiss];
+                    weakself.warnView.records = warns;
+                    [weakself.warnView.collection reloadData];
+                });
+                
+            }];
+        });
+    }];
+    
+    
+}
+
 - (void)readLocalTHData:(void(^)(NSArray <WarnHistoryRecordDB *>*records))block{
+    
     NSString * mac = [self macFromPeripheral];//[self macFromPeripheral];
     
     NSTimeInterval last = self.segmentView.times.last;
@@ -296,10 +355,10 @@
 }
 
 - (NSString *)macFromPeripheral{
-    NSDictionary * dic = self.deviceInfo;
-    return dic[@"mac"];
-//    MyPeripheral * peripheral = (MyPeripheral *)self.deviceInfo;
-//    return peripheral.macAddress;
+//    NSDictionary * dic = self.deviceInfo;
+//    return dic[@"mac"];
+    MyPeripheral * peripheral = (MyPeripheral *)self.deviceInfo;
+    return peripheral.macAddress;
 }
 
 /**
@@ -315,20 +374,20 @@
         return ;
     }
     
-    LRWeakSelf(self);
     NSString * strData = [NSString stringWithFormat:@"PX-MQ#%d",start?1:0];
     NSData * data = [strData dataUsingEncoding:NSUTF8StringEncoding];
     
-    //    Byte *byte = (Byte *)[data bytes];
-    //    byte[6] = isStart?1:0;
-    //    data = [[NSData alloc]initWithBytes:byte length:7];
+//    Byte * byte = (Byte *)[data bytes];
+//    byte[6] = start?1:0;
+//    data = [[NSData alloc]initWithBytes:byte length:7];
     
     //    NSString * queryStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     //    LRLog(@"请求历史数据:%@ -- %@",queryStr,data.description);
     
+    MyPeripheral * peri = self.deviceInfo;
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(queue, ^{
-       [[BLEManager shareInstance] queryWithData:data CBPeripheral:weakself.curDevInfo.bleInfo.peripheral];
+       [[BLEManager shareInstance] queryWithData:data CBPeripheral:peri.peripheral];
     });
     
     //10秒之后还未接收到蓝牙历史数据，再请求

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <UIKit/UIKit.h>
 
 extern NSString * const NotiName_ToBleSetControler;///<向设置界面通知发现新蓝牙设备,传递的是 MyPeripheral 参数
 extern NSString * const NotiName_ToBLEController;///<向设置界面通知发现新蓝牙设备,传递的是 MyPeripheral 参数
@@ -16,7 +16,7 @@ extern NSString * const NotiName_ToBLEController;///<向设置界面通知发现
 /*！
  * 判断数组是否存在的参数
  */
-typedef struct {
+typedef struct ContainStruct{
     NSInteger index;///<是第几个相同（以遇见的第一个判断）
     bool isExist;///<是否存在
 } ContainStruct;

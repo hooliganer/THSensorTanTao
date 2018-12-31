@@ -35,9 +35,6 @@ NSString * const Response_Characteristic = @"0000fff7-0000-1000-8000-00805f9b34f
         self.discoveredPeripherals = [NSMutableArray array];
         
 
-//        self.marrPeripheralInfos=[NSMutableArray array];
-//        self.marrCBPeripherals=[NSMutableArray array];
-//        self.marrManufatures=[NSMutableArray array];
     }
     return self;
 }

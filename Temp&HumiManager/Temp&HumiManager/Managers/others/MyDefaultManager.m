@@ -31,9 +31,9 @@
         user.uname = dic[@"uname"];
         user.upwd = dic[@"upwd"];
         user.isLogin = [dic[@"isLogin"] boolValue];
-        user.uname = @"b0:df:c1:6d:09:60";
-        user.upwd = @"b0:df:c1:6d:09:60px";
-        user.uid = 5;
+//        user.uname = @"b0:df:c1:6d:09:60";
+//        user.upwd = @"b0:df:c1:6d:09:60px";
+//        user.uid = 5;
     }
     return user;
 }

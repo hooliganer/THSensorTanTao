@@ -10,4 +10,7 @@
 
 @interface DetailHistoryInfoView : UIView
 
+
+- (void)setHigh:(NSString *)high Low:(NSString *)low Avg:(NSString *)avg Last:(NSString *)last Time1:(NSString *)time1 Time2:(NSString *)time2;
+
 @end

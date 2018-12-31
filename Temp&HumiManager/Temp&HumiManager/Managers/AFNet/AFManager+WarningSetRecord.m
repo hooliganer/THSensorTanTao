@@ -159,11 +159,14 @@
         return ;
     }
     NSString * url = [NSString stringWithFormat:@"http://%@:%@/aircondition/dev/query_dev_trigger_history.jsp?",TH_IP,TH_PORT];
-    NSDictionary * param = @{
+    NSMutableDictionary * param = @{
                              @"mac":mac,
                              @"stype":@"4",
-                             @"all":@"yes"
-                             };
+                             @"all":@"yes",
+                             }.mutableCopy;
+    if (isShort) {
+        [param setValue:@"50" forKey:@"limitcount"];
+    }
 
     [self.sessionManager POST:url parameters:param progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         

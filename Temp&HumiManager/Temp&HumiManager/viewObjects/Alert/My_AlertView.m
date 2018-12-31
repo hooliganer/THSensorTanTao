@@ -74,6 +74,7 @@
 }
 
 + (void)showInfo:(NSString *)info Block:(void (^)(My_AlertView *))block{
+    
     My_AlertView * alert = [[My_AlertView alloc]init];
     alert.animType = My_AlertAnimateType_Fade;
     AlertInfoer * infoview = [AlertInfoer instanceWithFrame:CGRectMake(0, 0, alert.width * 0.65, 0)];

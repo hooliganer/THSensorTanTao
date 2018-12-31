@@ -188,7 +188,6 @@
     return _peripherals;
 }
 
-
 - (SettingCardView *)unitView{
     if (_unitView == nil) {
         _unitView = [[SettingCardView alloc]init];
@@ -225,13 +224,14 @@
     return _unitView;
 }
 
-
 - (UITextField_DIYField *)tfPwd{
     if (_tfPwd == nil) {
         _tfPwd = [[UITextField_DIYField alloc]init];
         _tfPwd.style = TextFieldStyle_BorderLine;
         _tfPwd.placeholder = @"Input The Wifi Password";
         _tfPwd.tintsColor = [UIColor lightGrayColor];
+        _tfPwd.leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 10, 0)];
+        [_tfPwd setLeftViewMode:UITextFieldViewModeAlways];
     }
     return _tfPwd;
 }

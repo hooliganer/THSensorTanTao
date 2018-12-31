@@ -6,7 +6,7 @@
 //  Copyright © 2018年 terry. All rights reserved.
 //
 
-#import "SuperFMDBManager.h"
+#import <Foundation/Foundation.h>
 #import "DeviceInfo+DeviceInfoExtension.h"
 
 typedef NS_OPTIONS(NSInteger, DeviceDataType) {
@@ -17,7 +17,7 @@ typedef NS_OPTIONS(NSInteger, DeviceDataType) {
 /*!
  * 网络对象,可能是用户关注的对象，也可能是组里面的对象
  */
-@interface DeviceInfo : SuperFMDBManager
+@interface DeviceInfo : NSObject
 
 @property (nonatomic,assign)int dID;
 @property (nonatomic,assign)NSTimeInterval dateline;
@@ -59,6 +59,12 @@ typedef NS_OPTIONS(NSInteger, DeviceDataType) {
 - (float)temeratureBySData;
 - (int)humidityBySData;
 - (int)powerBySData;
+/**
+ 判断是否是标准数据
+
+ @return 判断结果
+ */
+- (bool)isTHData;
 
 - (float)temeratureBySensor;
 

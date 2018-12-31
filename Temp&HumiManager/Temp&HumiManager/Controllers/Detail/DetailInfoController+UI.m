@@ -80,6 +80,7 @@
 
     self.bgScroll = [[UIScrollView alloc]initWithFrame:CGRectMake(0, self.navigationBar.height, MainScreenWidth, MainScreenHeight - self.navigationBar.height)];
     [self.view addSubview:self.bgScroll];
+    
     [self setupScrollSubviews];
 }
 
@@ -115,7 +116,6 @@
     self.editer.switcher.isOn = true;
     [self.editer.btnSave addTarget:self action:@selector(clickEditButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.editer.btnCancel addTarget:self action:@selector(clickEditButton:) forControlEvents:UIControlEventTouchUpInside];
-    self.editer.tfName.text = self.curDevInfo.nickName?self.curDevInfo.nickName:self.curDevInfo.bleInfo.peripheral.name;
     [self.view insertSubview:self.editer aboveSubview:self.bgScroll];
 
     
@@ -216,6 +216,12 @@
 
 #pragma mark - Delegate
 
+/**
+ 点击数据类型
+
+ @param chooseView view
+ @param type 类型 温度、湿度、报警
+ */
 - (void)typeChooseView:(DetailTypeChooseView *)chooseView ChooseType:(int)type{
     
     self.temperatureView.hidden = !(type == 0);
@@ -245,6 +251,9 @@
             }
                 break;
             case 2:
+            {
+                [self readLocalWarnRecord];
+            }
                 break;
                 
             default:
@@ -318,7 +327,7 @@
                 break;
             case 2:
             {
-
+                [self readLocalWarnRecord];
             }
                 break;
                 
@@ -363,7 +372,7 @@
                 break;
             case 2:
             {
-
+                [self readLocalWarnRecord];
             }
                 break;
                 
@@ -377,3 +386,4 @@
 }
 
 @end
+

@@ -11,12 +11,9 @@
 #import "DetailInfoController+BG.h"
 #import "DetailInfoController+BGBLE.h"
 #import "DetailInfoController+Extension.h"
-#import "DetailInfoController+DetailInfoBG.h"
-#import "DetailInfoController+DetailInfoUI.h"
-#import "DetailInfoController+DetailInfo.h"
 
-#import "FMDB_DeviceInfo.h"
-#import "MyPeripheral.h"
+#import "BLEManager.h"
+
 
 @interface DetailInfoController ()
 
@@ -48,74 +45,33 @@
     if ([self.deviceInfo isKindOfClass:[MyPeripheral class]]) {
         
         self.devType = 1;
-        [self handleInterDeviceInfo];
+        [self handleBluetoothDeviceInfo];
         
     } else if ([self.deviceInfo isKindOfClass:[DeviceInfo class]]){
         self.devType = 0;
         [self handleInterDeviceInfo];
+        [self startBLE];
 
     } else if ([self.deviceInfo isKindOfClass:[NSDictionary class]]){
-        self.devType = 1;
+        self.devType = 3;
         [self handleDictionaryDeviceInfo];
         [self startBLE];
     }
-    
 
-    return ;
-
-//    if (self.curDevInfo) {
-//
-//        [self setLocalInfo];
-//
-//        [self setDeviceInfo];
-//
-//        if (self.curDevInfo.isBle) {
-//
-//            //查询蓝牙数据
-//            [self selecetBLEDevData];
-//            //请求查询蓝牙历史数据
-//            [self selecetHistoryDataIsStart:true];
-//            //监听蓝牙返回数据
-//            [self notifyValueForCharacteristic];
-//        }
-//
-//        if (!self.curDevInfo.isWifi) {
-//            [self linkDev];
-//        }
-//    }
-//
-//    [self startTimer];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
 
-    if (self.curDevInfo.bleInfo.peripheral) {
-
-        //停止历史数据请求
-        [self selecetHistoryDataIsStart:false];
-        async_bgqueue(^{
-            BLEManager *manager = [BLEManager shareInstance];
-            [manager disConnectCBPeripheral:self.curDevInfo.bleInfo.peripheral];
-        });
+    if (self.devType == 1) {
+        MyPeripheral * peri = (MyPeripheral *)self.deviceInfo;
+        [[BLEManager shareInstance] cancelConnectCBPeripheral:peri.peripheral];
     }
-
-    if (self.selectTimer) {
-        dispatch_source_cancel(self.selectTimer);
-        self.selectTimer = nil;
-    }
-
-    if (self.historyTimer) {
-        self.historyTimer = nil;
-        dispatch_source_cancel(self.historyTimer);
-    }
-
 }
 
 - (void)viewWillLayoutSubviews{
     [super viewWillLayoutSubviews];
 
-//    self.mainScroll.frame = CGRectMake(0, 64.0, MainScreenWidth, MainScreenHeight - 64.0);
 
     self.topView.y = self.warner.bottomY + 10;
 
@@ -130,22 +86,19 @@
 
 
 
-
-
 #pragma mark - inside method
 
 /**
  处理蓝牙设备信息
  */
 - (void)handleBluetoothDeviceInfo{
+    
     MyPeripheral * device = self.deviceInfo;
     self.topView.labTitle.text = device.peripheral.name ? device.peripheral.name : @"(null)";
     self.topView.isBle = true;
     [self readLocalInfo];
-}
-
-- (void)handleDictionaryDeviceInfo{
-    [self readLocalInfo];
+    
+    [self readLocalTemparatureRecord];
 }
 
 /**
@@ -178,7 +131,58 @@
     self.topView.labPower.text = pwstr;
     [self.topView.labPower sizeToFit];
     
+    //查网络基本信息
     [self selectInternetInfo];
+    
+
+    //查询网络温湿度数据
+    LRWeakSelf(self);
+    [self selectInternetTHData:^(NSArray<DeviceInfo *> *datas) {
+        
+        weakself.currentDatas = datas.mutableCopy;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            float max = [[datas valueForKeyPath:@"@max.temeratureBySData"] floatValue];
+            float min = [[datas valueForKeyPath:@"@min.temeratureBySData"] floatValue];
+            float avg = [[datas valueForKeyPath:@"@avg.temeratureBySData"] floatValue];
+            NSMutableArray <NSNumber *>* tps = [NSMutableArray array];
+            for (DeviceInfo * dd in datas) {
+                CGFloat percent;
+                if ((max - min) == 0) {
+                    if (max == 0) {
+                        percent = 0;
+                    } else {
+                        percent = 1;
+                    }
+                } else {
+                    percent = (dd.temeratureBySData - min)/(max - min);
+                }
+                [tps addObject:@(percent)];
+            }
+            [weakself.temperatureView.liner reDrawWithX:10 Y:10 Values:tps];
+            
+            NSString * unit = [MyDefaultManager unit];
+            NSString * last = [NSString stringWithFormat:@"%.1f%@",datas.firstObject.temeratureBySData,unit]
+            ;
+            NSString * high = [NSString stringWithFormat:@"%.1f%@",max,unit]
+            ;
+            NSString * low = [NSString stringWithFormat:@"%.1f%@",min,unit]
+            ;
+            NSString * avgstr = [NSString stringWithFormat:@"%.1f%@",avg,unit]
+            ;
+            NSDate * date = [NSDate dateWithTimeIntervalSince1970:datas.firstObject.utime];
+            NSString * time1 = [NSString stringWithFormat:@"%02d/%02d/%d",[date nDay],[date nMonth],[date nYear]];
+            NSString * time2 = [NSString stringWithFormat:@"%02d:%02d:%02d",[date nHour],[date nMinute],[date nSecond]];
+            
+            [weakself.temperatureView.tempInfoView setHigh:high Low:low Avg:avgstr Last:last Time1:time1 Time2:time2];
+        });
+    }];
+    
+    [self selectCurrentInternetTHData];
+}
+
+- (void)handleDictionaryDeviceInfo{
+    [self readLocalInfo];
 }
 
 @end

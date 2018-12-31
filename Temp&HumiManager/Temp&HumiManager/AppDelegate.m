@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "MainViewController.h"
 #import "AppDelegate+Catergory.h"
 #import "MainListController.h"
 

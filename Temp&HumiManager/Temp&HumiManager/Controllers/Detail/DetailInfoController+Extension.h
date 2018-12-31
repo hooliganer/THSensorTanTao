@@ -15,6 +15,7 @@
 #import "DetailTempView.h"
 #import "DetailWarningView.h"
 #import "DetailEditAlert.h"
+#import "DeviceInfo.h"
 
 @interface DetailInfoController ()
 

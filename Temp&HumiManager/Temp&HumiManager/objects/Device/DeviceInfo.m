@@ -56,6 +56,17 @@
     return sensor;
 }
 
+- (bool)isTHData{
+    if (![self.sdata containsString:@"50582D505323"]) {
+        return false;
+    } else if (self.sdata.length < 20){
+        return false;
+    } else if (self.sdata.length < 22){
+        return false;
+    }
+    return true;
+}
+
 - (float)temeratureBySData{
     //  50582D505323 4900 072B 33 5E
     //  50582D505323 这个为头 截断之后以49位标识 49后面就是数据

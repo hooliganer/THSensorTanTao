@@ -18,22 +18,6 @@
 
 @implementation MainListController (Tableview)
 
-- (void)setupMainTable{
-
-//    self.mainTable = [[UITableView alloc]initWithFrame:CGRectMake(0,StatusBarHeight + 44.0 + 20, MainScreenWidth, MainScreenHeight - (StatusBarHeight + 44.0 - 20)) style:UITableViewStylePlain];
-//    self.mainTable.backgroundColor = [UIColor clearColor];
-//    self.mainTable.delegate = self;
-//    self.mainTable.dataSource = self;
-//    self.mainTable.tag = MainListTag_MainCollection;
-//    self.mainTable.separatorStyle = UITableViewCellSeparatorStyleNone;
-//    self.mainTable.estimatedRowHeight = 0;
-//    self.mainTable.estimatedSectionHeaderHeight = 0;
-//    self.mainTable.estimatedSectionFooterHeight = 0;
-//
-//    [self.view addSubview:self.mainTable];
-
-}
-
 
 #pragma mark - cell
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {

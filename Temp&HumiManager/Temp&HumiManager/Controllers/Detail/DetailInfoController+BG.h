@@ -7,25 +7,36 @@
 //
 
 #import "DetailInfoController.h"
+#import "DeviceInfo.h"
 
 @interface DetailInfoController (BG)
 
-
+/**
+ 查询当前的温湿度数据并刷新
+ */
+- (void)selectCurrentInternetTHData;
 
 /**
- 查询温度并刷新（根据）
+ 查询温度纪录并刷新（根据当前时间段）
  */
 - (void)selectInternetTemparature;
 
 /**
- 查询湿度并刷新（根据）
+ 查询湿度纪录并刷新（根据当前时间段）
  */
 - (void)selectInternetHumidity;
 
 /**
- 查询报警记录并刷新
+ 查询报警记录并刷新（根据当前时间段）
  */
 - (void)selectInternetWarnRecord;
+
+/**
+ 查询选择时间段内的数据
+ 
+ @param block 回调 - 温湿度数据等等
+ */
+- (void)selectInternetTHData:(void(^)(NSArray<DeviceInfo *> *datas))block;
 
 /**
  查询网络信息(报警设置、数据等)

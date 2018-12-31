@@ -67,7 +67,22 @@
 
 }
 
-
+- (void)setHigh:(NSString *)high Low:(NSString *)low Avg:(NSString *)avg Last:(NSString *)last Time1:(NSString *)time1 Time2:(NSString *)time2{
+    
+    UILabel * lab1 = (UILabel *)[self viewWithTag:2+10];
+    UILabel * lab2 = (UILabel *)[self viewWithTag:1+10];
+    UILabel * lab3 = (UILabel *)[self viewWithTag:3+10];
+    UILabel * lab4 = (UILabel *)[self viewWithTag:7+10];
+    UILabel * lab5 = (UILabel *)[self viewWithTag:8+10];
+    UILabel * lab6 = (UILabel *)[self viewWithTag:9+10];
+    lab1.text = last;
+    lab2.text = time1;
+    lab3.text = time2;
+    lab4.text = high;
+    lab5.text = low;
+    lab6.text = avg;
+    
+}
 
 
 #pragma mark - inside method

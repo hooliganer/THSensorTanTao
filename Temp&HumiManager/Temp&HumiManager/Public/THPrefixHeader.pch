@@ -8,7 +8,6 @@
 
 #import "MyDefaultManager.h"
 #import "MyArchiverManager.h"
-#import "MyAlertView.h"
 #import "methoder.h"
 #import "ConstNotification.h"
 #import "My_AlertView.h"

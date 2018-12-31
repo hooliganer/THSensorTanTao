@@ -165,43 +165,6 @@
     }
 }
 
-//for (NSDictionary *dic in self.currentPerips) {
-//
-//    CBPeripheral *peripheraler = [dic valueForKey:@"peripheral"];
-//
-//    CBCharacteristic *receiveChar = dic[@"receiveCharacteristic"];
-//    CBCharacteristic *sendChar = dic[@"sendCharacteristic"];
-//
-//    //            NSLog(@"--UUID-- : %@",receiveChar.UUID);
-//
-//    if ([peripheral.identifier isEqual:peripheraler.identifier]) {
-//
-//        if ([characteristic isEqual:receiveChar]) {
-//            //                     NSLog(@"--recieve-- %@", receiveChar.value.description);
-//
-//            if (self.didResponse) {
-//                self.didResponse(peripheral, characteristic,self);
-//            }
-//
-//        } else if ([characteristic isEqual:sendChar]){
-//            //                     NSLog(@"--send-- %@", receiveChar.value.description);
-//
-//            if (self.didRequest) {
-//                self.didRequest(peripheral, characteristic,self);
-//            }
-//        } else{
-//            NSLog(@"unkown characteristic : %@",characteristic);
-//        }
-//        //                if (querySendBlock) {
-//        //                    querySendBlock(peripheral,characteristic.value);
-//        //                }
-//        break ;
-//    }
-//}
-
-
-
-
 #pragma methods
 - (ContainStruct)containPeripheral:(CBPeripheral *)peri{
     ContainStruct cs = ContainStructMake(0, false);

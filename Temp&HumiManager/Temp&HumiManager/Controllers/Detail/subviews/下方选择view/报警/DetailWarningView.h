@@ -8,14 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "DetailWarnTopView.h"
-#import "FMDB_DeviceWarn.h"
 #import "DetailWarnSetObject.h"
 
 @interface DetailWarningView : UIView
 
 @property (nonatomic,strong)DetailWarnTopView *topView;
 @property (nonatomic,strong)UICollectionView *collection;
-@property (nonatomic,strong)NSMutableArray <FMDB_DeviceWarn *> *datasArray;
 
 @property (nonatomic,strong)NSMutableArray <DetailWarnSetObject *>* records;
 

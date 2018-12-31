@@ -7,11 +7,8 @@
 //
 
 #import "MySuperController.h"
-#import "MainCollectionObject.h"
 
 @interface DetailInfoController : MySuperController
-
-@property (nonatomic,strong)MainCollectionObject *curDevInfo;///<当前页面的设备
 
 @property (nonatomic,strong)id deviceInfo;
 

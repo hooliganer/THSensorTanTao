@@ -15,10 +15,60 @@
 
 @implementation DetailInfoController (BG)
 
+- (void)selectCurrentInternetTHData{
+    
+    NSString * mac = [self macFormDevice];
+    int uid = [MyDefaultManager userInfo].uid;
+    
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+    dispatch_async(queue, ^{
+        
+        LRWeakSelf(self);
+        NSString * unit = [MyDefaultManager unit];
+        [[AFManager shared] selectLastDataOfDevice:uid Mac:mac Block:^(NSString * _Nonnull dataStr) {
+            
+            float temp = [DeviceInfo temeratureBySData:dataStr];
+            int humi = [DeviceInfo humidityBySData:dataStr];
+            int power = [DeviceInfo powerBySData:dataStr];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                weakself.topView.labTempar.text = [NSString stringWithFormat:@"%.1f%@",temp,unit];
+                [weakself.topView.labTempar sizeToFit];
+                weakself.topView.labHumi.text = [NSString stringWithFormat:@"%d%%",humi];
+                [weakself.topView.labHumi sizeToFit];
+                weakself.topView.labPower.text = [NSString stringWithFormat:@"%d%%",power];
+                [weakself.topView.labPower sizeToFit];
+            });
+            
+            [weakself selectWhetherWarnWithTemp:temp Humi:humi];
+            
+        }];
+    });
+    
+}
 
 /**
- 查询温度并刷新（根据）
+ 查询是否报警
  */
+- (void)selectWhetherWarnWithTemp:(float)temp Humi:(int)humi{
+    
+    NSString * mac = [self macFormDevice];
+    LRWeakSelf(self);
+    [[AFManager shared] selectLastWarnSetRecordWithMac:mac Block:^(WarnSetRecord * _Nonnull record) {
+        if (record.ison) {
+            if (temp < record.threshold.tempMin.value || temp > record.threshold.tempMax.value || humi < record.threshold.humiMin.value || humi > record.threshold.humiMax.value) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    weakself.warner.labTemp.text = [NSString stringWithFormat:@"%.1f%@",temp,[MyDefaultManager unit]];
+                    [weakself.warner.labTemp sizeToFit];
+                    weakself.warner.labHumi.text = [NSString stringWithFormat:@"%d%%",humi];
+                    [weakself.warner.labHumi sizeToFit];
+                    [weakself showIsWaner:true];
+                });
+            }
+        }
+    }];
+}
+
 - (void)selectInternetTemparature{
     
     LRWeakSelf(self);
@@ -27,13 +77,19 @@
         //查询网络温湿度数据
         [weakself selectInternetTHData:^(NSArray<DeviceInfo *> *datas) {
             
+            datas = [weakself removeTooClosedTemparatureData:datas];
+//            for (DeviceInfo *dd in datas) {
+//                NSLog(@"%f",dd.temeratureBySData);
+//            }
             weakself.currentDatas = datas.mutableCopy;
+            
             dispatch_async(dispatch_get_main_queue(), ^{
                 
                 [loading dismiss];
                 
                 float max = [[datas valueForKeyPath:@"@max.temeratureBySData"] floatValue];
                 float min = [[datas valueForKeyPath:@"@min.temeratureBySData"] floatValue];
+                float avg = [[datas valueForKeyPath:@"@avg.temeratureBySData"] floatValue];
                 NSMutableArray <NSNumber *>* tps = [NSMutableArray array];
                 for (DeviceInfo * dd in datas) {
                     CGFloat percent;
@@ -48,16 +104,28 @@
                     }
                     [tps addObject:@(percent)];
                 }
-                [self.temperatureView.liner reDrawWithX:10 Y:10 Values:tps];
+                [weakself.temperatureView.liner reDrawWithX:10 Y:10 Values:tps];
+                
+                NSString * unit = [MyDefaultManager unit];
+                NSString * last = [NSString stringWithFormat:@"%.1f%@",datas.firstObject.temeratureBySData,unit]
+                ;
+                NSString * high = [NSString stringWithFormat:@"%.1f%@",max,unit]
+                ;
+                NSString * low = [NSString stringWithFormat:@"%.1f%@",min,unit]
+                ;
+                NSString * avgstr = [NSString stringWithFormat:@"%.1f%@",avg,unit]
+                ;
+                NSDate * date = [NSDate dateWithTimeIntervalSince1970:datas.firstObject.utime];
+                NSString * time1 = [NSString stringWithFormat:@"%02d/%02d/%d",[date nDay],[date nMonth],[date nYear]];
+                NSString * time2 = [NSString stringWithFormat:@"%02d:%02d:%02d",[date nHour],[date nMinute],[date nSecond]];
+                
+                [weakself.temperatureView.tempInfoView setHigh:high Low:low Avg:avgstr Last:last Time1:time1 Time2:time2];
             });
         }];
         
     }];
 }
 
-/**
- 查询湿度并刷新（根据）
- */
 - (void)selectInternetHumidity{
     
     LRWeakSelf(self);
@@ -66,6 +134,7 @@
         //查询数据
         [weakself selectInternetTHData:^(NSArray<DeviceInfo *> *datas) {
             
+            datas = [weakself removeTooClosedHumidityData:datas];
             weakself.currentDatas = datas.mutableCopy;
             
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -74,6 +143,7 @@
                 
                 float max = [[datas valueForKeyPath:@"@max.humidityBySData"] floatValue];
                 float min = [[datas valueForKeyPath:@"@min.humidityBySData"] floatValue];
+                float avg = [[datas valueForKeyPath:@"@avg.humidityBySData"] floatValue];
                 NSMutableArray <NSNumber *>* tps = [NSMutableArray array];
                 for (DeviceInfo * dd in datas) {
                     CGFloat percent;
@@ -89,15 +159,27 @@
                     [tps addObject:@(percent)];
                 }
                 [self.humidityView.liner reDrawWithX:10 Y:10 Values:tps];
+                
+                NSString * unit = @"%";
+                NSString * last = [NSString stringWithFormat:@"%d%@",datas.firstObject.humidityBySData,unit]
+                ;
+                NSString * high = [NSString stringWithFormat:@"%.0f%@",max,unit]
+                ;
+                NSString * low = [NSString stringWithFormat:@"%.0f%@",min,unit]
+                ;
+                NSString * avgstr = [NSString stringWithFormat:@"%.0f%@",avg,unit]
+                ;
+                NSDate * date = [NSDate dateWithTimeIntervalSince1970:datas.firstObject.utime];
+                NSString * time1 = [NSString stringWithFormat:@"%02d/%02d/%d",[date nDay],[date nMonth],[date nYear]];
+                NSString * time2 = [NSString stringWithFormat:@"%02d:%02d:%02d",[date nHour],[date nMinute],[date nSecond]];
+                
+                [weakself.humidityView.humiInfoView setHigh:high Low:low Avg:avgstr Last:last Time1:time1 Time2:time2];
             });
         }];
         
     }];
 }
 
-/**
- 查询报警记录并刷新
- */
 - (void)selectInternetWarnRecord{
     
     
@@ -261,27 +343,6 @@
                 weakself.editer.limitHumi.tfMore_textField.text = [NSString stringWithFormat:@"%.0f",record.threshold.humiMax.value];
             });
             
-            //如果开关打开，则查询实时数据看是否报警
-            if (record.ison) {
-                int uid = [MyDefaultManager userInfo].uid;
-                [[AFManager shared] selectLastDataOfDevice:uid Mac:[weakself macFormDevice] Block:^(NSString * _Nonnull dataStr) {
-                    
-                    float temp = [DeviceInfo temeratureBySData:dataStr];
-                    int humi = [DeviceInfo humidityBySData:dataStr];
-                    
-                    if (temp < record.threshold.tempMin.value || temp > record.threshold.tempMax.value || humi < record.threshold.humiMin.value || humi > record.threshold.humiMax.value) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            weakself.warner.labTemp.text = [NSString stringWithFormat:@"%.1f%@",temp,[MyDefaultManager unit]];
-                            [weakself.warner.labTemp sizeToFit];
-                            weakself.warner.labHumi.text = [NSString stringWithFormat:@"%d%%",humi];
-                            [weakself.warner.labHumi sizeToFit];
-                            [weakself showIsWaner:true];
-                        });
-                    }
-                    
-                    
-                }];
-            }
         }];
     });
     
@@ -363,8 +424,15 @@
         //查时间段之内的所有温湿度记录
         [[AFManager shared] selectDataOfDevice:user.uid Mac:[self macFormDevice] SIndex:start EIndex:count Result:^(NSArray<DeviceInfo *> * _Nonnull datas) {
             
+            NSMutableArray <DeviceInfo *>* ths = datas.mutableCopy;
+            for (DeviceInfo *dd in ths.reverseObjectEnumerator) {
+                if (![dd isTHData]) {
+                    [ths removeObject:dd];
+                }
+            }
+            
             if (block) {
-                block(datas);
+                block(ths);
             }
         }];
     });
@@ -375,6 +443,56 @@
     return device.mac;
 }
 
+/**
+ 删除短时间内温度相同的数据
 
+ @param datas 数据
+ @return 去重后的数据
+ */
+- (NSMutableArray<DeviceInfo *> *)removeTooClosedTemparatureData:(NSArray<DeviceInfo *> *)datas{
+    NSMutableArray <DeviceInfo *>* marr = datas.mutableCopy;
+    float temp = marr.lastObject.temeratureBySData;
+    int count = 0;
+    for (DeviceInfo * dd in marr.reverseObjectEnumerator) {
+        
+        if (dd.temeratureBySData == temp) {
+            if (count >= 3) {
+                [marr removeObject:dd];
+                continue ;
+            }
+            count++;
+        } else {
+            count = 0;
+            temp = dd.temeratureBySData;
+        }
+    }
+    return marr;
+}
+
+/**
+ 删除短时间内湿度相同的数据
+ 
+ @param datas 数据
+ @return 去重后的数据
+ */
+- (NSMutableArray<DeviceInfo *> *)removeTooClosedHumidityData:(NSArray<DeviceInfo *> *)datas{
+    NSMutableArray <DeviceInfo *>* marr = datas.mutableCopy;
+    float temp = marr.lastObject.humidityBySData;
+    int count = 0;
+    for (DeviceInfo * dd in marr.reverseObjectEnumerator) {
+        
+        if (dd.humidityBySData == temp) {
+            if (count >= 3) {
+                [marr removeObject:dd];
+                continue ;
+            }
+            count++;
+        } else {
+            count = 0;
+            temp = dd.humidityBySData;
+        }
+    }
+    return marr;
+}
 
 @end

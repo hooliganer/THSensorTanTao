@@ -37,6 +37,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)readLocalHumidityRecord;
 
+/**
+ 读本地报警记录
+ */
+- (void)readLocalWarnRecord;
 
 @end
 

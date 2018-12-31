@@ -77,8 +77,11 @@
 }
 
 - (void)showAlertTipTitle:(NSString *)title Message:(NSString *)msg DismissTime:(NSTimeInterval)interval{
-    MyAlertView *alert = [[MyAlertView alloc]init];
-    [alert showTitle:title Message:msg DissTime:interval];
+    [My_AlertView showInfo:msg Block:^(My_AlertView *infoAlert) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(interval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [infoAlert dismiss];
+        });
+    }];
 }
 
 - (void)showNavigationBarEffect{

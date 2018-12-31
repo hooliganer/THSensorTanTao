@@ -11,6 +11,5 @@
 @interface MainListController (Tableview)
 <UITableViewDelegate,UITableViewDataSource>
 
-- (void)setupMainTable;
 
 @end

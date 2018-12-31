@@ -68,6 +68,9 @@
     self.tfWifi.style = TextFieldStyle_BorderLine;
     self.tfWifi.placeholder = @"Input The Wifi Name";
     self.tfWifi.tintsColor = [UIColor lightGrayColor];
+    
+    self.tfWifi.leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 10, 0)];
+    [self.tfWifi setLeftViewMode:UITextFieldViewModeAlways];
     [self.wifiView addSubview:self.tfWifi];
     self.tfWifi.tag = 100;
 //    self.tfWifi.delegate = self;

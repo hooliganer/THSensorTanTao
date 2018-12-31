@@ -25,7 +25,7 @@
 
 + (void)showLoading:(void(^)(My_AlertView *loading))block;
 + (void)showLoadingWithText:(NSString *)text Block:(void (^)(My_AlertView *loading,UILabel *infoLab))block;
-+ (void)showInfo:(NSString *)info Block:(void(^)(My_AlertView *loading))block;
++ (void)showInfo:(NSString *)info Block:(void(^)(My_AlertView *infoAlert))block;
 
 + (void)showConfrimAlertWithTempText:(NSString *)tpText HumiText:(NSString *)hmText Completion:(void(^)(My_AlertView *alert))completion;
 

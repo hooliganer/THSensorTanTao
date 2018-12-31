@@ -302,6 +302,11 @@
     } completion:^(BOOL finished) {
         self.hidden = true;
     }];
+    [self.tfName resignFirstResponder];
+    [self.limitTemp.tfLess_textField resignFirstResponder];
+    [self.limitTemp.tfMore_textField resignFirstResponder];
+    [self.limitHumi.tfLess_textField resignFirstResponder];
+    [self.limitHumi.tfMore_textField resignFirstResponder];
 }
 
 @end

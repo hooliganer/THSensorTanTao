@@ -62,6 +62,7 @@
         _liner.lineWidth = 2;
         _liner.lineColor = [UIColor blueColor];
         _liner.type = THLineType_Beeline;
+        _liner.layer.masksToBounds = true;
         [self addSubview:_liner];
     }
     return _liner;
