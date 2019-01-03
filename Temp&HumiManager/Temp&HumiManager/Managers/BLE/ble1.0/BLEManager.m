@@ -394,8 +394,9 @@ NSString * const responseCharacteristic1 = @"0000fff7-0000-1000-8000-00805f9b34f
 }
 
 - (void)connectCBPeripheral:(CBPeripheral *)peripheral Block:(void (^)(bool, NSString *, CBPeripheral *))block{
-    if (!peripheral) {
+    if (peripheral == nil) {
         LRLog(@"can`t connect nil peripheral");
+        return ;
     }
     connectCBPeripheralBlock = block;
     [self.centralManager connectPeripheral:peripheral options:nil];
@@ -405,6 +406,7 @@ NSString * const responseCharacteristic1 = @"0000fff7-0000-1000-8000-00805f9b34f
     
     if (!peripheral) {
         LRLog(@"can`t connect nil peripheral");
+        return ;
     }
     connectCBPeripheralBlock = result;
     [self.centralManager connectPeripheral:peripheral options:nil];

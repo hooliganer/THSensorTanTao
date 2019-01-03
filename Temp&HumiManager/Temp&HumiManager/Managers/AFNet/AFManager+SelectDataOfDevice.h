@@ -12,7 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AFManager (SelectDataOfDevice)
 
-- (void)selectDataOfDevice:(int)uid Mac:(nonnull NSString *)mac Stime:(NSTimeInterval)stime Etime:(NSTimeInterval)etime;
 
 - (void)selectDataOfDevice:(int)uid Mac:(nonnull NSString *)mac SIndex:(int)sindex EIndex:(int)eindex Result:(void(^)(NSArray <DeviceInfo *>*datas))result;
 

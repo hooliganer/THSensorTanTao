@@ -1379,7 +1379,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = WSF8C32N4B;
+				DEVELOPMENT_TEAM = 9WV47J9VN9;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Temp&HumiManager/Public/THPrefixHeader.pch";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "Temp&HumiManager/Info.plist";
@@ -1409,7 +1409,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = WSF8C32N4B;
+				DEVELOPMENT_TEAM = 9WV47J9VN9;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Temp&HumiManager/Public/THPrefixHeader.pch";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "Temp&HumiManager/Info.plist";

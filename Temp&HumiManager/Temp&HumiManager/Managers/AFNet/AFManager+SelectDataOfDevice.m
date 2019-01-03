@@ -71,39 +71,6 @@
     }];
 }
 
-- (void)selectDataOfDevice:(int)uid Mac:(nonnull NSString *)mac Stime:(NSTimeInterval)stime Etime:(NSTimeInterval)etime{
-    
-    // /aircondition/app/sensordb_query_ex.jsp?uid=&tmac=&pwd=&starttime=&endtime=&nio=yes&start=0&end=720
-    // /aircondition/app/sensordb_query_ex.jsp?uid=
-    NSString * url = [NSString stringWithFormat:@"http://%@:%@/aircondition/app/sensordb_query_ex.jsp?",TH_IP,TH_PORT];
-    NSDictionary * param = @{@"uid":@(uid),
-                             @"tmac":mac,
-                             @"nio":@"yes",
-                             @"starttime":[NSString stringWithFormat:@"%.0f",stime],
-                             @"endtime":[NSString stringWithFormat:@"%.0f",etime],
-                             @"pwd":@"12345678"};
-    
-    NSMutableString * ss = [[NSMutableString alloc]initWithString:url];
-    for (int i=0; i<param.allKeys.count; i++) {
-        NSString * key = param.allKeys[i];
-        NSString * value = [NSString stringWithFormat:@"%@",param.allValues[i]];
-        if (i != 0) {
-            [ss appendFormat:@"&"];
-        }
-        [ss appendFormat:@"%@=%@",key,value];
-    }
-    LRLog(@"%@",ss);
-    
-    [self.sessionManager POST:url parameters:param progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-//        LRLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-        NSDictionary * dic = [NSDictionary dictionaryWithXMLData:responseObject];
-        LRLog(@"%@",dic);
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        LRLog(@"%@",error);
-    }];
-}
 
 //http://www.easyhomeai.com:8080/aircondition/app/sensordb_query_ex.jsp?uid=5&tmac=DB59655E25C8&nio=yes&start=0&end=720&pwd=12345678
 
