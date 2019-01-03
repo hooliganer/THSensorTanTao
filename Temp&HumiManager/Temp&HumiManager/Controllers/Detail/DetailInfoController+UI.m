@@ -114,6 +114,10 @@
     
     self.editer = [[DetailEditAlert alloc]init];
     self.editer.switcher.isOn = true;
+    self.editer.limitTemp.tfLess_textField.text = @"0";
+    self.editer.limitTemp.tfMore_textField.text = @"30";
+    self.editer.limitHumi.tfLess_textField.text = @"10";
+    self.editer.limitHumi.tfMore_textField.text = @"70";
     [self.editer.btnSave addTarget:self action:@selector(clickEditButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.editer.btnCancel addTarget:self action:@selector(clickEditButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view insertSubview:self.editer aboveSubview:self.bgScroll];
@@ -137,10 +141,12 @@
     [self.btmView addSubview:self.typeView];
 
     self.temperatureView = [[DetailTempView alloc]initWithFrame:CGRectMake(20, self.btmView.height * 0.3 + 10, self.btmView.width - 40, self.btmView.height * 0.7 - 10)];
+    self.temperatureView.liner.backgroundColor = [UIColor whiteColor];
     [self.btmView addSubview:self.temperatureView];
 
     self.humidityView = [[DetailHumidityView alloc]initWithFrame:CGRectMake(20, self.btmView.height * 0.3 + 10, self.btmView.width - 40, self.btmView.height * 0.7 - 10)];
     self.humidityView.hidden = true;
+    self.humidityView.liner.backgroundColor = [UIColor whiteColor];
     [self.btmView addSubview:self.humidityView];
 
     self.warnView = [[DetailWarningView alloc]initWithFrame:CGRectMake(20, self.btmView.height * 0.3 +10, self.btmView.width - 40, self.btmView.height * 0.7 - 10)];

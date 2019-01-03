@@ -314,9 +314,9 @@
             UILabel * lab1 = [weakself.warnView.topView viewWithTag:13];
             lab1.text = [NSString stringWithFormat:@"%lu",(unsigned long)warns.count];
             UILabel * lab2 = [weakself.warnView.topView viewWithTag:14];
-            lab2.text = [NSString stringWithFormat:@"%lu",devTPMin.count+devTPMax.count];
+            lab2.text = [NSString stringWithFormat:@"%lu",(unsigned long)(devTPMin.count+devTPMax.count)];
             UILabel * lab3 = [weakself.warnView.topView viewWithTag:15];
-            lab3.text = [NSString stringWithFormat:@"%lu",devHMMin.count+devHMMax.count];
+            lab3.text = [NSString stringWithFormat:@"%lu",(unsigned long)(devHMMin.count+devHMMax.count)];
             
         });
     }];

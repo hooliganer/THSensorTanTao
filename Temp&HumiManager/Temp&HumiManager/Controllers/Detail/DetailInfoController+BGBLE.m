@@ -110,6 +110,33 @@
     DeviceDB * dd = [DeviceDB readBymac:[self macFromPeripheral]];
     if (dd) {
         [self refreshInfoByLocalDevice:dd];
+    } else {
+        MyPeripheral * peripheral = (MyPeripheral *)self.deviceInfo;
+        if (peripheral.macAddress.length > 0) {
+            
+            bool iswarn = self.editer.switcher.isOn;
+            float tpMin = [self.editer.limitTemp.tfLess_textField.text floatValue];
+            float tpMax = [self.editer.limitTemp.tfMore_textField.text floatValue];
+            float hmMin = [self.editer.limitHumi.tfLess_textField.text floatValue];
+            float hmMax = [self.editer.limitHumi.tfMore_textField.text floatValue];
+            
+            dd = [DeviceDB newDevice];
+            dd.mac = peripheral.macAddress;
+            dd.dbName = peripheral.peripheral.name ?peripheral.peripheral.name : peripheral.peripheral.identifier.UUIDString;
+            dd.devType = self.editer.type;
+            dd.tempTime = [[NSDate date] timeIntervalSince1970];
+            dd.humiTime = [[NSDate date] timeIntervalSince1970];
+            dd.isWarn = iswarn;
+            dd.lessTemper = tpMin;
+            dd.overTemper = tpMax;
+            dd.lessHumidi = hmMin;
+            dd.overHumidi = hmMax;
+            
+            [dd save];
+            
+        } else {
+            LRLog(@"空Mac的蓝牙设备！不进行保存至本地!");
+        }
     }
 }
 

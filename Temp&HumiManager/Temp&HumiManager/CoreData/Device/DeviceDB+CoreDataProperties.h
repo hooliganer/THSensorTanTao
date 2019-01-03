@@ -16,15 +16,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSFetchRequest<DeviceDB *> *)fetchRequest;
 
-@property (nullable, nonatomic, copy) NSString *dbName;
-@property (nonatomic) int16_t devType;
+@property (nullable, nonatomic, copy) NSString *dbName;///<设备名称
+@property (nonatomic) int16_t devType;///<设备类型
 @property (nonatomic) double humiTime;
-@property (nonatomic) BOOL isWarn;
-@property (nonatomic) float lessHumidi;
-@property (nonatomic) float lessTemper;
-@property (nullable, nonatomic, copy) NSString *mac;
-@property (nonatomic) float overHumidi;
-@property (nonatomic) float overTemper;
+@property (nonatomic) BOOL isWarn;///<报警是否开启
+@property (nonatomic) float lessHumidi;///<湿度报警最小值
+@property (nonatomic) float lessTemper;///<温度报警最小值
+@property (nullable, nonatomic, copy) NSString *mac;///<Mac地址
+@property (nonatomic) float overHumidi;///<湿度报警最大值
+@property (nonatomic) float overTemper;///<温度报警最大值
 @property (nonatomic) double tempTime;
 @property (nullable, nonatomic, retain) NSOrderedSet<WarnRecordSetDB *> *warnSetRecords;
 

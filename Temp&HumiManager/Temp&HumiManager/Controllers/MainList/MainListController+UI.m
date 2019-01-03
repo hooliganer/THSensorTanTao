@@ -74,6 +74,7 @@
         [weakself.bleTable reloadData];
 
         [weakself selectGroupData];
+        [weakself selectLocalDevices];
     }];
 }
 

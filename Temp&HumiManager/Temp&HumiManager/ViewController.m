@@ -8,8 +8,6 @@
 
 #import "ViewController.h"
 
-#import "HTTP_MemberManager.h"
-
 typedef void(^IntBlock)(int);
 
 @interface ViewController ()

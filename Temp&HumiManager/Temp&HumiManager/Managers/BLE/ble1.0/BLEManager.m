@@ -28,6 +28,8 @@ NSString * const responseCharacteristic1 = @"0000fff7-0000-1000-8000-00805f9b34f
 @property (nonatomic,strong)NSMutableArray <CBPeripheral *> *discoveredCBPeripherals;
 @property (nonatomic,strong)NSMutableArray <NSDictionary *> *connectingDics;///<@{@"peripheral":xx,@"sendCharacteristc":xx,@"receiveCharacteristc":xx,@"unknownCharacteristc":xx}
 
+@property (nonatomic,strong)NSMutableArray <NSMutableDictionary *>* isConnects;
+
 @end
 
 @implementation BLEManager
@@ -88,6 +90,13 @@ NSString * const responseCharacteristic1 = @"0000fff7-0000-1000-8000-00805f9b34f
         _discoveredCBPeripherals = [NSMutableArray array];
     }
     return _discoveredPeripherals;
+}
+
+- (NSMutableArray<NSMutableDictionary *> *)isConnects{
+    if (_isConnects == nil) {
+        _isConnects = [NSMutableArray array];
+    }
+    return _isConnects;
 }
 
 #pragma mark ----- <CB CentralManager Delegate>
@@ -264,6 +273,13 @@ NSString * const responseCharacteristic1 = @"0000fff7-0000-1000-8000-00805f9b34f
         connectCBPeripheralBlock(true,@"连接成功!",peripheral);
         connectCBPeripheralBlock = nil;
     }
+    
+    for (NSMutableDictionary * mdic in self.isConnects) {
+        if ([mdic[@"peripheral"] isEqual:peripheral]) {
+            [mdic setValue:@(true) forKey:@"isconnect"];
+            break ;
+        }
+    }
 
 }
 
@@ -392,12 +408,22 @@ NSString * const responseCharacteristic1 = @"0000fff7-0000-1000-8000-00805f9b34f
     }
     connectCBPeripheralBlock = result;
     [self.centralManager connectPeripheral:peripheral options:nil];
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), queue, ^{
-//        if (result) {
-//            result(false,@"Connection timed out !",peripheral);
-//        }
-//        [self.centralManager cancelPeripheralConnection:peripheral];
-//    });
+    
+    [self.isConnects addObject:@{@"peripheral":peripheral,@"isconnect":@(false)}.mutableCopy];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), queue, ^{
+        for (NSMutableDictionary * mdic in self.isConnects) {
+            if ([mdic[@"peripheral"] isEqual:peripheral]) {
+                if (![mdic[@"isconnect"] boolValue]) {
+                    if (result) {
+                        result(false,@"Connection timed out !",peripheral);
+                    }
+                    [self.centralManager cancelPeripheralConnection:peripheral];
+                }
+                break ;
+            }
+        }
+    });
 }
 
 - (void)cancelConnectCBPeripheral:(CBPeripheral *)peripheral{

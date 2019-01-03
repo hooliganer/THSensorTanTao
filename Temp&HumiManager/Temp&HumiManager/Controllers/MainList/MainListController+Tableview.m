@@ -14,7 +14,7 @@
 #import "TH_GroupInfo.h"
 #import "DetailInfoController.h"
 #import "BlueToothInfo.h"
-
+#import "DeviceDB+CoreDataClass.h"
 
 @implementation MainListController (Tableview)
 
@@ -67,31 +67,7 @@
     }
     else if (tableView.tag == 2000){
 
-        NSMutableDictionary * mdic = self.bleDatasource[indexPath.row];
-        MyPeripheral * info = mdic[@"ble"];
-        cell.labTitle.text = info.peripheral.name ? info.peripheral.name : info.macAddress;
-        cell.iswifi = false;
-        cell.isble = true;
-
-        NSString * powerTxt = ([info powerBle] == -1000)?@"--%":[NSString stringWithFormat:@"%d%%",[info powerBle]];
-        NSString * tempTxt = ([info temperatureBle] == -1000)?@"--%":[NSString stringWithFormat:@"%.1f%@",[info temperatureBle],[MyDefaultManager unit]];
-        NSString * humiTxt = ([info humidityBle] == -1000)?@"--%":[NSString stringWithFormat:@"%d%%",[info humidityBle]];
-
-        cell.labPower.text = powerTxt;
-        cell.labTemp.text = tempTxt;
-        cell.labHumi.text = humiTxt;
-
-        cell.iswifi = false;
-        cell.isble = true;
-        
-        NSMutableDictionary * warn = mdic[@"warn"];
-        cell.tempWarning = [warn[@"tempWarn"] boolValue];
-        cell.humiWarning = [warn[@"humiWarn"] boolValue];
-        
-        if (mdic[@"fakeble"]) {
-            cell.labTemp.text = [NSString stringWithFormat:@"%.1f%@",[mdic[@"fakeble"][@"temp"] floatValue],[MyDefaultManager unit]];
-            cell.labHumi.text = [NSString stringWithFormat:@"%d%%",[mdic[@"fakeble"][@"humi"] intValue]];
-        }
+        [self handleBLECell:cell IndexPath:indexPath];
         
     }
 
@@ -99,81 +75,6 @@
     return cell;
 
 
-//
-//    [cell.btnLink addTarget:self action:@selector(clickLinkButton:) forControlEvents:UIControlEventTouchUpInside];
-
-//    cell.logo = [UIImage imageNamed:@"ic_room_car"];
-//
-//    cell.indexPath = indexPath;
-//
-//    if (indexPath.row % 2 == 0) {
-//        cell.showLink = false;
-//    } else {
-//        cell.showLink = true;
-//    }
-//
-//    MainTableObject * mto = [self.dataSources objectAtIndex:indexPath.section];
-//    NSMutableDictionary * mdic = [mto.devices objectAtIndex:indexPath.row];
-//    NSMutableDictionary * warning = [mdic valueForKey:@"warning"];
-//    cell.tempWarning = [[warning valueForKey:@"temp"] boolValue];
-//    cell.humiWarning = [[warning valueForKey:@"humi"] boolValue];
-//
-//    if (mto.type == DataType_Ble) {
-//
-//        BlueToothInfo * bti = [mdic valueForKey:@"ble"];
-//
-//        cell.isble = true;
-//        cell.iswifi = false;
-//
-//        cell.labTitle.text = bti.peripheral.name;
-//
-//        NSString * powerTxt = ([bti powerBle]==-1000)?@"--%":[NSString stringWithFormat:@"%d%%",[bti powerBle]];
-//        NSString * tempTxt = ([bti temperatureBle]==-1000)?@"--%":[NSString stringWithFormat:@"%.1f˚C",[bti temperatureBle]];
-//        NSString * humiTxt = ([bti humidityBle]==-1000)?@"--%":[NSString stringWithFormat:@"%d%%",[bti humidityBle]];
-//
-//        cell.labPower.text = powerTxt;
-//        cell.labTemp.text = tempTxt;
-//        cell.labHumi.text = humiTxt;
-//
-//    } else if(mto.type == DataType_Wifi){
-//
-//        DeviceInfo * di = [mdic valueForKey:@"wifi"];
-//        BlueToothInfo * bti = [mdic valueForKey:@"ble"];
-//
-//        cell.isble = false;
-//        cell.iswifi = true;
-//
-//        cell.labTitle.text = di.showName;
-//
-//        NSString * powerTxt = ([bti powerBle]==-1000)?@"--%":[NSString stringWithFormat:@"%d%%",[bti powerBle]];
-//        NSString * tempTxt = ([bti temperatureBle]==-1000)?@"--%":[NSString stringWithFormat:@"%.1f˚C",[bti temperatureBle]];
-//        NSString * humiTxt = ([bti humidityBle]==-1000)?@"--%":[NSString stringWithFormat:@"%d%%",[bti humidityBle]];
-//
-//        cell.labPower.text = powerTxt;
-//        cell.labTemp.text = tempTxt;
-//        cell.labHumi.text = humiTxt;
-//
-//    } else {
-//
-//        //        NSLog(@"%@",mto.devices);
-//        DeviceInfo * di = [mdic valueForKey:@"wifi"];
-//
-//        cell.isble = false;
-//        cell.iswifi = true;
-//        //        cell.tempWarning = mto.tpWarning;
-//        //        cell.humiWarning = mto.hmWarning;
-//        cell.labTitle.text = di.showName;
-//
-//        NSString * powerTxt = ([di powerBySData]==-1000)?@"--%":[NSString stringWithFormat:@"%d%%",[di powerBySData]];
-//        NSString * tempTxt = ([di temeratureBySData]==-1000)?@"--%":[NSString stringWithFormat:@"%.1f˚C",[di temeratureBySData]];
-//        NSString * humiTxt = ([di humidityBySData]==-1000)?@"--%":[NSString stringWithFormat:@"%d%%",[di humidityBySData]];
-//
-//        cell.labPower.text = powerTxt;
-//        cell.labTemp.text = tempTxt;
-//        cell.labHumi.text = humiTxt;
-//    }
-
-//    return cell;
 }
 
 #pragma mark - 每组行数
@@ -309,24 +210,6 @@
     }
     return 0;
 
-//    NSObject * objc = self.datasource[section];
-//
-//    if ([objc isKindOfClass:[NSDictionary class]]) {
-//        return 40;
-//    }
-//    return 0;
-
-    //    MainTableObject * mto = nil;
-    //    if (section < self.dataSources.count) {
-    //        mto = [self.dataSources objectAtIndex:section];
-    //    } else {
-    //        return 0;
-    //    }
-    //    if (mto.type == DataType_Default) {
-    //        return Fit_Y(40.0);
-    //    } else {
-    //        return 0;
-    //    }
 }
 
 #pragma mark - 组尾高
@@ -348,12 +231,6 @@
 }
 
 #pragma mark - 其他事件区域
-
-- (void)clickLinkButton:(UIButton *)sender{
-    MainTableViewCell * cell = (MainTableViewCell *)sender.superview.superview;
-    NSLog(@"%ld",(long)cell.indexPath.row);
-}
-
 - (void)tapHeader:(UIGestureRecognizer *)gesture{
 
     MainTableViewHeader * header = (MainTableViewHeader * )gesture.view;
@@ -372,6 +249,50 @@
 }
 
 #pragma mark - 私有方法
+
+/**
+ 处理蓝牙的cell
+
+ @param cell 该cell
+ @param indexPath 下标
+ */
+- (void)handleBLECell:(MainTableViewCell *)cell IndexPath:(NSIndexPath *)indexPath{
+    
+    NSMutableDictionary * mdic = self.bleDatasource[indexPath.row];
+    MyPeripheral * peripheral = mdic[@"ble"];
+    DeviceDB * device = mdic[@"device"];
+    
+    cell.iswifi = false;
+    cell.isble = true;
+    
+    if (device) {
+        cell.labTitle.text = device.dbName;
+    } else {
+        cell.labTitle.text = peripheral.peripheral.name ? peripheral.peripheral.name : peripheral.peripheral.identifier.UUIDString;
+    }
+    
+    if (peripheral) {
+        NSString * powerTxt = ([peripheral powerBle] == -1000)?@"--%":[NSString stringWithFormat:@"%d%%",[peripheral powerBle]];
+        NSString * tempTxt = ([peripheral temperatureBle] == -1000)?@"--˚C":[NSString stringWithFormat:@"%.1f%@",[peripheral temperatureBle],[MyDefaultManager unit]];
+        NSString * humiTxt = ([peripheral humidityBle] == -1000)?@"--%":[NSString stringWithFormat:@"%d%%",[peripheral humidityBle]];
+        cell.labPower.text = powerTxt;
+        cell.labTemp.text = tempTxt;
+        cell.labHumi.text = humiTxt;
+    } else {
+        cell.labPower.text = @"--%";
+        cell.labTemp.text = [NSString stringWithFormat:@"--%@",[MyDefaultManager unit]];
+        cell.labHumi.text = @"--%";
+    }
+    
+    NSMutableDictionary * warn = mdic[@"warn"];
+    cell.tempWarning = [warn[@"tempWarn"] boolValue];
+    cell.humiWarning = [warn[@"humiWarn"] boolValue];
+    
+    if (mdic[@"fakeble"]) {
+        cell.labTemp.text = [NSString stringWithFormat:@"%.1f%@",[mdic[@"fakeble"][@"temp"] floatValue],[MyDefaultManager unit]];
+        cell.labHumi.text = [NSString stringWithFormat:@"%d%%",[mdic[@"fakeble"][@"humi"] intValue]];
+    }
+}
 
 /**
  处理点击网络设备的操作
@@ -450,6 +371,12 @@
     NSMutableDictionary * mdic = self.bleDatasource[indexPath.row];
     NSMutableDictionary * warn = mdic[@"warn"];
     MyPeripheral * ble = mdic[@"ble"];
+
+//    DetailInfoController * dvc = [[DetailInfoController alloc]init];
+//    dvc.deviceInfo = ble;
+//    [weakself.navigationController pushViewController:dvc animated:true];
+//    
+//    return ;
     
     //有报警，先弹报警窗
     if ([warn[@"tempWarn"] boolValue] || [warn[@"humiWarn"] boolValue]) {
@@ -517,7 +444,8 @@
 
             
         }];
-    } else {
+    }
+    else {
         
         //show连接提示
         [My_AlertView showLoadingWithText:@"Connect Blue Tooth…" Block:^(My_AlertView *loading, UILabel *infoLab) {

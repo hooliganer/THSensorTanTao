@@ -10,8 +10,14 @@
 
 @interface MainListController (BG)
 
+/**
+ 蓝牙扫描
+ */
 - (void)startBlueToothScan;
 
+/**
+ 定时查报警判断、组信息
+ */
 - (void)startTimer;
 
 /**
@@ -24,10 +30,10 @@
  */
 - (void)selectDevicesOfGroup;
 
-///**
-// 查询设备数据
-// */
-//- (void)selectDataOfDevice;
+/**
+ 查本地数据库保存的设备信息
+ */
+- (void)selectLocalDevices;
 
 /**
  保存某个设备确认报警的信息

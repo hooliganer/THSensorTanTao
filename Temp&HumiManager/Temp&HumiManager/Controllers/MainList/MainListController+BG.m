@@ -19,6 +19,7 @@
 #import "AFManager+WarningSetRecord.h"
 #import "WarnConfirm+CoreDataClass.h"
 #import "WarnRecordSetDB+CoreDataClass.h"
+#import "DeviceDB+CoreDataClass.h"
 
 @implementation MainListController (BG)
 
@@ -36,34 +37,41 @@
 
 - (void)startBlueToothScan{
     
-//    // 介绍 : 模拟扫描到2个蓝牙设备
-//
-//    [self.bleDatasource removeAllObjects];
-//    NSDictionary * bled = @{
-//                            @"name":@"啊哈哈哈",
-//                            @"mac":@"df36fbc37df",
-//                            @"temp":@(arc4random()%50),
-//                            @"humi":@(arc4random()%100)
-//                            };
-//    NSMutableDictionary * mdic = @{@"fakeble":bled}.mutableCopy;
-//
-//    NSDictionary * bled1 = @{
-//                             @"name":@"打算放弃而为",
-//                             @"mac":@"df36c38ea",
-//                             @"temp":@(arc4random()%50),
-//                             @"humi":@(arc4random()%100)
-//                             };
-//    NSMutableDictionary * mdic1 = @{@"fakeble":bled1}.mutableCopy;
-//
-//    [self.bleDatasource addObject:mdic];
-//    [self.bleDatasource addObject:mdic1];
-//    [self.bleTable reloadData];
-//    return ;
+    /**
+     
+     // 介绍 : 模拟扫描到2个蓝牙设备
+     
+     [self.bleDatasource removeAllObjects];
+     NSDictionary * bled = @{
+     @"name":@"啊哈哈哈",
+     @"mac":@"df36fbc37df",
+     @"temp":@(arc4random()%50),
+     @"humi":@(arc4random()%100)
+     };
+     NSMutableDictionary * mdic = @{@"fakeble":bled}.mutableCopy;
+     
+     NSDictionary * bled1 = @{
+     @"name":@"打算放弃而为",
+     @"mac":@"df36c38ea",
+     @"temp":@(arc4random()%50),
+     @"humi":@(arc4random()%100)
+     };
+     NSMutableDictionary * mdic1 = @{@"fakeble":bled1}.mutableCopy;
+     
+     [self.bleDatasource addObject:mdic];
+     [self.bleDatasource addObject:mdic1];
+     [self.bleTable reloadData];
+     return ;
+     
+     */
 
     LRWeakSelf(self);
     BLEManager * ble = [BLEManager shareInstance];
-    [ble startScan];
     ble.discoverPeripheral = ^(BLEManager *manager, MyPeripheral *peripheral) {
+        
+        if (peripheral.macAddress.length == 0) {
+            return ;
+        }
 
         //通知蓝牙列表界面接客（蓝牙设备）啦
         [[NSNotificationCenter defaultCenter] postNotificationName:NotiName_ToBLEController object:peripheral];
@@ -73,12 +81,21 @@
             
             NSLock * lock = [[NSLock alloc]init];
             [lock lock];
-
+            
             NSInteger index = -1;
+            //新旧蓝牙设备判断
             for (int i=0; i<weakself.bleDatasource.count; i++) {
                 MyPeripheral * ble = weakself.bleDatasource[i][@"ble"];
-                if ([ble isEqual:peripheral]) {
+                if ([ble isEqual:peripheral] || [ble.peripheral.identifier isEqual:peripheral.peripheral.identifier]) {
                     index = i;
+                    break ;
+                }
+            }
+            for (int i=0; i<weakself.bleDatasource.count; i++) {
+                NSMutableDictionary * mdic = weakself.bleDatasource[i];
+                DeviceDB * device = mdic[@"device"];
+                if ([device.mac isEqualToString:peripheral.macAddress]) {
+                    [mdic setValue:peripheral forKey:@"ble"];
                     break ;
                 }
             }
@@ -90,11 +107,14 @@
                 [weakself.bleDatasource addObject:mdic];
                 [weakself.bleTable reloadData];
             }
-
             [lock unlock];
         });
 
     };
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+    dispatch_async(queue, ^{
+       [ble startScan];
+    });
 }
 
 - (void)startTimer{
@@ -106,6 +126,7 @@
         [self selectGroupData];
         [self judgeBLEWhetherWarn];
 //        [self selectDevicesOfGroup];
+        [self selectLocalDevices];
     });
     dispatch_resume(self.timer1);
 }
@@ -118,51 +139,65 @@
 //    [self judgeFakeBLEWarn];
 //    return ;
     
-    for (int row=0;row<self.bleDatasource.count;row++) {
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+    dispatch_async(queue, ^{
         
-        NSMutableDictionary * rowDic = self.bleDatasource[row];
-        MyPeripheral * peri = rowDic[@"ble"];
-        NSString * mac = peri.macAddress;
-        float temp = peri.temperatureBle;
-        int humi= peri.humidityBle;
-        NSMutableDictionary * warnDic = rowDic[@"warn"];
-        if (!warnDic) {
-            warnDic = @{}.mutableCopy;
-            [rowDic setValue:warnDic forKey:@"warn"];
+        for (int row=0; row<self.bleDatasource.count; row++) {
+            
+            NSMutableDictionary * rowDic = self.bleDatasource[row];
+            MyPeripheral * peri = rowDic[@"ble"];
+            if (!peri) {
+                continue ;
+            }
+            NSString * mac = peri.macAddress;
+            float temp = peri.temperatureBle;
+            int humi= peri.humidityBle;
+            NSMutableDictionary * warnDic = rowDic[@"warn"];
+            if (!warnDic) {
+                warnDic = @{}.mutableCopy;
+                [rowDic setValue:warnDic forKey:@"warn"];
+            }
+            
+            WarnConfirm * wc = [WarnConfirm readByMac:mac];
+            NSTimeInterval time = wc.time;
+            NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+            if (now - time < 180) {
+                continue ;
+            }
+            
+            WarnRecordSetDB * wrs = [WarnRecordSetDB readAllOrderByMac:mac].firstObject;
+            float tpmin = wrs ? wrs.tempMin : 0;
+            float tpmax = wrs ? wrs.tempMax : 30;
+            float hmmin = wrs ? wrs.humiMin : 10;
+            float hmmax = wrs ? wrs.humiMax : 70;
+            bool ison = wrs ? wrs.ison : true;
+            
+            if (temp <= tpmin || temp >= tpmax) {
+                [warnDic setValue:@(temp == -1000 ? false : ison) forKey:@"tempWarn"];
+            } else {
+                [warnDic setValue:@(false) forKey:@"tempWarn"];
+            }
+            
+            if (humi <= hmmin || humi >= hmmax) {
+                [warnDic setValue:@(humi == -1000 ? false : ison) forKey:@"humiWarn"];
+            } else{
+                [warnDic setValue:@(false) forKey:@"humiWarn"];
+            }
+            
+            [warnDic setValue:@(tpmin) forKey:@"tempMin"];
+            [warnDic setValue:@(tpmax) forKey:@"tempMax"];
+            [warnDic setValue:@(hmmin) forKey:@"humiMin"];
+            [warnDic setValue:@(hmmax) forKey:@"humiMax"];
+            
         }
-        
-        WarnConfirm * wc = [WarnConfirm readByMac:mac];
-        NSTimeInterval time = wc.time;
-        NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
-        if (now - time < 180) {
-            continue ;
-        }
-        
-        WarnRecordSetDB * wrs = [WarnRecordSetDB readAllOrderByMac:mac].firstObject;
-        float tpmin = wrs ? wrs.tempMin : 0;
-        float tpmax = wrs ? wrs.tempMax : 30;
-        float hmmin = wrs ? wrs.humiMin : 10;
-        float hmmax = wrs ? wrs.humiMax : 70;
-        bool ison = wrs ? wrs.ison : true;
-
-        if (temp <= tpmin || temp >= tpmax) {
-            [warnDic setValue:@(temp == -1000 ? false : ison) forKey:@"tempWarn"];
-        } else {
-            [warnDic setValue:@(false) forKey:@"tempWarn"];
-        }
-        
-        if (humi <= hmmin || humi >= hmmax) {
-            [warnDic setValue:@(humi == -1000 ? false : ison) forKey:@"humiWarn"];
-        } else{
-            [warnDic setValue:@(false) forKey:@"humiWarn"];
-        }
-
-    }
+        dispatch_async(dispatch_get_main_queue(), ^{
+           [self.bleTable reloadData];
+        });
+    });
     
-    [self.bleTable reloadData];
+    
     
 }
-
 
 /**
  判断假的蓝牙报警
@@ -217,37 +252,41 @@
 - (void)selectGroupData{
 
     LRWeakSelf(self);
-    [[AFManager shared] selectGroupOfUser:^(NSArray<TH_GroupInfo *> *groups) {
-
-        //查询回的分组数据中遍历比较
-        for (int i=0; i<groups.count; i++) {
-            TH_GroupInfo * newGroup = groups[i];
-            int index = -1;
-            for (int j=0; j<weakself.groupDatasource.count; j++) {
-                TH_GroupInfo * oldGroup = [weakself.groupDatasource[j] valueForKey:@"group"];
-                //如果新旧数据一样，则替换掉旧数据
-                if ([oldGroup.mac isEqual:newGroup.mac]) {
-                    [weakself.groupDatasource[j] setValue:newGroup forKey:@"group"];
-                    index = j;
-                    break ;
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+    dispatch_async(queue, ^{
+        
+        [[AFManager shared] selectGroupOfUser:^(NSArray<TH_GroupInfo *> *groups) {
+            
+            //查询回的分组数据中遍历比较
+            for (int i=0; i<groups.count; i++) {
+                TH_GroupInfo * newGroup = groups[i];
+                int index = -1;
+                for (int j=0; j<weakself.groupDatasource.count; j++) {
+                    TH_GroupInfo * oldGroup = [weakself.groupDatasource[j] valueForKey:@"group"];
+                    //如果新旧数据一样，则替换掉旧数据
+                    if ([oldGroup.mac isEqual:newGroup.mac]) {
+                        [weakself.groupDatasource[j] setValue:newGroup forKey:@"group"];
+                        index = j;
+                        break ;
+                    }
                 }
+                //有新旧数据的更迭,执行下一个循环
+                if (index >= 0) {
+                    continue ;
+                }
+                //没有数据的更换，添加新数据
+                NSMutableDictionary * mdic = [NSMutableDictionary dictionary];
+                [mdic setValue:newGroup forKey:@"group"];
+                [mdic setValue:@(false) forKey:@"flex"];
+                [weakself.groupDatasource addObject:mdic];
             }
-            //有新旧数据的更迭,执行下一个循环
-            if (index >= 0) {
-                continue ;
-            }
-            //没有数据的更换，添加新数据
-            NSMutableDictionary * mdic = [NSMutableDictionary dictionary];
-            [mdic setValue:newGroup forKey:@"group"];
-            [mdic setValue:@(false) forKey:@"flex"];
-            [weakself.groupDatasource addObject:mdic];
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakself.groupTable reloadData];
-        });
-        //查询子设备
-        [weakself selectDevicesOfGroup];
-    }];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakself.groupTable reloadData];
+            });
+            //查询子设备
+            [weakself selectDevicesOfGroup];
+        }];
+    });
 
 }
 
@@ -358,6 +397,32 @@
     });
     
 }
+
+- (void)selectLocalDevices{
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+    dispatch_async(queue, ^{
+        NSMutableArray <DeviceDB *>* devs = [DeviceDB readAll].mutableCopy;
+        for (DeviceDB * db in devs.reverseObjectEnumerator) {
+            for (NSMutableDictionary * mdic in self.bleDatasource) {
+                MyPeripheral * ble = mdic[@"ble"];
+                DeviceDB * device = mdic[@"device"];
+                if ([ble.macAddress isEqualToString:db.mac] || [device.mac isEqualToString:db.mac]) {
+                    [mdic setValue:db forKey:@"device"];
+                    [devs removeObject:db];
+                    break ;
+                }
+            }
+        }
+        for (DeviceDB * db in devs) {
+            [self.bleDatasource addObject:@{@"device":db}.mutableCopy];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.bleTable reloadData];
+        });
+    });
+}
+
+#pragma mark - 处理
 
 /**
  处理查回的分组子设备
